@@ -1,0 +1,3 @@
+$('#contact_<%= @contact.id %>').html('<%= escape_javascript (render 'contact_row', contact: @contact) %>');
+$('#myriander-modal').modal('hide');
+$('#myriander-modal').html('');

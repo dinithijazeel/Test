@@ -1,0 +1,15 @@
+= row
+  = col md: 6
+    = field 'Primary Email', tag: 'admin_email'
+      = mail_to(contact.admin_email)
+      - unless contact.billing_email.nil? || contact.billing_email.empty?
+        == " (billing: #{mail_to(contact.billing_email)})"
+  = col md: 6
+    = field 'Phone', phone(contact.phone), tag: 'phone'
+= row
+  = col md: 6
+    .billing_address = field 'Billing Address'
+      = render 'address', address: contact.billing_address
+  = col md: 6
+    .service_address = field 'Service Address'
+      = render 'address', address: contact.service_address

@@ -1,0 +1,12 @@
+= myr_form [:admin, @vendor], remote: true do |f|
+  = myrject :modal do |m|
+    - m.title
+      - if @vendor.new_record?
+        | Add Vendor
+      - else
+        | Edit Vendor
+    - m.body
+      = render 'errors', :obj => @vendor
+      = render 'fields', f: f
+    - m.footer
+      = f.action :submit, as: :input, label: 'Save', button_html: {class: 'button btn btn-primary'}

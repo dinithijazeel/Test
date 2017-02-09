@@ -1,0 +1,9 @@
+/ Errors
+= render 'errors', :obj => @customer
+
+/ Contact
+.contact = render 'contacts/fields', f: f
+
+/ Opportunity
+= f.semantic_fields_for :opportunity do |f|
+  .opportunity = render 'opportunities/fields', f: f

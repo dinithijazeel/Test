@@ -1,0 +1,28 @@
+/ Errors
+= render 'errors', :obj => f.object
+
+/ Customer
+#contact
+  = render 'contacts/dropdown', :f => f, :context => '#contact'
+  = render 'contacts/info', :contact => f.object.contact
+  
+/ Memo
+= f.input :memo
+
+/ Service
+= f.semantic_fields_for :services_proposal do |f|
+  = f.hidden_field :id
+  = f.hidden_field :invoice_date
+  = f.hidden_field :contact_id
+  = render 'line_items/fields', f: f, products: Product.collection(:services_proposal), :id => 'services_proposal'
+
+/ Products
+= f.semantic_fields_for :products_proposal do |f|
+  = f.hidden_field :id
+  = f.hidden_field :invoice_date
+  = f.hidden_field :contact_id
+  = render 'line_items/fields', f: f, products: Product.collection(:products_proposal), :id => 'products_proposal'
+
+/ Onboarding
+= f.semantic_fields_for :onboarding do |f|
+  = render 'onboarding/fields', f: f

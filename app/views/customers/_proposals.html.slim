@@ -1,0 +1,29 @@
+= myrject :card do |c|
+  - c.title "Proposals"
+  - c.action
+    = link_to fa('plus'), new_customer_proposal_path(customer)
+  - c.body
+    = table
+      thead
+        tr
+          th width="10%" Date
+          th width="10%" Number
+          th width="45%" Memo
+          th width="10%" Status
+          th.text-right width="20%" Total
+          th width="5%" &nbsp;
+      tbody
+        - if customer.proposals.any?
+          - customer.proposals.each do |proposal|
+            tr
+              td = proposal.proposal_date
+              td = link_to (proposal.number.nil? ? 'Draft' : proposal.number), proposal
+              td = proposal.memo
+              td = proposal.status_label
+              td.text-right
+                = money(proposal.total)
+              td.text-right
+        - else
+            tr
+              td colspan=6
+                em No proposals.

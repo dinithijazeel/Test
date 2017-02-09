@@ -1,0 +1,121 @@
+- additional_pages = @invoice.additional_pages
+- total_pages = additional_pages.count + 1
+- page_counter = 0
+#invoice
+  #first-page
+    / - billing_group_page_total = billing_group[:line_items].count
+    / - billing_group[:line_items].each_with_index do |billing_group_line_items, billing_group_page_number|
+    .print-page
+        - page_counter += 1
+        #invoice-header
+          .title Invoice
+          .info
+            .account-number
+              .label Account #
+              .value = @invoice.contact.portal_id
+            .invoice-number
+              .label Invoice #
+              .value = @invoice.number
+            .invoice-date
+              .label Invoice Date
+              .value = @invoice.invoice_date
+            .invoice-balance
+              .label Balance Due (USD)
+              .value = money(@invoice.total_due)
+            - if total_pages > 1
+              .invoice-pagination
+                .label Page
+                .value = "#{page_counter} of #{total_pages}"
+        .logo &nbsp;
+        #vendor-address
+          h3 Remit To:
+          | FracTEL LLC
+          br
+          | 122 4th Ave. Ste 201
+          br
+          | Indialantic, FL 32903
+        #billing-address
+          h3 Bill To:
+          - unless @invoice.contact.nil?
+            .contact = "#{@invoice.contact.contact_first} #{@invoice.contact.contact_last}"
+            .company = @invoice.contact.company_name
+            .street-1 = @invoice.contact.billing_street_1
+            .street-2 = @invoice.contact.billing_street_2
+            .city-state-zip
+              span.city = @invoice.contact.billing_city
+              span.comma ,&nbsp;
+              span.state = @invoice.contact.billing_state
+              | &nbsp;
+              span.zip = @invoice.contact.billing_zip
+        #service-address
+          h3 Service Address:
+          - unless @invoice.contact.nil?
+            .contact = "#{@invoice.contact.contact_first} #{@invoice.contact.contact_last}"
+            .company = @invoice.contact.company_name
+            .street-1 = @invoice.contact.service_street_1
+            .street-2 = @invoice.contact.service_street_2
+            .city-state-zip
+              span.city = @invoice.contact.service_city
+              span.comma ,&nbsp;
+              span.state = @invoice.contact.service_state
+              | &nbsp;
+              span.zip = @invoice.contact.service_zip
+        #line-items
+          table.table.table-condensed
+              thead
+                th colspan=2
+                  h2 Summary
+              tbody.summary
+                - @invoice.billing_groups.each do |summary_group|
+                  tr
+                    td width="85%" = summary_group[:type]
+                    td.text-right width="15%" = money(summary_group[:subtotal])
+              tbody.total
+                tr
+                  td
+                    strong Total:
+                  td.text-right width="15%"
+                    strong = money(@invoice.invoice_total)
+                tr
+                  td colspan=2 &nbsp;
+
+          - billing_group = @invoice.billing_groups(:taxes)
+          h2 = billing_group[:type]
+          table.table.table-condensed.line-items
+            = render 'invoice_line_items',
+              :line_items => billing_group[:line_items],
+              :hide_quantity => billing_group[:hide_quantity]
+            tbody.totals
+              = render 'invoice_line_total',
+                :total_class => 'invoice-subtotal',
+                :total_label => "#{billing_group[:type]} Subtotal:",
+                :total_amount => money(billing_group[:subtotal])
+              tr
+              td colspan=4 &nbsp;
+
+        #payment-instructions
+          h4 Payment Instructions
+          p thank you for your business, etc.
+
+  - additional_pages.each do |page|
+    - page_counter += 1
+    .print-page.detail-page
+      .header
+        .logo &nbsp;
+        .invoice-header
+          .invoice-number = "Invoice # #{@invoice.number}"
+          .invoice-pagination = "Page #{page_counter} of #{total_pages}"
+      .detail
+        - page.each do |billing_group|
+          h2 = billing_group[:type]
+          table.table.table-condensed.line-items
+            = render 'invoice_line_items',
+              :line_items => billing_group[:line_items],
+              :hide_quantity => billing_group[:hide_quantity]
+            tbody.totals
+              = render 'invoice_line_total',
+                :total_class => 'invoice-subtotal',
+                :total_label => "#{billing_group[:type]} Subtotal:",
+                :total_amount => money(billing_group[:subtotal])
+              tr
+              td colspan=4 &nbsp;

@@ -1,0 +1,16 @@
+- content_for :page_header
+  => fa('customer')
+  | Add Customer
+
+- content_for :page_body
+  = myr_form @customer, :html => {:id => 'new-customer'} do |f|
+    = form_header 'New Invoice'
+    = form_body
+      = render 'fields', f: f
+    = form_footer
+      = f.action :submit, as: :input, label: 'Save'
+
+- content_for :page_scripts
+  javascript:
+    invoices.init('.invoice')
+    contacts.init('.contact')

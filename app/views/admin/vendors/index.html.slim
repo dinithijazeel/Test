@@ -1,0 +1,8 @@
+- content_for :page_header
+  => fa('vendors')
+  | Vendors
+
+- content_for :page_body
+  = render 'search', :search_path => admin_vendors_path
+  #vendors
+    = render 'vendor_list', :vendors => @vendors

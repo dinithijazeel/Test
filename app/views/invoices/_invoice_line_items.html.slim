@@ -1,0 +1,28 @@
+/ Header
+- if defined?(hide_quantity) && hide_quantity
+  thead
+    tr
+      th width="60%"            Description
+      th width="10%"            &nbsp;
+      th width="15%"            &nbsp;
+      th.text-right width="15%" Amount
+- else
+  thead
+    tr
+      th width="60%"            Description
+      th.text-right width="10%" Qty
+      th.text-right width="15%" Price
+      th.text-right width="15%" Subtotal
+/ Line Items
+tbody.line-items
+  - line_items.each do |li|
+    - if defined?(hide_quantity) && hide_quantity
+      tr.line-item
+        td colspan="3" = li.description
+        td.text-right = money(li.total)
+    - else
+      tr.line-item
+        td = li.description
+        td.text-right = quantity(li.quantity)
+        td.text-right = unit_price(li.unit_price)
+        td.text-right = money(li.total)

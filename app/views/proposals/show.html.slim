@@ -1,0 +1,60 @@
+- content_for :page_header
+  => fa('proposal')
+  = "Proposal #{@proposal.number unless @proposal.number.nil?}"
+  span.label.label-reverse.status = @proposal.status_label
+  
+- content_for :page_body
+  / Heading
+  h2
+    => "#{@proposal.contact.company_name}"
+    small = "#{@proposal.contact.contact_first} #{@proposal.contact.contact_last} "
+  / Proposal
+  = myrject :card do |c|
+    - c.title 'Proposal'
+    - c.body
+      = row
+        = col md: 4
+          = field 'Date', @proposal.proposal_date.to_s()
+        = col md: 4
+          = field 'Memo', @proposal.memo
+        = col md: 4
+          = field 'Amount', money(@proposal.total)
+  / Contact
+  = render 'contacts/contact', contact: @proposal.contact
+  / Service
+  = myrject :card do |c|
+    - c.title 'Service'
+    - c.body
+      = table
+        = render 'invoices/invoice_line_items', :line_items => @proposal.services_proposal.line_items
+  / Products
+  = myrject :card do |c|
+    - c.title 'Products'
+    - c.body
+      = table
+        = render 'invoices/invoice_line_items', :line_items => @proposal.products_proposal.line_items
+  / Onboarding
+  = render 'onboarding/onboarding', onboarding: @proposal.onboarding
+
+- content_for :page_footer
+  = row
+    = col md: 6
+      = button_link "Proposals Index", proposals_path
+    = col md: 6
+      - if @proposal.draft?
+        => button_link 'Submit', proposal_path(@proposal, status: 'submitted'), method: :put, type: 'primary', confirm: 'Submit this proposal? It will be sent to the customer.'
+        => button_link 'Edit', edit_proposal_path(@proposal), type: 'primary'
+      - elsif @proposal.submitted?
+        => button_link 'Decline', proposal_path(@proposal, status: 'declined'), method: :put, type: 'danger', confirm: 'Decline this proposal?'
+        => button_link 'Accept', proposal_path(@proposal, status: 'accepted'), method: :put, type: 'primary', confirm: 'Accept this proposal?'
+        => button_link 'Resend', proposal_path(@proposal, status: 'resend'), method: :put, type: 'warning', confirm: 'Resend this proposal?'
+      - elsif @proposal.accepted?
+          - if @proposal.contact.has_portal_account?
+            => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal?'
+          - else
+            => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a FracTEL account for the customer.'
+      = button_link 'View PDF', proposal_path(@proposal, :format => :pdf), :target => '_blank'
+
+- content_for :page_activity
+  = render partial: 'comments/comments', locals: {commentable: @proposal.contact, new_comment: @comment}
+  = render 'history', object: @proposal

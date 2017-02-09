@@ -1,0 +1,10 @@
+.payment data-stripe-key=Rails.configuration.stripe[:publishable_key]
+  = render 'form'
+
+coffee:
+  payments.initTestData('select.test-data', 'div.payment')
+  payments.initPayment('div.payment')
+  h.focusModal('select#payment_type')
+
+javascript:
+  stripeResponseHandler = payments.responseHandler

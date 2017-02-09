@@ -1,0 +1,2 @@
+class ServiceInvoicePolicy < InvoicePolicy
+end

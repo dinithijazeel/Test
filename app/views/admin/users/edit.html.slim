@@ -1,0 +1,12 @@
+- content_for :page_header
+  => fa('contacts')
+  => "#{@user.first_name} #{@user.last_name}"
+  small = "#{@user.title}"
+
+- content_for :page_body
+  = myr_form [:admin, @user] do |f|
+    = form_header 'Edit User'
+    = form_body
+      = render 'fields', f: f
+    = form_footer
+      = f.action :submit, as: :input, label: 'Save'

@@ -1,0 +1,38 @@
+- content_for :page_header
+  => fa('customer')
+  = "#{@customer.contact_first} #{@customer.contact_last} "
+  small = "#{@customer.company_name}"
+  span.label.label-reverse.status = @customer.status_label
+
+- content_for :page_body
+  = render 'contacts/contact', contact: @customer
+  - unless @customer.opportunity.nil?
+    = render 'opportunities/opportunity', contact: @customer
+  = render 'proposals', customer: @customer
+  / = render 'invoices', customer: @customer
+  / = render 'payments', customer: @customer
+  / = render 'credits', customer: @customer
+  - if @customer.signup? || @customer.pre_production? || @customer.production?
+    .loa-buttons style="width: 250px;"
+      p = link_to "Local Provider Letter of Agency (LOA)", @customer.local_loa_path, target: '_blank', class: "btn btn-xs btn-block btn-default"
+      p = link_to "Toll Free Provider Letter of Agency (LOA)", @customer.tollfree_loa_path, target: '_blank', class: "btn btn-xs btn-block btn-default"
+
+- content_for :page_footer
+  = row
+    = col md: 6
+      = link_to "Customers Index", customers_path, class: 'btn btn-default'
+    = col md: 6
+      - if @customer.opportunity?
+          => button_link 'Make Prospect', contact_path(@customer, status: 'prospect'), method: :put, type: 'primary', confirm: 'Make this customer a prospect?'
+      - elsif @customer.prospect?
+          => button_link 'Signup', contact_path(@customer, status: 'signup'), method: :put, type: 'primary', confirm: 'Move this customer to signup?'
+      - elsif @customer.signup?
+          => button_link 'Pre-Production', contact_path(@customer, status: 'pre_production'), method: :put, type: 'primary', confirm: 'Move this customer to pre-production?'
+      - elsif @customer.pre_production?
+          => button_link 'Production', contact_path(@customer, status: 'production'), method: :put, type: 'primary', confirm: 'Move this customer to production?'
+      - elsif @customer.production?
+          => button_link 'Cancel', contact_path(@customer, status: 'canceled'), method: :put, type: 'danger', confirm: 'Cancel this customer account?'
+
+- content_for :page_activity
+  = render partial: 'comments/comments', locals: {commentable: @customer, new_comment: @comment}
+  = render 'history', object: @customer

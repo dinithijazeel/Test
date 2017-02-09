@@ -1,0 +1,29 @@
+/ Contact
+= myrject :card do |c|
+  - c.action
+    = link_to fa('edit'), edit_contact_path(contact), remote: true
+  - c.title 'Contact'
+  - c.body
+    = row
+      = col md: 6
+        = field 'Primary Email'
+          = mail_to(contact.admin_email)
+          - unless contact.billing_email.nil? || contact.billing_email.empty?
+            == " (billing: #{mail_to(contact.billing_email)})"
+      = col md: 3
+        = field 'Phone', phone(contact.phone)
+      = col md: 3
+        - if contact.has_portal_account?
+          = field 'Portal ID', contact.portal_id
+    = row
+      = col md: 6
+        = field 'Billing Address'
+          = render 'address', address: contact.billing_address
+      = col md: 6
+        = field 'Service Address'
+          = render 'address', address: contact.service_address
+    = row
+      = col md: 6
+        = field 'Affiliate ID', contact.affiliate_id
+      = col md: 6
+        = field 'Discount Code', contact.discount_code

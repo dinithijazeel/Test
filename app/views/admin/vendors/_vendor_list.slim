@@ -1,0 +1,11 @@
+= table
+  thead
+    tr
+      th.col-md-11 Name
+      th.col-md-1
+  tbody
+    - @vendors.each do |vendor|
+      tr
+        td
+          strong = vendor.name
+        td = link_to fa('edit'), edit_admin_vendor_path(vendor), remote: true

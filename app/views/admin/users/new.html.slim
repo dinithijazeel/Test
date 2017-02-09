@@ -1,0 +1,11 @@
+- content_for :page_header
+  => fa('contacts')
+  | Add User
+
+- content_for :page_body
+  = myr_form [:admin, @user] do |f|
+    = form_header 'Add User'
+    = form_body
+      = render 'fields', f: f
+    = form_footer
+      = f.action :submit, as: :input, label: 'Save'

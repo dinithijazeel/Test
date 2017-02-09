@@ -1,0 +1,383 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  formtastic:
+    labels:
+      contact:
+        contact_first: First Name
+        contact_last: Last Name
+        default_terms: Terms
+        company_name: Company
+        phone: Phone
+        admin_email: Primary Email
+        billing_email: Billing Email (if different from Primary)
+        billing_street_1: Street 1
+        billing_street_2: Street 2
+        billing_city: City
+        billing_state: State
+        billing_zip: Zip
+        billing_country: Country
+        use_billing_for_service: Use billing address
+        service_street_1: Street 1
+        service_street_2: Street 2
+        service_city: City
+        service_state: State
+        service_zip: Zip
+        service_country: Country
+        affiliate_id: Affiliate
+        discount_code: Discount Code
+      customer:
+        contact_first: First Name
+        contact_last: Last Name
+        default_terms: Terms
+        company_name: Company
+        phone: Phone
+        admin_email: Primary Email
+        billing_email: Billing Email (if different from Primary)
+        billing_street_1: Street 1
+        billing_street_2: Street 2
+        billing_city: City
+        billing_state: State
+        billing_zip: Zip
+        billing_country: Country
+        use_billing_for_service: Use billing address
+        service_street_1: Street 1
+        service_street_2: Street 2
+        service_city: City
+        service_state: State
+        service_zip: Zip
+        service_country: Country
+        affiliate_id: Affiliate
+        discount_code: Discount Code
+      invoice:
+        terms: Terms
+        invoice_date: Date
+        memo: Memo
+      onboarding:
+        installation: Installation
+        tollfree_port: Tolll Free Port
+        local_port: Local Port
+        installation_notes: Installation Notes
+      opportunity:
+        need: Need
+        budget: Budget
+        timing: Timing
+        decision_maker: Decision Maker
+        competition: Competition
+      product:
+        sku: SKU
+        name: Name
+        description: Description
+        price: Price
+        default_quantity: Default Quantity
+        weight: Weight
+        units: Units
+        product_type: Type
+        product_status: Status
+        billing: Billing
+        vendor: Vendor
+        taxable: Taxable
+        fixed_price: Fixed Price
+        datasheet: Datasheet
+      profile:
+      proposal:
+        proposal_status: Status
+        proposal_date: Date
+        number: Number
+        memo: Memo
+        total: Total
+      user:
+        email: Email
+        title: Title
+        role: Role
+        first_name: First Name
+        last_name: Last Name
+        phone: Phone
+        nickname: Nickname
+        about: About
+      vendor:
+        name: Name
+    prompts:
+      contact:
+        contact_first: First Name
+        contact_last: Last Name
+        default_terms: Terms
+        company_name: Company
+        phone: Phone
+        admin_email: Primary Email
+        billing_email: Billing Email (if different from Primary)
+        billing_street_1: Street 1
+        billing_street_2: Street 2
+        billing_city: City
+        billing_state: State
+        billing_zip: Zip
+        billing_country: Country
+        use_billing_for_service: Use billing address
+        service_street_1: Street 1
+        service_street_2: Street 2
+        service_city: City
+        service_state: State
+        service_zip: Zip
+        service_country: Country
+        affiliate_id: Affiliate
+        discount_code: Discount Code
+      customer:
+        contact_first: First Name
+        contact_last: Last Name
+        default_terms: Terms
+        company_name: Company
+        phone: Phone
+        admin_email: Primary Email
+        billing_email: Billing Email (if different from Primary)
+        billing_street_1: Street 1
+        billing_street_2: Street 2
+        billing_city: City
+        billing_state: State
+        billing_zip: Zip
+        billing_country: Country
+        use_billing_for_service: Use billing address
+        service_street_1: Street 1
+        service_street_2: Street 2
+        service_city: City
+        service_state: State
+        service_zip: Zip
+        service_country: Country
+        affiliate_id: Affiliate
+        discount_code: Discount Code
+      invoice:
+        terms: Terms
+        invoice_date: Date
+        memo: Memo
+      onboarding:
+        installation: Installation
+        tollfree_port: Tolll Free Port
+        local_port: Local Port
+        installation_notes: Installation Notes
+      opportunity:
+        need: Need
+        budget: Budget
+        timing: Timing
+        decision_maker: Decision Maker
+        competition: Competition
+      product:
+        sku: SKU
+        name: Name
+        description: Description
+        price: Price
+        default_quantity: Default Quantity
+        weight: Weight
+        units: Units
+        product_type: Type
+        product_status: Status
+        billing: Billing
+        vendor: Vendor
+        taxable: Taxable
+        fixed_price: Fixed Price
+        datasheet: Datasheet
+      profile:
+      proposal:
+        proposal_status: Status
+        proposal_date: Date
+        number: Number
+        memo: Memo
+        total: Total
+      user:
+        email: Email
+        title: Title
+        role: Role
+        first_name: First Name
+        last_name: Last Name
+        phone: Phone
+        nickname: Nickname
+        about: About
+      vendor:
+        name: Name
+    placeholders:
+      contact:
+        contact_first: First Name
+        contact_last: Last Name
+        default_terms: Terms
+        company_name: Company
+        phone: Phone
+        admin_email: Primary Email
+        billing_email: Billing Email (if different from Primary)
+        billing_street_1: Street 1
+        billing_street_2: Street 2
+        billing_city: City
+        billing_state: State
+        billing_zip: Zip
+        billing_country: Country
+        use_billing_for_service: Use billing address
+        service_street_1: Street 1
+        service_street_2: Street 2
+        service_city: City
+        service_state: State
+        service_zip: Zip
+        service_country: Country
+        affiliate_id: Affiliate
+        discount_code: Discount Code
+      customer:
+        contact_first: First Name
+        contact_last: Last Name
+        default_terms: Terms
+        company_name: Company
+        phone: Phone
+        admin_email: Primary Email
+        billing_email: Billing Email (if different from Primary)
+        billing_street_1: Street 1
+        billing_street_2: Street 2
+        billing_city: City
+        billing_state: State
+        billing_zip: Zip
+        billing_country: Country
+        use_billing_for_service: Use billing address
+        service_street_1: Street 1
+        service_street_2: Street 2
+        service_city: City
+        service_state: State
+        service_zip: Zip
+        service_country: Country
+        affiliate_id: Affiliate
+        discount_code: Discount Code
+      invoice:
+        terms: Terms
+        invoice_date: Date
+        memo: Memo
+      onboarding:
+        installation: Installation
+        tollfree_port: Tolll Free Port
+        local_port: Local Port
+        installation_notes: Installation Notes
+      opportunity:
+        need: Need
+        budget: Budget
+        timing: Timing
+        decision_maker: Decision Maker
+        competition: Competition
+      product:
+        sku: SKU
+        name: Name
+        description: Description
+        price: Price
+        default_quantity: Default Quantity
+        weight: Weight
+        units: Units
+        product_type: Type
+        product_status: Status
+        billing: Billing
+        vendor: Vendor
+        taxable: Taxable
+        fixed_price: Fixed Price
+        datasheet: Datasheet
+      profile:
+        email: Email
+        title: Title
+        role: Role
+        first_name: First Name
+        last_name: Last Name
+        phone: Phone
+        nickname: Nickname
+        about: About
+      proposal:
+        proposal_status: Status
+        proposal_date: Date
+        number: Number
+        memo: Memo
+        total: Total
+      user:
+        email: Email
+        title: Title
+        role: Role
+        first_name: First Name
+        last_name: Last Name
+        phone: Phone
+        nickname: Nickname
+        about: About
+      vendor:
+        name: Name
+  activerecord:
+    attributes:
+      contact:
+        default_terms:
+          net10: Net 10
+          net30: Net 30
+          due: Due on Receipt
+          special_terms: Special
+      customer:
+        customer_statuses:
+          lead: Lead
+          opportunity: Opportunity
+          prospect: Prospect
+          signup: Signup
+          pre_production: Pre-Production
+          production: Production
+          canceled: Canceled
+      invoice:
+        invoice_statuses:
+          draft: Draft
+          open: Open
+          paid: Paid
+          closed: Closed
+          credit: Credit
+          canceled: Canceled
+          obsolete: Obsolete
+        rating_statuses:
+          no_rating: None
+          rating_pending: Pending
+          rating_processed: Processed
+          rating_error: Error
+        invoice_types:
+          invoice: Invoice
+          purchase: Sales Order
+          proposal: Proposal
+          special_type: Special
+        terms:
+          one: term
+          other: terms
+          net10: Net 10
+          net30: Net 30
+          due: Due on Receipt
+          special_terms: Special
+      product:
+        product_statuses:
+          active: Active
+          billing: Billing
+          inactive: Inactive
+        product_types:
+          other_type: Other
+          service: Service
+          merchandise: Merchandise
+          tax: Tax
+          shipping: Shipping
+        billings:
+          other_billing: Other Charges
+          non_recurring: One-Time Charges
+          recurring: Recurring Charges
+          usage: Usage Charges
+          taxes: Taxes
+      proposal:
+        proposal_statuses:
+          draft: Draft
+          submitted: Submitted
+          accepted: Accepted
+          declined: Declined
+          completed: Completed

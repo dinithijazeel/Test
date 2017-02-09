@@ -1,0 +1,26 @@
+.well
+  .row
+    .col-md-2.text-right Company:
+    .col-md-4
+      strong = payment.customer.company_name
+    .col-md-2.text-right Amount:
+    .col-md-4
+      strong = money payment.amount
+  .row
+    .col-md-2.text-right Date:
+    .col-md-4
+      strong = payment.payment_date
+    .col-md-2.text-right Balance:
+    .col-md-4
+      strong = money payment.balance
+  .row
+    .col-md-2.text-right Type:
+    .col-md-4
+      strong = payment.payment_type
+    .col-md-2.text-right Fee:
+    .col-md-4
+      strong = money payment.fee
+  .row
+    .col-md-2.text-right Memo:
+    .col-md-10
+      strong = payment.memo

@@ -1,0 +1,29 @@
+<% content_for :preview do %>
+    A new invoice is available.
+<% end %>
+
+<!-- COPY -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+        <p>Dear FracTEL Customer:</p>
+
+        <p>Your FracTEL Service Invoice is available for viewing and payment.</p>
+
+        <p>For your convenience, we accept Visa, MasterCard, AMEX, and PayPal.</p>
+
+        <p>Please click on the envelope below:</p>
+
+        <p align="center"><a href="https://fractel.fortapay.com/user/overview?Email=<%= @invoice.is_email %>"><img src="https://www.fractel.net/wp-content/themes/fractel_retail/images/invoice.jpg" alt="Pay your invoice online"></a></p>
+
+        <p>If this is your first time logging in to the FracTEL payment gateway, you will need to reset your password.</p>
+
+        <p>Please contact <a href="mailtp:accounting@fractel.net">accounting@fractel.net</a> if you have any questions or concerns.</p>
+
+        <p>Thank you for your business,</p>
+
+        <p>The FracTEL Team</p>
+
+        </td>
+    </tr>
+</table>

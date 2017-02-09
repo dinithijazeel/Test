@@ -1,0 +1,35 @@
+= table
+  thead
+    tr
+      th width="25%" Company
+      th width="20%" Contact
+      th width="20%" Phone
+      th width="20%" Email
+      - if defined?(show_status) && show_status
+        th width="10%" Status
+        th width="10%" &nbsp;
+      - else
+        th width="15%" &nbsp;
+  tbody
+    - if listing.count > 0
+      = content_tag_for(:tr, listing) do |contact|
+        td = link_to contact
+          - if contact.company_name
+            = contact.company_name
+          - else
+            em No company name
+        td = "#{contact.contact_first} #{contact.contact_last}"
+        td = phone(contact.phone)
+        td = mail_to contact.admin_email
+        - if defined?(show_status) && show_status
+          td = contact.status_label        
+        td.text-right
+          - if contact.lead?
+            = link_to fa('file-text-o'), new_contact_opportunity_path(contact), remote: true
+            | &nbsp;
+          = link_to fa('edit'), edit_contact_path(contact), remote: true
+
+    - else
+        tr
+          td colspan=5
+            em No contacts.

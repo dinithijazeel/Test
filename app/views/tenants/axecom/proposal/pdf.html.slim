@@ -1,0 +1,26 @@
+/ Cover
+= render "tenants/#{Rails.application.config.x.tenant}/proposal/cover"
+
+/ Letter
+= render "tenants/#{Rails.application.config.x.tenant}/proposal/letter", :page => 2
+
+/ About FracTEL Benefits
+= render "tenants/#{Rails.application.config.x.tenant}/proposal/about", :page => 3
+
+/ Proposal
+= render "tenants/#{Rails.application.config.x.tenant}/proposal/proposal", :page => 4
+
+/ Cloud PBX | SIP Trunking
+- if @proposal.services_proposal.has_line_item(:cloud_pbx)
+  = render "tenants/#{Rails.application.config.x.tenant}/proposal/cloud_pbx", :page => 5
+- else
+  = render "tenants/#{Rails.application.config.x.tenant}/proposal/sip_trunking", :page => 5
+
+/ Profiles
+= render "tenants/#{Rails.application.config.x.tenant}/proposal/profiles", :page => 6
+
+/ Addendums Index
+= render "tenants/#{Rails.application.config.x.tenant}/proposal/addendums", :page => 7
+
+/ Terms and Conditions
+/ = render 'proposals/pages/terms'

@@ -1,0 +1,17 @@
+#activity-log.panel.panel-default
+  .panel-heading
+    .panel-title
+      | Activity Log&nbsp;
+      - if commentable.comment_threads.count > 0
+        span.badge = commentable.comment_threads.count
+      .pull-right
+        a.comment-new href="#"
+          = fa('comment', true)
+          | Add
+  .comment-list
+    
+    .comment-form
+      = render partial: 'comments/form', locals: {new_comment: new_comment}
+
+    .comments
+      = render partial: 'comments/reply', locals: {comments: commentable.root_comments.order('created_at DESC')}

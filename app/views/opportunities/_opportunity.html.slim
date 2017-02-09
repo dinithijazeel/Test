@@ -1,0 +1,25 @@
+/ Opportunity
+.panel.panel-default.data-display
+  .panel-heading
+    .panel-heading-buttons
+      = link_to fa('edit'), edit_contact_opportunity_path(contact, contact.opportunity), remote: true
+    .panel-title Opportunity
+  .panel-body
+    .row
+      .col-md-6
+        label Need
+        p = contact.opportunity.need
+      .col-md-6
+        label Budget
+        p = contact.opportunity.budget
+    .row
+      .col-md-6
+        label Timing
+        p = contact.opportunity.timing
+      .col-md-6
+        label Decision Maker
+        p = contact.opportunity.decision_maker
+    .row
+      .col-md-6
+        label Competition
+        p = contact.opportunity.competition

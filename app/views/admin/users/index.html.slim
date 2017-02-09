@@ -1,0 +1,7 @@
+- content_for :page_header
+  => fa('contacts')
+  | Users
+
+- content_for :page_body
+  = render 'search', :search_path => admin_users_path
+  = render 'user_list', :users => @users

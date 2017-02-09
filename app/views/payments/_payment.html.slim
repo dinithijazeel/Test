@@ -1,0 +1,26 @@
+= myrject :modal do |modal|
+  - modal.title @payment.payment_status.capitalize
+  - if policy(@payment).update?
+    - modal.actions
+      = link_to 'Edit', edit_customer_payment_path, :class => 'btn btn-primary', :remote => true
+  - modal.body
+    = render 'info', :payment => @payment
+    = myrject :view_panel do |card|
+      - card.title "Credits"
+      - card.body
+        table.table.table-condensed
+          thead
+            tr
+              th Date
+              th Invoice
+              th Memo
+              th.text-right Amount
+          tbody
+            - @payment.credits.each do |credit|
+              tr
+                td = credit.invoice.invoice_date
+                td = credit.invoice.number
+                td = credit.invoice.memo
+                td.text-right = money credit.amount
+                   
+    = render 'history', object: @payment

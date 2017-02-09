@@ -1,0 +1,27 @@
+- @product_list = products
+div id=id
+  / Line Items
+  = f.inputs :name => "#{(defined? line_items_title) ? line_items_title : id.humanize.titlecase}"
+    = table
+      thead
+        tr
+          th.input-th width="15%" Product
+          th.input-th width="10%" Qty.
+          th.input-th width="50%" Description
+          th.input-th width="15%" Unit Price
+          th.total-th.text-right width="10%" Subtotal
+          th width="6%"
+      tbody.line-items id="line_items_#{id}"
+        = f.semantic_fields_for :line_items do |li|
+          = render 'line_item_fields', f: li
+      tbody.totals
+        tr
+          td colspan=2
+            = link_to_add_association f, :line_items, style: 'margin: 10px;', class: 'btn btn-default btn-sm', 'data-association-insertion-node' => "#line_items_#{id}", 'data-association-insertion-method' => 'append'
+              = fa('plus')
+              | &nbsp;Add line item
+          td colspan=2
+              p.form-control-static style="text-align:right;" Total:
+          td
+              p.form-control-static.invoice-total
+          td

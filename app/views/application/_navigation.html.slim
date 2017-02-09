@@ -1,0 +1,54 @@
+- if user_signed_in?
+  #navigation
+    ul.list-group
+      li.list-group-item = link_to_unless_current 'Customers', customers_path
+      - if params[:controller] == 'customers'
+        li.l1.list-group-item = link_to new_customer_path
+          = fa('plus')
+          | &nbsp;Add Customer
+
+      li.list-group-item= link_to_unless_current 'Proposals', proposals_path
+      - if params[:controller] == 'proposals'
+        li.l1.list-group-item = link_to new_proposal_path
+          = fa('plus')
+          | &nbsp;Add Proposal
+
+      - if policy(:invoice).index?
+        li.list-group-item= link_to_unless_current 'Invoices', invoices_path
+        - if params[:controller] == 'invoices' && policy(:invoice).create?
+          li.l1.list-group-item = link_to new_invoice_path
+            = fa('plus')
+            | &nbsp;Add Invoice
+
+      li.list-group-item = link_to_unless_current 'Products', admin_products_path
+      - if params[:controller] == 'admin/products' && policy(:product).create?
+        li.l1.list-group-item = link_to new_admin_product_path, remote: true
+          = fa('plus')
+          | &nbsp;Add Product
+
+      li.list-group-item= link_to_unless_current 'Contacts', contacts_path
+      - if params[:controller] == 'contacts'
+        li.l1.list-group-item = link_to new_contact_path, remote: true
+          = fa('plus')
+          | &nbsp;Add Contact
+
+      li.list-group-item.active = link_to_unless_current current_user.identifier, edit_profile_path
+
+      li.list-group-item style='text-align: center;'
+        = link_to 'Log Out', destroy_user_session_path, method: 'DELETE', class: 'btn btn-default btn-sm'
+
+    / Admin menu
+    - if current_user.is(:admin)
+      ul.list-group
+        li.list-group-item Administration
+        li.list-group-item= link_to_unless_current 'Users', admin_users_path
+        - if params[:controller] == 'admin/users'
+          li.l1.list-group-item = link_to new_admin_user_path
+            = fa('plus')
+            | &nbsp;Add User
+        li.list-group-item = link_to_unless_current 'Vendors', admin_vendors_path
+        - if params[:controller] == 'admin/vendors'
+          li.l1.list-group-item = link_to new_admin_vendor_path, remote: true
+            = fa('plus')
+            | &nbsp;Add Vendor
+        li.list-group-item = link_to_unless_current 'Resque', resque_path

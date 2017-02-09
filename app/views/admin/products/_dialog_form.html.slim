@@ -1,0 +1,14 @@
+= myr_form [:admin, @product], remote: true, :html => { :multipart => true } do |f|
+  = myrject :modal do |m|
+    - m.title
+      - if f.object.new_record?
+        | Add Product
+      - else
+        | Edit Product
+    - m.body
+      = render 'errors', :obj => @product
+      = render 'fields', f: f
+    - m.footer
+      - if params[:inline]
+        = hidden_field_tag :inline, params[:inline]
+      = f.action :submit, as: :input, label: 'Save', button_html: {class: 'button btn btn-primary'}

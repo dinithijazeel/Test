@@ -1,0 +1,397 @@
+body {
+    background-color: $myr-primary-light;
+}
+
+// Navigation
+
+#navigation {
+
+    border-top: $border-teal-thick;
+    border-right: $border-teal-thin;
+    padding: $content-margin;
+    background-color: $myr-primary-mid;
+    height: 100%;
+
+    ul {
+        li.list-group-item {
+            padding: $padding-small-vertical $padding-small-horizontal;
+            background-color: white;
+            border: $border-teal-thin;
+            color: $myr-primary;
+            font-weight: bold;
+            a {
+                font-weight: normal;
+            }
+        }
+        li.l1 {
+            padding-left: 10%;
+        }
+        li.l2 {
+            padding-left: 20%;
+        }
+    }
+}
+
+// Main area
+
+#page {
+
+    #logo {
+        position: fixed;
+        right: 0;
+        z-index: $zindex-navbar + 1;
+        img {
+            height: 60px;
+        }
+    }
+
+    #menu-toggle {
+
+        .menu-toggle {
+            position: fixed;
+            z-index: $zindex-navbar + 10;
+            width: 40px;
+            height: 100%;
+            text-align: center;
+            background-color: transparent;
+            i {
+                display: none;
+                background-color: white;
+                padding: 3px;
+                margin-top: 12px;
+            }
+        }
+
+        .menu-toggle:hover {
+            background-image: linear-gradient(90deg, rgba($myr-primary, 0.6), rgba($myr-primary-light, 0.5), rgba(white, 0));
+            i {
+                display: inline-block;
+            }
+        }
+
+    }
+
+    #content {
+
+        min-height: 500px;
+        margin-bottom: $main-header-height;
+        padding: 0;
+        background-color: white;
+        border-bottom: $border-teal-thick;
+
+        .page-header {
+
+            border-top: $border-teal-thick;
+            border-bottom: none;
+            width: 100%;
+            height: $main-header-height * 1.5;
+            position: fixed;
+            z-index: $zindex-navbar;
+            background-image: linear-gradient(0deg, rgba(white, 0), rgba(white, 1), rgba(white, 1));
+            margin: 0;
+
+            h1 {
+
+                background-color: $myr-primary;
+                margin: 0 0 0 $content-margin;
+
+                padding: 3px ($header-radius * 0.7) 6px ($header-radius * 0.7);
+                display: inline-block;
+                color: $myr-primary-light;
+                font-size: $header-font-size;
+                font-weight: bold;
+                border-bottom-left-radius: $header-radius;
+                border-bottom-right-radius: $header-radius;
+
+                .fa {
+                  font-size: 65%;
+                  position: relative;
+                  top: -4px;
+                }
+
+                small {
+                    color: $myr-primary-mid;
+                }
+            }
+        }
+
+        .page-alert {
+            padding: $main-header-height + $content-margin $content-margin 0 $content-margin;
+        }
+
+        .page-body {
+            margin: $content-margin;
+            margin-top: 0;
+            h2 {
+              margin-top: 0;
+            }
+            .page-footer {
+                margin: $content-margin 0;
+            }
+        }
+
+        .page-footer {
+            text-align: right;
+            padding: ($padding-large-vertical * 2);
+            margin: 0 $content-margin;
+            background-color: $myr-primary-mid;
+            color: $myr-primary;
+
+            .col-md-3:first-child,
+            .col-md-4:first-child,
+            .col-md-6:first-child {
+                text-align: left;
+            }
+        }
+
+        .history {
+            margin: $content-margin;
+            font-size: 90%;
+            color: $gray-light;
+            text-align: right;
+            font-style: italic;
+        }
+
+        .page-activity {
+            margin: $content-margin;
+        }
+    }
+}
+
+// Modals
+
+.modal-content {
+  box-shadow: none;
+  border: $border-teal-thin;
+  .history {
+      margin: 0 0 0 $content-margin / 2;
+      font-size: 90%;
+      color: $gray-light;
+      text-align: right;
+      font-style: italic;
+  }
+}
+
+.modal-header {
+    border-top: $border-teal-thick;
+    padding-top: 0;
+    .close {
+        margin-top: 3px;
+    }
+    h2.modal-title,
+    h4.modal-title {
+        background-color: $myr-primary;
+        margin: 0;
+        padding: 3px ($header-radius * 0.7) 6px ($header-radius * 0.7);
+        display: inline-block;
+        color: white;
+        font-size: ($header-font-size * 0.7);
+        font-weight: bold;
+        border-bottom-left-radius: ($header-radius * 0.7);
+        border-bottom-right-radius: ($header-radius * 0.7);
+    }
+}
+
+.modal-body {
+  .dialog-header {
+    margin: 0;
+  }
+}
+
+.modal-title {
+    font-size: $font-size-large;
+}
+
+.modal-footer {
+    background-color: $myr-primary-light;
+    border-top: $border-teal-thick;
+    color: $myr-primary;
+}
+
+// Typography
+
+em.missing {
+    color: $brand-danger;
+}
+
+tr.inactive {
+    color: $gray-light;
+    font-style: italic;
+}
+
+.destroy-link {
+    color: $brand-danger;
+}
+
+
+.line-items,
+.totals {
+
+    .line-item-total,
+    .invoice-total,
+    .total-due {
+        text-align: right;
+    }
+    .form-group {
+        margin-bottom: 0;
+    }
+}
+
+// Forms
+
+form.button-form {
+  display: inline-block;
+}
+
+form.myriander-form {
+
+    legend {
+        border-bottom: none;
+        background-color: $myr-primary-light;
+        font-size: ($font-size-base * 1.2);
+        font-weight: bold;
+        padding-left: $padding-large-vertical;
+        margin-bottom: $form-group-margin-bottom;
+    }
+
+    fieldset {
+        margin-bottom: $form-group-margin-bottom;
+        background-color: white;
+        border-bottom: $border-teal-thin;
+    }
+
+    .form-control {
+        @include box-shadow(none);
+    }
+
+    .fieldset-checkbox {
+        position: relative;
+        height: 0;
+        margin-bottom: -8px;
+        float: right;
+        top: -47px;
+        right: $content-margin;
+        label {
+            font-size: 90%;
+            line-height: 1.5;
+        }
+    }
+}
+
+.form-footer {
+    border-top: $border-teal-thin;
+    padding:  $padding-large-vertical;
+    margin: ($padding-base-vertical * 3) 0;
+    background-color: $myr-primary-light;
+    text-align: right;
+}
+
+// Panels
+
+.panel-default > .panel-heading {
+    border-top: $border-teal-thick;
+    padding: 0;
+    margin-bottom: $padding-base-vertical;
+
+    .panel-title {
+        color: $legend-color;
+        font-size: ($font-size-base * 1.2);
+        font-weight: bold;
+        padding-left: $padding-large-vertical;
+        margin-bottom: 0;
+    }
+}
+
+.panel {
+  .panel-heading-buttons {
+    float: right;
+    margin-top: 5px;
+    margin-right: $content-margin;
+  }
+}
+
+.panel-default {
+    border-bottom: 1px solid $myr-secondary-light;
+    margin-bottom: ($padding-base-vertical * 4);
+}
+
+#activity-log.panel {
+  margin-top: ($padding-base-vertical * 4);
+}
+
+.label-reverse {
+  background-color: $myr-primary-light;
+  color: $myr-primary;
+}
+
+.label.status {
+  position: relative;
+  top: -6px;
+  font-size: 40%;
+  padding: 1px 4px;
+  margin: 0 $content-margin;
+}
+
+// Gravatars
+
+.gravatar img {
+    border: $border-teal-thick;
+}
+
+// Uploads
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    label {
+      width: 100%;
+    }
+    input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+}
+
+// forms
+
+.myriander-form-overlay {
+  // Overlay
+  box-sizing: border-box;
+  position: absolute;
+  background-color: rgba($myr-primary-mid, 0.75);
+  // Align
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-flex;
+  display: flex;
+  // Label
+  .label {
+    line-height: 1.5;
+    font-size: 150%;
+    margin: auto;
+  }
+}
+
+// Tables
+
+.table {
+  margin-bottom: 0;
+}
+
+tr.billing-status,
+tr.inactive-status {
+  font-style: italic;
+  color: #999;
+}

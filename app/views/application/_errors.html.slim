@@ -1,0 +1,10 @@
+/ Errors
+- if obj.errors.any?
+  #error_explanation.alert.alert-danger
+    strong
+      = pluralize(obj.errors.count, "error")
+      | &nbsp;
+      = "prohibited this #{(defined? name) ? name : obj.model_name.human.downcase} from being saved:"
+    ul
+      - obj.errors.full_messages.each do |message|
+        li= message

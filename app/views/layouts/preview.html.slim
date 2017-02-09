@@ -1,0 +1,17 @@
+doctype html
+html lang="en"
+  head
+
+    title= "#{params[:controller].titleize} :: Myriander"
+
+    meta content=("text/html; charset=UTF-8") http-equiv="content-type" /
+    meta charset="utf-8" /
+    meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" /
+
+    = stylesheet_link_tag    Rails.application.config.x.theme.name, media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag    'print', media: 'all'
+
+  body
+    #page
+      #content
+        = yield

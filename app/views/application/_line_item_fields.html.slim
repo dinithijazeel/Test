@@ -1,0 +1,12 @@
+- line_quantity = (f.object.quantity.nil? ? '' : sprintf('%g', f.object.quantity))
+- line_price = (f.object.unit_price.nil? ? '' : sprintf('%.2f', f.object.unit_price))
+tr.line-item
+  td = f.input :product_id, as: 'select', collection: @product_list, label:false, input_html: {class: 'line-item-product product-lookup', data: {load: admin_products_path}}
+  td = f.input :quantity, placeholder:'#', label:false, input_html: {class: 'line-item-quantity', value: line_quantity, style: 'text-align: right;'}
+  td = f.input :description, label:false, input_html: {class: 'line-item-description'}
+  - readonly_price = f.object.product.nil? ? true : f.object.product.fixed_price
+  td = f.input :unit_price, as: :string, prepend: fa('dollar'), placeholder:'0.00', label: false, input_html: {class: 'line-item-price', value: line_price, style: 'text-align: right;', readonly: readonly_price}
+  td
+    p.form-control-static.line-item-total
+  td style="text-align: right;"
+    = link_to_remove_association fa('times'), f, wrapper_class: 'line-item', class: 'btn btn-default btn-sm destroy-link'

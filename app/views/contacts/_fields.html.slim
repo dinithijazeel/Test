@@ -1,0 +1,59 @@
+/ Contact
+= f.inputs name: 'Contact'
+  = row
+    = col md: 4
+      = f.input :admin_email
+    = col md: 3
+      = f.input :contact_first
+    = col md: 3
+      = f.input :contact_last
+    = col md: 2
+      = f.input :default_terms
+  = row
+    = col md: 4
+      = f.input :company_name
+    = col md: 4
+      = f.input :phone
+    = col md: 4
+      = f.input :billing_email
+
+/ Billing Address
+= f.inputs name: 'Billing Address'
+  = f.input :billing_street_1
+  = f.input :billing_street_2
+  = row
+    = col md: 4
+      = f.input :billing_city
+    = col md: 2
+      = f.input :billing_state, collection: states, prompt:'State'
+    = col md: 3
+      = f.input :billing_zip
+    = col md: 3
+      = f.input :billing_country, as: :select, collection: countries
+
+/ Service Address
+= f.inputs name: 'Service Address'
+  = f.input :use_billing_for_service, as: :boolean, label: 'Use billing address', wrapper_html: {class: 'use_billing_for_service fieldset-checkbox'}, input_html: {class: 'use_billing_for_service'}
+  .service-address-block
+    = f.input :service_street_1
+    = f.input :service_street_2
+    = row
+      = col md: 4
+        = f.input :service_city
+      = col md: 2
+        = f.input :service_state, collection: states, prompt:'State'
+      = col md: 3
+        = f.input :service_zip
+      = col md: 3
+        = f.input :service_country, as: :select, collection: countries
+
+/ Affiliates and Discounts
+= f.inputs name: 'Affiliates and Discounts'
+  = row
+    = col md: 6
+      = f.input :affiliate_id
+    = col md: 6
+      = f.input :discount_code
+
+/ IDs
+= f.hidden_field :id, class: 'id'

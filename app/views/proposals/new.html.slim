@@ -1,0 +1,18 @@
+= content_for :page_header
+  = fa('proposal', true)
+  | Add Proposal
+
+- content_for :page_body
+  = myr_form @proposal do |f|
+    = form_header 'Add Proposal'
+    = form_body
+      = render 'fields', f: f
+    = form_footer
+      = f.action :submit, as: :input, label: 'Save'
+
+- content_for :page_scripts
+  javascript:
+    contacts.initContactDropdown('#contact');
+    invoices.init('#services_proposal');
+    invoices.init('#products_proposal');
+    invoices.focusInvoice('#contact');

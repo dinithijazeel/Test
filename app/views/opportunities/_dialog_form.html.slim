@@ -1,0 +1,16 @@
+= myr_form [@opportunity.contact.becomes(Contact), @opportunity], remote: true do |f|
+  = myrject :modal do |m|
+    - m.title
+      - if f.object.new_record?
+        | Add Opportunity
+      - else
+        | Edit Opportunity
+    - m.body
+      h3.dialog-header = "#{@opportunity.contact.contact_first} #{@opportunity.contact.contact_last}"
+      p.lead = @opportunity.contact.company_name
+      = render 'errors', :obj => @opportunity
+      = render 'fields', f: f
+    - m.footer
+      - if params[:inline]
+        = hidden_field_tag :inline, params[:inline]
+      = f.action :submit, as: :input, label: 'Save', button_html: {class: 'button btn btn-primary'}

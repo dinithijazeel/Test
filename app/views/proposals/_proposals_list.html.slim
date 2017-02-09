@@ -1,0 +1,23 @@
+- unless proposals.nil? || proposals.empty?
+  = myrject :card do |c|
+    - c.title title
+    - c.body
+      = table
+        thead
+          tr
+            th width="10%" Submitted
+            th width="10%" Number
+            th width="15%" Company
+            th width="20%" Contact
+            th width="15%" Phone
+            th width="20%" Email
+            th width="10%" Amount
+        tbody
+          = content_tag_for(:tr, proposals) do |proposal|
+            td = proposal.proposal_date
+            td = link_to (proposal.number.nil? ? 'Draft' : proposal.number), proposal
+            td = proposal.contact.company_name
+            td = "#{proposal.contact.contact_first} #{proposal.contact.contact_last}"
+            td = phone(proposal.contact.phone)
+            td = mail_to proposal.contact.admin_email
+            td.text-right = money(proposal.total)

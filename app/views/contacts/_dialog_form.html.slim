@@ -1,0 +1,17 @@
+= myr_form @contact, remote: true do |f|
+  = myrject :modal do |m|
+    - m.title
+      - if f.object.new_record?
+        | Add Contact
+      - else
+        | Edit Contact
+    - m.body
+      = render 'errors', :obj => @contact
+      = render 'fields', f: f
+    - m.footer
+      - if params[:inline]
+        = hidden_field_tag :inline, params[:inline]
+      = f.action :submit, as: :input, label: 'Save', button_html: {class: 'button btn btn-primary'}
+
+javascript:
+  contacts.init('.contact');

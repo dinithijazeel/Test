@@ -1,0 +1,67 @@
+#invoice
+  #first-page
+    .print-page
+      #invoice-header
+        .title Invoice
+        .info
+          .invoice-number
+            .label Invoice #
+            .value = @pdf_invoice.number
+          .invoice-date
+            .label Invoice Date
+            .value = @pdf_invoice.invoice_date
+          .invoice-balance
+            .label Balance Due (USD)
+            .value = money(@pdf_invoice.total_due)
+      .logo &nbsp;
+      #vendor-address
+        h3 Remit To:
+        | FracTEL LLC
+        br
+        | 122 4th Ave. Ste 201
+        br
+        | Indialantic, FL 32903
+      #billing-address
+        h3 Bill To:
+        - unless @pdf_invoice.contact.nil?
+          .contact = "#{@pdf_invoice.contact.contact_first} #{@pdf_invoice.contact.contact_last}"
+          .company = @pdf_invoice.contact.company_name
+          .street-1 = @pdf_invoice.contact.billing_street_1
+          .street-2 = @pdf_invoice.contact.billing_street_2
+          .city-state-zip
+            span.city = @pdf_invoice.contact.billing_city
+            span.comma ,&nbsp;
+            span.state = @pdf_invoice.contact.billing_state
+            | &nbsp;
+            span.zip = @pdf_invoice.contact.billing_zip
+      #service-address
+        h3 Service Address:
+        - unless @pdf_invoice.contact.nil?
+          .contact = "#{@pdf_invoice.contact.contact_first} #{@pdf_invoice.contact.contact_last}"
+          .company = @pdf_invoice.contact.company_name
+          .street-1 = @pdf_invoice.contact.service_street_1
+          .street-2 = @pdf_invoice.contact.service_street_2
+          .city-state-zip
+            span.city = @pdf_invoice.contact.service_city
+            span.comma ,&nbsp;
+            span.state = @pdf_invoice.contact.service_state
+            | &nbsp;
+            span.zip = @pdf_invoice.contact.service_zip
+      #line-items
+        table.table.table-condensed.line-items
+          = render 'invoice_line_items',
+            :line_items => @pdf_invoice.line_items
+          tbody.totals
+            = render 'invoice_line_total',
+              :total_class => 'invoice-subtotal',
+              :total_label => "Subtotal:",
+              :total_amount => money(@pdf_invoice.invoice_total)
+            = render 'invoice_line_total',
+              :total_class => 'payments',
+              :total_label => 'Payments:',
+              :total_amount => money(@invoice.total_payments)
+            = render 'invoice_line_total',
+              :total_class => 'total-due',
+              :total_label => 'Amount Due:',
+              :total_amount => money(@invoice.total_due)
+      = render 'tenants/fractel/invoices/payment_instructions'

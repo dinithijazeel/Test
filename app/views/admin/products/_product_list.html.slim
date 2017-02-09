@@ -1,0 +1,36 @@
+- unless products.nil? || products.empty?
+  = myrject :card do |c|
+    - c.action
+      = link_to fa('eye'), '#', :class => 'toggle-hidden-products'
+    - c.title title
+    - c.body
+      = table class: 'products-table'
+        thead
+          tr.active-status
+            th width="15%" SKU
+            th width="15%" Name
+            th width="5%"
+            th width="30%" Description
+            th width="15%" Vendor
+            th width="20%" Billing
+            th
+        tbody
+          - products.each do |product|
+            tr class="#{product.product_status}-status"
+              td
+                = link_to product.sku, edit_admin_product_path(product), remote: true
+              td
+                strong = product.name
+              td
+                - unless product.datasheet.blank?
+                  = link_to product.datasheet.url, :target => '_blank'
+                    = fa('datasheet')
+              td
+                = product.description
+                - if product.product_status != 'active'
+                  = " (#{product.product_status})"
+              td = product.vendor.name unless product.vendor.nil?
+              td = product.billing_label
+              td.text-right
+                - if policy(product).update?
+                  = link_to fa('edit'), edit_admin_product_path(product), remote: true

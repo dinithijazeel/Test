@@ -1,0 +1,37 @@
+= myrject :card do |c|
+  - c.action
+    = link_to fa('edit'), edit_onboarding_path(onboarding), remote: true
+  - c.title 'Onboarding'
+  - c.body
+    = row
+      = col md: 6
+        = field 'Installation Type', onboarding.installation
+        - unless onboarding.installation_notes.empty?
+          = field 'Installation Notes', simple_format(onboarding.installation_notes)
+        .loa-buttons style="width: 50%; margin: auto; text-align: center;"
+          p = button_link "Local Provider Letter of Agency (LOA)", @proposal.contact.local_loa_path, target: '_blank', type: (onboarding.local_port ? 'primary' : 'default')
+          p = button_link "Toll Free Provider Letter of Agency (LOA)", @proposal.contact.tollfree_loa_path, target: '_blank', type: (onboarding.tollfree_port ? 'primary' : 'default')
+      = col md: 6
+        = table
+          thead
+            tr
+              th width="50%" Item
+              th width="25%" Quantity
+              th.text-right width="25%" Unit Price
+          tbody
+            tr
+              td = onboarding.service_type
+              td = onboarding.service_quantity
+              td.text-right = money(onboarding.service_unit_price)
+            tr
+              td Enterprise FAX
+              td = onboarding.fax_quantity
+              td.text-right = money(onboarding.fax_unit_price)
+            tr
+              td Additional DIDs
+              td = onboarding.addl_dids_quantity
+              td.text-right = money(onboarding.addl_dids_unit_price)
+            tr
+              td Discount
+              td
+              td.text-right = money(onboarding.discount)

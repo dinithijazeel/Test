@@ -1,0 +1,19 @@
+/ Errors
+= render 'errors', :obj => f.object
+
+/ Company / Date / Type
+= f.inputs name: 'Invoice'
+  #contact
+    = row
+      = col md:6
+        = render 'contacts/dropdown', :f => f, :context => '#contact'
+      = col md:3
+        = f.input :terms, label: false, :input_html => {:class => 'default_terms'}
+      = col md:3
+        = f.input :invoice_date, as: :string, label: false, :prepend => fa('calendar'), input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format': 'yyyy-mm-dd'}}
+      
+    = render 'contacts/info', :contact => f.object.contact
+
+= render 'line_items/fields', f: f, products: Product.collection, :id => 'line_items'
+
+= f.input :memo

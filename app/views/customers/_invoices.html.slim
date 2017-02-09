@@ -1,0 +1,35 @@
+= myrject :card do |c|
+  - c.title
+    | Invoices
+  - c.action
+    = link_to fa('plus'), new_customer_invoice_path(customer)
+  - c.body
+    = table
+      thead
+        tr
+          th width="10%" Date
+          th width="10%" Number
+          th width="45%" Memo
+          th width="10%" Status
+          th.text-right width="10%" Total
+          th.text-right width="10%" Due
+          th width="5%" &nbsp;
+      tbody
+        - if customer.invoices.any?
+          - customer.invoices.each do |invoice|
+            tr
+              td = invoice.invoice_date
+              td = link_to (invoice.number.nil? ? 'Draft' : invoice.number), invoice
+              td = invoice.memo
+              td = invoice.invoice_status.capitalize
+              td.text-right
+                = money(invoice.invoice_total)
+              td.text-right
+                = money(invoice.total_due)
+              td.text-right
+                - if invoice.open?
+                  = link_to fa('money'), new_invoice_payment_path(invoice), :remote => true
+        - else
+            tr
+              td colspan=8
+                em No invoices.

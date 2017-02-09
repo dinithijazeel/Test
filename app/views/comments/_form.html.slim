@@ -1,0 +1,9 @@
+= myr_form [@new_comment.commentable, @new_comment] do |f|
+  = f.hidden_field :commentable_id, value: @new_comment.commentable_id
+  = f.hidden_field :commentable_type, value: @new_comment.commentable_type
+  .field.form-group
+    .input-group
+      = f.text_area :body, class: 'form-control autogrow', rows: 1
+      span.input-group-btn
+        button.btn.btn-primary type='submit'
+          = fa('reply')

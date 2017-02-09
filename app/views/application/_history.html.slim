@@ -1,0 +1,5 @@
+.history
+  = "Created by #{object.creator.identifier} on #{object.created_at.to_s(:db)}"
+  - unless object.last_editor.nil? or object.updated_at == object.created_at
+    | &nbsp;&bull;&nbsp;
+    = "Updated by #{object.last_editor.identifier} on #{object.updated_at.to_s(:db)}"

@@ -1,0 +1,13 @@
+- content_for :page_header
+  => fa('products')
+  | Products
+
+- content_for :page_body
+  = render 'search', :search_path => admin_products_path
+  - %w( Service Merchandise Tax Shipping Other ).each do |group|
+    = render 'product_list', products: @products[group], title: group
+/ = render 'product_list', :products => @contacts, :show_status => true
+
+- content_for :page_scripts
+  javascript:
+    products.initProductToggle('.products-table')

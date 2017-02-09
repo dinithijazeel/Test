@@ -1,0 +1,11 @@
+- content_for :page_header
+  => fa('invoices')
+  | Invoices
+
+- content_for :page_body
+  = render 'search', :search_path => invoices_path
+  - if @invoices.empty?
+    em No invoices found
+  - else
+    - %w( Draft Open Paid Closed Credit Canceled Obsolete ).each do |group|
+      = render 'invoice_list', invoices: @invoices[group], title: group

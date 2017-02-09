@@ -1,0 +1,6 @@
+- unless customers.nil? || customers.empty?
+  = myrject :card do |c|
+    - c.title title
+    - c.body
+      = table
+        = render 'contacts/contact_list', :listing => customers

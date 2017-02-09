@@ -1,0 +1,21 @@
+namespace :deploy do
+  desc "Compiles assets locally, then rsyncs them to the target"
+  task :compile_assets_locally do
+    run_locally do
+      execute "RAILS_ENV=#{fetch(:rails_env)} bundle exec rake assets:precompile"
+    end
+    on roles(:app) do |role|
+      run_locally do
+        if role.port == 22
+          execute "rsync -av ./public/assets/ #{role.user}@#{role.hostname}:#{release_path}/public/assets/;"
+        else
+          execute "rsync -av -e 'ssh -p #{role.port}' ./public/assets/ #{role.user}@#{role.hostname}:#{release_path}/public/assets/;"
+        end
+      end
+      sudo "chmod -R 755 #{release_path}/public/assets/"
+    end
+    run_locally do
+      execute "rm -rf ./public/assets"
+    end
+  end
+end

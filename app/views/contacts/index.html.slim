@@ -1,0 +1,7 @@
+- content_for :page_header
+  => fa('contacts')
+  | Contacts
+
+- content_for :page_body
+  = render 'search', :search_path => contacts_path
+  = render 'contact_list', :listing => @contacts, :show_status => true

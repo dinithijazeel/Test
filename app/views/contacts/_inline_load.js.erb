@@ -1,0 +1,4 @@
+var contact = JSON.parse('<%= raw render(:template => "contacts/_contact.json", :locals => { :contact => @contact }) %>');
+contacts.set(contact, '<%= params[:inline] %>');
+$('#myriander-modal').modal('hide');
+$('#myriander-modal').html('');

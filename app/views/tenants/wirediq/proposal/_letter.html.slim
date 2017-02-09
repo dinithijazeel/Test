@@ -1,0 +1,34 @@
+#letter.print-page
+  .fractel-address
+    p.name FracTEL, LLC
+    p.address
+      | 122 4th Ave. Ste. 201
+      br
+      | Indialantic, FL 32903
+  .letter
+    p.date = "#{@proposal.proposal_date.nil? ? "[DATE]" : @proposal.proposal_date.strftime('%B %-d, %Y')}"
+    .customer-address
+      p.contact = "#{@proposal.contact.contact_first} #{@proposal.contact.contact_last}"
+      p.company = @proposal.contact.company_name
+      p.street-1 = @proposal.contact.billing_street_1
+      p.street-2 = @proposal.contact.billing_street_2
+      p.city-state-zip
+        span.city = @proposal.contact.billing_city
+        span.comma ,&nbsp;
+        span.state = @proposal.contact.billing_state
+        | &nbsp;
+        span.zip = @proposal.contact.billing_zip
+    .body
+      p.greeting = "#{@proposal.contact.contact_first},"
+      markdown:
+        Thank you for considering FracTEL for your cloud communications needs. I am happy to present this proposal for your review. We look forward to working with you and providing you with stellar service for your business. If you have any questions, please do not hesitate to contact me.
+      p.closing Sincerely,
+      p.signature
+        span.name = "#{@proposal.owner.full_name}"
+        br
+        span.phone = "#{@proposal.owner.phone}"
+        br
+        span.email = "#{@proposal.owner.email}"
+  .footer
+    p.proposal-number = "PROPOSAL ##{@proposal.number.nil? ? "[NUMBER]" : @proposal.number}"
+  .page-number = page

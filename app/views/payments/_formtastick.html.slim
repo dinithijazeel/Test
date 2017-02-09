@@ -1,0 +1,27 @@
+= semantic_form_for @payment, remote: true do |f|
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true"  &times;
+        h2.modal-title Payment
+      .modal-body
+        - if @payment.errors.any?
+          #error_explanation.alert.alert-danger
+            strong
+              = pluralize(@payment.errors.count, "error")
+              | &nbsp;prohibited this vendor from being saved:
+            ul
+              - @payment.errors.full_messages.each do |message|
+                li= message
+        = f.input :token, :prepend => fa('credit-card'), label: 'Card Number', input_html: {class: 'cc-num'}
+        .row
+          .col-md-4
+            = f.input :token, :prepend => fa('calendar'), label: 'Expiration (MM/YY)', input_html: {class: 'cc-expiration'}
+          .col-md-4
+            = f.input :token, :prepend => fa('hashtag'), label: 'CVC', input_html: {class: 'cc-cvc'}
+          .col-md-4
+            = f.input :token, :prepend => fa('dollar'), as: :number, label: 'Amount', input_html: {class: 'cc-amount'}
+      .modal-footer
+        button.btn.btn-default data-dismiss="modal" type="button" Cancel
+        = f.action :submit, as: :input, label: 'Submit Payment', button_html: {class: 'button btn btn-primary'}

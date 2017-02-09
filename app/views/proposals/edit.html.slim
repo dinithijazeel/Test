@@ -1,0 +1,17 @@
+- content_for :page_header
+  = fa('proposal', true)
+  | Edit Proposal
+
+- content_for :page_body
+  = myr_form @proposal do |f|
+    = form_header 'Edit Proposal'
+    = form_body
+      = render 'fields', f: f
+    = form_footer
+      = f.action :submit, as: :input, label: 'Save'
+
+- content_for :page_scripts
+  javascript:
+    invoices.init('#services_proposal')
+    invoices.init('#products_proposal')
+    contacts.init('.contact')

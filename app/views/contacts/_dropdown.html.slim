@@ -1,0 +1,14 @@
+- value = (f.object.contact.nil? ? '' : f.object.contact.company_name)
+- missing = f.object.contact.nil? || f.object.contact.errors.include?(:contact_id)
+#contact-search.form-group.string.input.stringish class="#{missing ? 'has-error' : ''}"
+  span.form-wrapper
+    .input-group
+      = f.hidden_field :contact_id, class: 'contact-id'
+      = text_field_tag :company_name, value, placeholder: 'Company', class: "input-lg company-name contact-lookup form-control#{' error' if missing}", data: {load: contacts_path}
+      span.input-group-btn
+        button#add-contact.btn.btn-default style='top: -3px;'
+          = fa('plus')
+          | &nbsp;Add
+        = link_to "Add Contact", new_contact_path(:inline => '#contact'), :remote => true, :class => 'hide'
+    - if missing
+      span.help-block can't be blank

@@ -1,0 +1,26 @@
+<% content_for :preview do %>
+    Your FracTEL Proposal
+<% end %>
+
+<!-- COPY -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+        <p>Dear <%= @proposal.contact.contact_first %>:</p>
+
+        <p>Thank you for taking the time to review your telecommunications requirements with me. Your proposal for FracTEL service is attached.</p>
+        <p>Please feel free to contact me if you have any questions. I look forward to working with you.</p>
+
+        <p>Sincerely,</p>
+
+        <p>
+          <%= @proposal.owner.full_name %>
+          <br/>
+          <%= @proposal.owner.phone %>
+          <br/>
+          <%= @proposal.owner.email %>
+        </p>
+
+        </td>
+    </tr>
+</table>

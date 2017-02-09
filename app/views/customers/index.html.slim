@@ -1,0 +1,11 @@
+- content_for :page_header
+  => fa('customers')
+  | Customers
+
+- content_for :page_body
+  = render 'search', :search_path => customers_path
+  - if @customers.empty?
+    em No customers found
+  - else
+    - %w( Opportunity Prospect Signup Pre-Production Production Canceled ).each do |group|
+      = render 'customer_list', customers: @customers[group], title: group

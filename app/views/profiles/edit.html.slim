@@ -1,0 +1,22 @@
+- content_for :page_header
+  => fa('profile')
+  | Edit Profile
+
+- content_for :page_body
+  = myr_form current_user, as: :profile, url: profile_path do |f|
+    = myrject :modal do |m|
+      - m.title "#{current_user.first_name} #{current_user.last_name}"
+      - m.body
+        = render 'errors', :obj => current_user
+        = row
+          = col md: 3
+            = field 'Gravatar', class: 'gravatar'
+              = gravatar_image_tag current_user.email, :alt => 'USER',  gravatar: {secure: :true}, class: 'img img-circle'
+              br
+              small
+                | Set your gravatar at
+                =< link_to 'gravatar.com', 'http://en.gravatar.com/', target: '_blank'
+          = col md: 9
+            = render 'fields', f: f
+      - m.footer
+        = f.action :submit, as: :input, label: 'Save', button_html: {class: 'button btn btn-primary'}

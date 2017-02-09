@@ -1,0 +1,99 @@
+- additional_pages = @pdf_invoice.additional_pages
+- total_pages = additional_pages.count + 1
+- page_counter = 0
+#invoice
+  #first-page
+    / - billing_group_page_total = billing_group[:line_items].count
+    / - billing_group[:line_items].each_with_index do |billing_group_line_items, billing_group_page_number|
+    .print-page
+        - page_counter += 1
+        #invoice-header
+          .title Invoice
+          .info
+            .account-number
+              .label Account #
+              .value = @pdf_invoice.contact.portal_id
+            .invoice-number
+              .label Invoice #
+              .value = @pdf_invoice.number
+            .invoice-date
+              .label Invoice Date
+              .value = @pdf_invoice.invoice_date
+            .invoice-balance
+              .label Balance Due (USD)
+              .value
+                => money(@pdf_invoice.total_due)
+                / = link_to "&rarr; Pay Online".html_safe, @pdf_invoice.payment_link
+            - if total_pages > 1
+              .invoice-pagination
+                .label Page
+                .value = "#{page_counter} of #{total_pages}"
+        .logo &nbsp;
+        #vendor-address
+          h3 Remit To:
+          | FracTEL LLC
+          br
+          | 122 4th Ave. Ste 201
+          br
+          | Indialantic, FL 32903
+        #billing-address
+          h3 Bill To:
+          - unless @pdf_invoice.contact.nil?
+            = render 'address', address: @pdf_invoice.contact.billing_address
+        #service-address
+          h3 Service Address:
+          - unless @pdf_invoice.contact.nil?
+            = render 'address', address: @pdf_invoice.contact.service_address
+        #line-items
+          table.table.table-condensed
+              thead
+                th colspan=2
+                  h2 Summary
+              tbody.summary
+                - @pdf_invoice.billing_groups.each do |summary_group|
+                  tr
+                    td width="85%" = summary_group[:type]
+                    td.text-right width="15%" = money(summary_group[:subtotal])
+              tbody.total
+                tr
+                  td
+                    strong Total:
+                  td.text-right width="15%"
+                    strong = money(@pdf_invoice.invoice_total)
+                tr
+                  td &nbsp;
+                  td.text-right width="15%" style="padding-top: 12px;"
+                    a.btn.btn-primary< href=@pdf_invoice.payment_link Click Here to Pay Online
+
+        #service-records
+          h4 Service Records
+          p
+            | Call Detail Records:
+            =< link_to @pdf_invoice.cdr_url
+          p
+            | Telephone Numbers:
+            =< link_to @pdf_invoice.did_url
+        = render 'tenants/fractel/invoices/payment_instructions'
+
+  - additional_pages.each do |page|
+    - page_counter += 1
+    .print-page.detail-page
+      .header
+        .logo &nbsp;
+        .invoice-header
+          .invoice-number = "Invoice # #{@pdf_invoice.number}"
+          .invoice-pagination = "Page #{page_counter} of #{total_pages}"
+      .detail
+        - page.each do |billing_group|
+          h2 = billing_group[:type]
+          table.table.table-condensed.line-items
+            = render 'invoice_line_items',
+              :line_items => billing_group[:line_items],
+              :hide_quantity => billing_group[:hide_quantity]
+            tbody.totals
+              = render 'invoice_line_total',
+                :total_class => 'invoice-subtotal',
+                :total_label => "#{billing_group[:type]} Subtotal:",
+                :total_amount => money(billing_group[:subtotal])
+              tr
+              td colspan=4 &nbsp;

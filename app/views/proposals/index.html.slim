@@ -1,0 +1,11 @@
+- content_for :page_header
+  => fa('proposals')
+  | Proposals
+
+- content_for :page_body
+  = render 'search', :search_path => proposals_path
+  - if @proposals.empty?
+    em No proposals found
+  - else
+    - %w( Draft Submitted Accepted Declined Completed ).each do |group|
+      = render 'proposals_list', proposals: @proposals[group], title: group

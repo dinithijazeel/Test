@@ -1,0 +1,9 @@
+#cover.print-page
+  .header-box
+    .date = "#{@proposal.proposal_date.nil? ? "[DATE]" : @proposal.proposal_date.strftime('%B %-d, %Y')}"
+    .title Proposal
+    .company
+      | Prepared for:
+      br
+      strong = @proposal.contact.company_name
+    .proposal-number = "##{@proposal.number.nil? ? "[NUMBER]" : @proposal.number}"

@@ -1,0 +1,62 @@
+// Test data select
+- unless @tests.nil?
+  span.form-wrapper
+    span.form-label
+      label.control-label Test Cards
+    select.form-control.test-data.pull-left
+      option selected="selected"
+      - @tests.each do |name, settings|
+        option*settings = name
+.card-problems
+.string.input.optional.stringish.form-group
+  span.form-label
+    label.control-label for="payment_cc" Card Number
+  span.form-wrapper
+    .input-group
+      span.input-group-addon
+        = fa('credit-card')
+      input#payment_cc.cc-number.form-control maxlength="255" type="text" data-stripe="number"
+.row
+  .col-md-4
+    .string.input.optional.stringish.form-group
+      span.form-label
+        label.control-label for="payment_exp" Expiration (MM/YY)
+      span.form-wrapper
+        .input-group
+          span.input-group-addon
+            = fa('calendar')
+          input#payment_exp.cc-expiration.form-control maxlength="255" type="text" data-stripe="exp"
+  .col-md-4
+    .string.input.optional.stringish.form-group
+      span.form-label
+        label.control-label for="payment_cvc" CVC
+      span.form-wrapper
+        .input-group
+          span.input-group-addon
+            = fa('hashtag')
+          input#payment_cvc.cc-cvc.form-control maxlength="255" type="text" data-stripe="cvc"
+  .col-md-4
+    = f.input :amount, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-amount', value: sprintf('%.2f', f.object.amount)}
+  = f.hidden_field :payment_date
+  = f.hidden_field :payment_type, :value => 'Stripe'
+  = f.fields_for :stripe_transaction do |f|
+    = f.hidden_field :token, :id => 'st_token'
+    = f.hidden_field :stripe_created, :id => 'st_stripe_created'
+    = f.hidden_field :card_id, :id => 'st_card_id'
+    = f.hidden_field :card_type, :id => 'st_card_type'
+    = f.hidden_field :brand, :id => 'st_brand'
+    = f.hidden_field :name, :id => 'st_name'
+    = f.hidden_field :exp_month, :id => 'st_exp_month'
+    = f.hidden_field :exp_year, :id => 'st_exp_year'
+    = f.hidden_field :last4, :id => 'st_last4'
+    = f.hidden_field :country, :id => 'st_country'
+    = f.hidden_field :funding, :id => 'st_funding'
+    = f.hidden_field :address_line1, :id => 'st_address_line1'
+    = f.hidden_field :address_line2, :id => 'st_address_line2'
+    = f.hidden_field :address_state, :id => 'st_address_state'
+    = f.hidden_field :address_city, :id => 'st_address_city'
+    = f.hidden_field :address_zip, :id => 'st_address_zip'
+    = f.hidden_field :address_country, :id => 'st_address_country'
+    = f.hidden_field :address_line1_check, :id => 'st_address_line1_check'
+    = f.hidden_field :address_zip_check, :id => 'st_address_zip_check'
+    = f.hidden_field :cvc_check, :id => 'st_cvc_check'

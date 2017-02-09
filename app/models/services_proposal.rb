@@ -1,0 +1,2 @@
+class ServicesProposal < Bom
+end

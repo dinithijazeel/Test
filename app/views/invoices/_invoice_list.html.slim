@@ -1,0 +1,19 @@
+- unless invoices.nil? || invoices.empty?
+  = myrject :card do |c|
+    - c.title title
+    - c.body
+      = table
+        thead
+          tr
+            th.col-md-1 Date
+            th.col-md-2 Number
+            th.col-md-4 Company
+            th.col-md-4 Memo
+            th.col-md-1 Due
+        tbody
+          = content_tag_for(:tr, invoices) do |invoice|
+            td = link_to invoice.invoice_date, invoice.becomes(Invoice)
+            td = invoice.number
+            td = invoice.contact.company_name unless invoice.contact.nil?
+            td = invoice.memo
+            td.text-right = money(invoice.total_due)

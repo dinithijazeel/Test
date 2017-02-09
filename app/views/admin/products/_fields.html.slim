@@ -1,0 +1,27 @@
+= f.input :sku
+= f.input :name
+= f.input :description, input_html:{rows:5}
+= row
+  = col md: 4
+    = f.input :price, prepend: fa('dollar')
+  = col md: 4
+    = f.input :default_quantity
+  = col md: 4
+    = f.input :weight
+= row
+  = col md: 4
+    = f.input :units
+  = col md: 4
+    = f.input :product_type
+  = col md: 4
+    = f.input :product_status
+= row
+  = col md: 4
+    = f.input :billing
+  = col md: 4
+    = f.input :vendor
+  = col md: 4
+    label
+    = f.input :taxable
+    = f.input :fixed_price
+= f.file_widget :datasheet

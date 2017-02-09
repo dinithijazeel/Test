@@ -1,0 +1,31 @@
+- comments.each do |comment|
+  article.comment-block
+    .gravatar
+      figure
+        = gravatar_image_tag comment.user.email, :alt => 'USER',  gravatar: {secure: :true, size: 50}, class: 'img img-circle'
+    .comment
+      .comment-body = simple_format comment.body
+      p.comment-info
+        a.comment-reply href="#"
+          = fa('comment', true)
+          | Reply
+        | &nbsp;&bull;&nbsp;
+        span.comment-user
+          = fa('user', true)
+          = comment.user.identifier
+        | &nbsp;&bull;&nbsp;
+        time.comment-date datetime=comment.created_at.to_s(:db)
+          = "#{fa('clock-o')} #{time_ago_in_words(comment.created_at)} ago".html_safe
+      .reply-form
+        = myr_form [@new_comment.commentable, @new_comment] do |f|
+          = f.hidden_field :commentable_id, value: @new_comment.commentable_id
+          = f.hidden_field :commentable_type, value: @new_comment.commentable_type
+          = f.hidden_field :comment_id, value: comment.id
+          .field.form-group
+            .input-group
+              = f.text_area :body, class: 'form-control autogrow', rows: 1
+              span.input-group-btn
+                button.btn.btn-primary type='submit'
+                  = fa('reply')
+
+      = render partial: "comments/reply", locals: {comments: comment.children}

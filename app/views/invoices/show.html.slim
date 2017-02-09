@@ -1,0 +1,26 @@
+- content_for :page_header
+  => fa('invoice')
+  | #{@invoice.type.underscore.humanize.titlecase} #{@invoice.number || 'Draft'}
+
+- content_for :page_body
+  = render 'invoice'
+
+- content_for :page_footer
+  = row
+    = col md: 6
+      => button_link "Invoices", invoices_path
+      = button_link "Customer", customer_path(@invoice.contact)
+    = col md: 6
+      - unless @invoice.draft?
+        => button_link 'Resend', invoice_path(@invoice, status: 'resend'), method: :put, type: 'warning', confirm: 'Resend this invoice?'
+      - if policy(:invoice).update?
+        - if @invoice.draft?
+          => button_link 'Confirm', invoice_path(@invoice, status: 'open'), method: :put, confirm: 'Confirm this invoice? It will be sent to the customer and no longer be editable.'
+          => button_link 'Edit', edit_invoice_path(@invoice), type: 'primary'
+        - elsif @invoice.paid?
+          => button_link 'Close', invoice_path(@invoice, status: 'closed'), method: :put, confirm: 'Mark this invoice as closed?'
+      = button_link 'View PDF', invoice_path(@invoice, format: :pdf), target: '_blank'
+
+- content_for :page_activity
+  = render partial: 'comments/comments', locals: {commentable: @invoice.contact, new_comment: @comment}
+  = render 'history', object: @invoice

@@ -1,0 +1,19 @@
+/ Onboarding
+= f.inputs name: 'Onboarding'
+  = f.hidden_field :id
+  = row
+    = col md: 6
+      = f.input :installation,
+        as: :select,
+        collection: ['Onsite','Remote'],
+        prompt: 'Installation',
+        label: false
+    = col md: 3
+      = f.input :tollfree_port
+    = col md: 3
+      = f.input :local_port
+  = f.input :installation_notes,
+      as: :text,
+      input_html: { rows: 5 },
+      label: false
+      
