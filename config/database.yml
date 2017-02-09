@@ -3,7 +3,7 @@ development:
   pool: 5
   timeout: 5000
   encoding: utf8
-  database: <%= Rails.application.secrets.database_name %>
+  database: myriander_dev
   username: <%= Rails.application.secrets.database_username %>
   password: <%= Rails.application.secrets.database_password %>
 production:
