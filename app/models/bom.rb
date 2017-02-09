@@ -89,7 +89,7 @@ class Bom < ActiveRecord::Base
     # Use current user if we don't specify a sender
     sender_id = User.current.id if sender_id.nil?
     # Queue for execution
-    SendInvoiceJob.perform_later(self.id, sender_id)
+    # SendInvoiceJob.perform_later(self.id, sender_id)
   end
 
   def send_invoice(sender_id = nil)
