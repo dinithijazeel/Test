@@ -138,11 +138,11 @@ class Bom < ActiveRecord::Base
     
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	puts self.as_json;
+	puts self.to_json;
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
 	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
-	puts line_items.as_json;
+	puts line_items.to_json;
 	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
     
     # Calculate taxes
