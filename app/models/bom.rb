@@ -140,6 +140,10 @@ class Bom < ActiveRecord::Base
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	puts self.as_json;
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
+	
+	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
+	puts line_items.as_json;
+	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
     
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
