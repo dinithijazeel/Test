@@ -138,7 +138,7 @@ class Bom < ActiveRecord::Base
     
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	puts self.to_json(include: :line_items);
+	puts self.to_json(include: :line_items(only: :description));
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
 	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
