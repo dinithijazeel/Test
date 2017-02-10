@@ -133,12 +133,22 @@ class Bom < ActiveRecord::Base
     self.rated_at = Time.now
     self.rating_status = :rating_processed
   end
+  
+  def as_json(options={})
+  super(:only => [:id,:number,:invoice_state,:invoice_date]#,
+       # :include => {
+        #  :employers => {:only => [:title]},
+         # :roles => {:only => [:name]}
+        #}
+	)
+	end
 
   def get_rating_line_items
     
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	puts self.to_json(only: [:id]);
+	puts as_json(self);
+	# puts self.to_json(only: [:id]);
 	# puts self.to_json(include: :line_items(only: [:description]));
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
