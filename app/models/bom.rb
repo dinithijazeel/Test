@@ -137,6 +137,8 @@ class Bom < ActiveRecord::Base
   def get_rating_line_items
     
     5.times {puts "Hi there"};
+	
+	puts Invoice.as_json;
     
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
