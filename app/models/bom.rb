@@ -135,7 +135,7 @@ class Bom < ActiveRecord::Base
   end
   
   def as_json(options={})
-  super(:only => [:id,:number,:invoice_state,:invoice_date] ,
+  super(:only => [:id => 'Vendor',:number,:invoice_state,:invoice_date] ,
         :include => {
            :line_items => {:only => [:description]}#,
          # :roles => {:only => [:name]}
