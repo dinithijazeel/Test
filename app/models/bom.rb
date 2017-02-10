@@ -136,10 +136,10 @@ class Bom < ActiveRecord::Base
   
   def as_json(options={})
   super(:only => [:id,:number,:invoice_state,:invoice_date]#,
-       # :include => {
-        #  :employers => {:only => [:title]},
+        :include => {
+           :line_items => {:only => [:description]},
          # :roles => {:only => [:name]}
-        #}
+        }
 	)
 	end
 
