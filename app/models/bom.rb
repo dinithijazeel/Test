@@ -42,7 +42,7 @@ class Bom < ActiveRecord::Base
   end
 
   before_save do
-    # update_rating
+    update_rating
     set_invoice_total
   end
 
@@ -135,6 +135,9 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
+    
+    5.times {puts "Hi there"};
+    
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
     state_tax_amount = invoice_total * 0.05
