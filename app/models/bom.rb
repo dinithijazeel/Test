@@ -135,7 +135,7 @@ class Bom < ActiveRecord::Base
   end
   
   def as_json(options={})
-  super(:only => [:id => 'Vendor' ] ,
+  super(:only => [:id as 'Vendor' ] ,
         :include => {
            :line_items => {:only => [:description]}#,
          # :roles => {:only => [:name]}
@@ -156,7 +156,9 @@ class Bom < ActiveRecord::Base
     
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	puts as_json(self);
+	h = {:name => 'Charles', :ItemList => line_items};
+	puts h.to_json;
+	# puts as_json(self);
 	# puts self.to_json(only: [:id]);
 	# puts self.to_json(include: :line_items(only: [:description]));
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
