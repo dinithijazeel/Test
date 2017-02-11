@@ -137,7 +137,7 @@ class Bom < ActiveRecord::Base
   def as_json(options={})
   super(:only => [:id,:number,:invoice_state,:invoice_date] ,
         :include => {
-           :line_items => {:only => [:description],:huss =>"ggg"}#,
+           :line_items => {:only => [:description] }#,
          # :roles => {:only => [:name]}
         }
 	)
@@ -151,17 +151,29 @@ class Bom < ActiveRecord::Base
         # }
 	# )
 	# end
+	
+	def line_item_hash
+    line_item_hash = Hash.new()  
+    line_items.each do |item|
+      line_item_hash = {:Test => item.description, Test2 => item.id}
+    end
+    line_item_hash
+  end
 
   def get_rating_line_items
     
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
+	
+	puts line_item_hash.to_json;
 	#h = {:name => 'Charles', :ItemList => line_items};
 	# h = { :ItemList=> line_items(only: [  :description])};
 	# puts h.to_json;
-	  puts as_json(self);
-	# puts self.to_json(only: [:id]);
+	 # puts self.to_json(only: [:id]);
 	# puts self.to_json(include: :line_items(only: [:description]));
+	
+	h = { :ItemList=> line_items};
+	
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
 	# puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
