@@ -157,7 +157,7 @@ class Bom < ActiveRecord::Base
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	#h = {:name => 'Charles', :ItemList => line_items};
-	h = {:name => 'Charles', :ItemList => line_items(only: [  :description])};
+	h = { line_items(only: [  :description])};
 	puts h.to_json;
 	# puts as_json(self);
 	# puts self.to_json(only: [:id]);
