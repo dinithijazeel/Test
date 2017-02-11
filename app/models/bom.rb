@@ -164,9 +164,9 @@ class Bom < ActiveRecord::Base
 	# puts self.to_json(include: :line_items(only: [:description]));
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
-	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
-	puts line_items.to_json;
-	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
+	# puts line_items.to_json;
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
     
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
