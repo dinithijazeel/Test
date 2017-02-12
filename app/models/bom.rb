@@ -165,11 +165,17 @@ class Bom < ActiveRecord::Base
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	line_item_hash = Hash.new()  
+	array = []
 	 line_items.each do |line_item|
       line_item_hash << {:Test => line_item.description, :Test2 => line_item.id}
+	   array.push(line_item_hash)
     end
 	
-	h = {:name => 'Charles', :ItemList => line_item_hash};
+	# hash = { :firstname => "Mark", :lastname => "Martin", :age => 24, :gender => "M" }
+  #array = []
+  #array.push(hash)
+	
+	h = {:name => 'Charles', :ItemList => array};
     # puts line_item_hash;
 	#puts line_item_hash;
 	#h = {:name => 'Charles', :ItemList => line_items};
