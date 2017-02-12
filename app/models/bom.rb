@@ -168,7 +168,7 @@ class Bom < ActiveRecord::Base
 	array = []
 	 line_items.each do |line_item|
 	 
-line_item_hash = {:"Item" => {
+line_item_hash = { "Item" => {
 "LineNumber"=> "01",
 "InvoiceNumber"=> "",
 "CustomerNumber"=> "001",
