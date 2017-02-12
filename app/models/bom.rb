@@ -165,7 +165,7 @@ class Bom < ActiveRecord::Base
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
-	puts line_item_hash.to_json;
+	puts line_item_hash;
 	#h = {:name => 'Charles', :ItemList => line_items};
 	# h = { :ItemList=> line_items(only: [  :description])};
 	# puts h.to_json;
