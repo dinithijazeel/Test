@@ -167,7 +167,7 @@ class Bom < ActiveRecord::Base
 	line_item_hash = Hash.new()  
 	array = []
 	 line_items.each do |line_item|
-      line_item_hash ={Item => {:Test => line_item.description, :Test2 => line_item.id}}
+      line_item_hash ={Item => [:Test => line_item.description, :Test2 => line_item.id]}
 	   array.push(line_item_hash)
     end
 	
