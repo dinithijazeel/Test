@@ -176,7 +176,7 @@ class Bom < ActiveRecord::Base
      #"letters" => ["a", "b", "c" ]}
 	 
 	 array <<
-         {Item : {
+         {:Item => {
                      :Test => line_item.description,
                      :Test2 => line_item.id 
           }}
