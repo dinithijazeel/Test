@@ -168,8 +168,9 @@ class Bom < ActiveRecord::Base
 	array = []
 	 line_items.each do |line_item|
       line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
-	  
+	  puts "hhhhhhhhhhhhhhhhhh"
 	  line_item_hash.to_json
+	   puts "hhhhhhhhhhhhhhhhhh"
 	   array.push(line_item_hash)
     end
 	
