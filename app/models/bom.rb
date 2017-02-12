@@ -153,19 +153,23 @@ class Bom < ActiveRecord::Base
 	# end
 	
 	def line_item_hash
-    line_item_hash = Hash.new()  
-    line_items.each do |item|
-      line_item_hash = {:Test => item.description, Test2 => item.id}
-    end
-    line_item_hash
+    # line_item_hash = Hash.new()  
+	 # line_items.each do |line_item|
+      # line_item_hash = {:Test => item.description, :Test2 => item.id}
+    # end
+    # line_item_hash
   end
 
   def get_rating_line_items
     
     5.times {puts "Hi there"};
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	
-	puts line_item_hash;
+	line_item_hash = Hash.new()  
+	 line_items.each do |line_item|
+      line_item_hash = {:Test => line_item.description, :Test2 => line_item.id}
+    end
+    puts line_item_hash;
+	#puts line_item_hash;
 	#h = {:name => 'Charles', :ItemList => line_items};
 	# h = { :ItemList=> line_items(only: [  :description])};
 	# puts h.to_json;
