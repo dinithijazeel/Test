@@ -168,11 +168,13 @@ class Bom < ActiveRecord::Base
 	 line_items.each do |line_item|
       line_item_hash = {:Test => line_item.description, :Test2 => line_item.id}
     end
-    puts line_item_hash;
+	
+	h = {:name => 'Charles', :ItemList => line_item_hash};
+    # puts line_item_hash;
 	#puts line_item_hash;
 	#h = {:name => 'Charles', :ItemList => line_items};
 	# h = { :ItemList=> line_items(only: [  :description])};
-	# puts h.to_json;
+	 puts h.to_json;
 	 # puts self.to_json(only: [:id]);
 	# puts self.to_json(include: :line_items(only: [:description]));
 	
