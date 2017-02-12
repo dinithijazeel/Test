@@ -169,17 +169,17 @@ class Bom < ActiveRecord::Base
 	s = "";
 	 line_items.each do |line_item|
 	 
-     #line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
+      line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
 	#  line_item_hash ={"Item"  => {:Test => line_item.description, :Test2 => line_item.id}}
 	  
 	# line_item_hash = {"colors"  => ["red", "blue", "green"],
      #"letters" => ["a", "b", "c" ]}
 	 
-	 array <<
-         {:Item => {
-                     :Test => line_item.description,
-                     :Test2 => line_item.id 
-          }}
+	 # array <<
+         # {:Item => {
+                     # :Test => line_item.description,
+                     # :Test2 => line_item.id 
+          # }}
 	 
 	  # puts "hhhhhhhhhhhhhhhhhh"
 	  # line_item_hash.to_json
