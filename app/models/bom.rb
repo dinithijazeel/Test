@@ -166,7 +166,7 @@ class Bom < ActiveRecord::Base
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	line_item_hash = Hash.new()  
 	 line_items.each do |line_item|
-      line_item_hash = {:Test => line_item.description, :Test2 => line_item.id}
+      line_item_hash << {:Test => line_item.description, :Test2 => line_item.id}
     end
 	
 	h = {:name => 'Charles', :ItemList => line_item_hash};
