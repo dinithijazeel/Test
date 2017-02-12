@@ -169,10 +169,10 @@ class Bom < ActiveRecord::Base
 	 line_items.each do |line_item|
 	 
 line_item_hash = {:"Item" => {
-"LineNumber": "01",
-"InvoiceNumber": "",
-"CustomerNumber": "001",
-"TransDate": "2015/05/26"}}
+"LineNumber"=> "01",
+"InvoiceNumber"=> "",
+"CustomerNumber"=> "001",
+"TransDate"=> "2015/05/26"}}
 
      # line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
 	  puts "hhhhhhhhhhhhhhhhhh"
