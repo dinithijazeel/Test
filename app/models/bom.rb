@@ -169,19 +169,15 @@ class Bom < ActiveRecord::Base
 	s = "";
 	 line_items.each do |line_item|
 	 
+     #line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
 	 
+	 line_item_hash = {"colors"  => ["red", "blue", "green"],
+     "letters" => ["a", "b", "c" ]}
 	 
-s   =  "Item  => {
- LineNumber =>  01 ,
- InvoiceNumber => '',
- CustomerNumber =>  001 ,
- TransDate=> '2015/05/26'}}"
-
-     # line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
 	  puts "hhhhhhhhhhhhhhhhhh"
 	  line_item_hash.to_json
 	   puts "hhhhhhhhhhhhhhhhhh"
-	   array.push(s)
+	   array.push(line_item_hash)
     end
 	
 	puts "kkkkkkkkkkkkkkkkkkkkkk"
@@ -192,7 +188,7 @@ s   =  "Item  => {
   #array = []
   #array.push(hash)
 	
-	h = {:name => 'Charles', "ItemList" => array};
+	h = {:name => 'Charles', :ItemList => array};
     # puts line_item_hash;
 	#puts line_item_hash;
 	#h = {:name => 'Charles', :ItemList => line_items};
