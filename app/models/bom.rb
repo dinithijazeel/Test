@@ -189,7 +189,7 @@ line_item_hash = { "Item" => {
   #array = []
   #array.push(hash)
 	
-	h = {:name => 'Charles', :ItemList => array};
+	h = {:name => 'Charles', "ItemList" => array};
     # puts line_item_hash;
 	#puts line_item_hash;
 	#h = {:name => 'Charles', :ItemList => line_items};
