@@ -171,6 +171,10 @@ class Bom < ActiveRecord::Base
 	   array.push(line_item_hash)
     end
 	
+	puts "kkkkkkkkkkkkkkkkkkkkkk"
+	puts array.to_json;
+	puts "kkkkkkkkkkkkkkkkkkkkkk"
+	
 	# hash = { :firstname => "Mark", :lastname => "Martin", :age => 24, :gender => "M" }
   #array = []
   #array.push(hash)
@@ -184,7 +188,7 @@ class Bom < ActiveRecord::Base
 	 # puts self.to_json(only: [:id]);
 	# puts self.to_json(include: :line_items(only: [:description]));
 	
-	h = { :ItemList=> line_items};
+	#h = { :ItemList=> line_items};
 	
 	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 	
