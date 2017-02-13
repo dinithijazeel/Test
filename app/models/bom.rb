@@ -359,6 +359,14 @@ class Bom < ActiveRecord::Base
 	puts "&&&&&&&&&&&&&&&&&&&" 
 	
 	new_line_item_array =  [] 
+	
+	 federal_tax_amount = invoice_total * 0.12
+     state_tax_amount = invoice_total * 0.05
+    local_tax_amount = invoice_total * 0.06
+    # # Get products from sku's
+     federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:federal_tax])
+      state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
+     local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
 	 
 	parsed["GroupList"].each do |group|
 		puts group["LineNumber"]
@@ -366,11 +374,18 @@ class Bom < ActiveRecord::Base
 			puts tax["TaxTypeCode"]
 			puts tax["TaxTypeDesc"]
 			
-			p = LineItem.new(
-				description: tax["TaxTypeDesc"],
-				quantity: 1,
-				unit_price: 0.05, #tax["TaxRate"],
-				product: tax["TaxTypeCode"]) 
+			# p = LineItem.new(
+				# description: tax["TaxTypeDesc"],
+				# quantity: 1,
+				# unit_price: 0.05, #tax["TaxRate"],
+				# product: tax["TaxTypeCode"]) 
+				
+				p = LineItem.new(
+         description: federal_tax_product.description,
+          quantity: 1,
+         unit_price: federal_tax_amount,
+         product: federal_tax_product
+       )
 				
 			new_line_item_array.push(p) 
 		end
