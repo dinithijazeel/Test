@@ -392,6 +392,7 @@ class Bom < ActiveRecord::Base
 	end
 
 puts new_line_item_array.to_json
+return new_line_item_array
   
     # # Calculate taxes
     # federal_tax_amount = invoice_total * 0.12
@@ -402,26 +403,26 @@ puts new_line_item_array.to_json
     # state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
     # local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
     # # Create array of line items to return
-     puts [
-       LineItem.new(
-         description: federal_tax_product.description,
-         quantity: 1,
-         unit_price: federal_tax_amount,
-         product: federal_tax_product
-       ),
-       LineItem.new(
-         description: state_tax_product.description,
-         quantity: 1,
-         unit_price: state_tax_amount,
-         product: state_tax_product
-       ),
-       LineItem.new(
-         description: local_tax_product.description,
-         quantity: 1,
-         unit_price: local_tax_amount,
-         product: local_tax_product
-       ),
-     ].to_json
+    # [
+      # LineItem.new(
+        # description: federal_tax_product.description,
+        # quantity: 1,
+        # unit_price: federal_tax_amount,
+        # product: federal_tax_product
+      # ),
+      # LineItem.new(
+        # description: state_tax_product.description,
+        # quantity: 1,
+        # unit_price: state_tax_amount,
+        # product: state_tax_product
+      # ),
+      # LineItem.new(
+        # description: local_tax_product.description,
+        # quantity: 1,
+        # unit_price: local_tax_amount,
+        # product: local_tax_product
+      # ),
+    # ]
   end
 
   # View Helpers
