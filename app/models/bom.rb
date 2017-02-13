@@ -359,9 +359,9 @@ class Bom < ActiveRecord::Base
 	  puts "&&&&&&&&&&&&&&&&&&&"
 	  
 	  
-	  parsed["TaxList"].each do |tax|
-  puts tax["TaxTypeCode"]
-    puts tax["TaxTypeDesc"]
+	  parsed["GroupList"].each do |group|
+  puts group["LineNumber"]
+    # puts group["TaxTypeDesc"]
 end
 
 
