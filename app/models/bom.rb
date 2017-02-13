@@ -357,6 +357,12 @@ class Bom < ActiveRecord::Base
 	 puts "&&&&&&&&&&&&&&&&&&&"
 	 puts parsed["Successful"]
 	  puts "&&&&&&&&&&&&&&&&&&&"
+	  
+	  
+	  parsed["TaxList"].each do |tax|
+  puts tax["TaxTypeCode"]
+    puts tax["TaxTypeDesc"]
+end
 
 
   
