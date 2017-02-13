@@ -139,9 +139,10 @@ class Bom < ActiveRecord::Base
   #generate line items hash
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
+	i = 1
 	line_items.each do |line_item| 
 		#line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]} 
-		line_item_hash ={:Item => [:LineNumber => '01',
+		line_item_hash ={:Item => [:LineNumber => i,
 									:InvoiceNumber => '',
 									:CustomerNumber => '001',
 									:TransDate => '2015/05/26',
@@ -200,8 +201,9 @@ class Bom < ActiveRecord::Base
 									:TermNumber => '',
 									:BillToNumber => '',
 									:Seconds => '0' ]
-						};
+						}  
 	    line_item_array.push(line_item_hash)
+		i += 1
     end
 	
 	#generate main hash for SureTax API call 
@@ -219,10 +221,10 @@ class Bom < ActiveRecord::Base
 		:ReturnFileCode => '0',
 		:STAN => '',
 		:ItemList => line_item_array
-	};
+	} 
 	
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 puts main_hash.to_json;
+	 puts main_hash.to_json 
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
   
     # Calculate taxes
