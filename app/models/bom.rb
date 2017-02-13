@@ -154,7 +154,7 @@ class Bom < ActiveRecord::Base
 									:TaxSitusRule => '27',
 									:TransTypeCode => '050101',
 									:SalesTypeCode => 'R',
-									:RegulatoryCode => '00'],
+									:RegulatoryCode => '00',
 									:TaxExemptionCodeList => [:string => ''],
 									:UDF => '',
 									:UDF2 => '',
@@ -199,7 +199,7 @@ class Bom < ActiveRecord::Base
 									:OrigNumber =>'',
 									:TermNumber => '',
 									:BillToNumber => '',
-									:Seconds => '0' 
+									:Seconds => '0' ]
 						};
 	    line_item_array.push(line_item_hash)
     end
