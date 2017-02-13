@@ -375,10 +375,10 @@ class Bom < ActiveRecord::Base
 			puts tax["TaxTypeDesc"]
 			
 			 p = LineItem.new(
-				  description: tax["TaxTypeDesc"],
+				  description: "yyy",
 				  quantity: 1,
 				  unit_price: 0.05, #tax["TaxRate"],
-				 product: tax["TaxTypeCode"]) 
+				 product: "tttt") 
 				
 				# p = LineItem.new(
          # description: federal_tax_product.description,
