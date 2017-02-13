@@ -135,6 +135,24 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
+	#generate main hash for SureTax API call 
+	main_hash = {:ClientNumber => '000000000',
+		:BusinessUnit => '',
+		:ValidationKey => '13290031-F004-4F00-BMN3-E979D6749B88',
+		:DataYear => '2016',
+		:DataMonth => '06',
+		:CmplDataYear => '2016',
+		:CmplDataMonth => '06',
+		:TotalRevenue => '0',
+		:ClientTracking =>  'Certi',
+		:ResponseType => 'D2',
+		:ResponseGroup => '00',
+		:ReturnFileCode => '0',
+		:STAN => ''
+	};
+	
+	 puts main_hash.to_json;
+  
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
     state_tax_amount = invoice_total * 0.05
