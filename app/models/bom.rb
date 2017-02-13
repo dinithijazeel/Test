@@ -391,7 +391,7 @@ class Bom < ActiveRecord::Base
 		end
 	end
 
-
+puts new_line_item_array.to_json
   
     # # Calculate taxes
     # federal_tax_amount = invoice_total * 0.12
