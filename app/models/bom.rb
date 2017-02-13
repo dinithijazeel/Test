@@ -350,7 +350,7 @@ class Bom < ActiveRecord::Base
 					]
 					}
 					]
-					}
+					}.to_json
 	
 	puts json_Text
 
