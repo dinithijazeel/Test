@@ -155,7 +155,27 @@ class Bom < ActiveRecord::Base
 									:TransTypeCode => '050101',
 									:SalesTypeCode => 'R',
 									:RegulatoryCode => '00'],
-									:TaxExemptionCodeList => [:string => '']
+									:TaxExemptionCodeList => [:string => ''],
+									:UDF => '',
+									:UDF2 => '',
+									:CostCenter => '',
+									:GLAccount => '',
+									:MaterialGroup => '',
+									:BillingDaysInPeriod => '0',
+									:OriginCountryCode => '',
+									:DestCountryCode => '',
+									:Parameter1 => '',
+									:Parameter2 => '',
+									:Parameter3 => '',
+									:Parameter4 => '',
+									:Parameter5 => '',
+									:Parameter6 => '',
+									:Parameter7 => '',
+									:Parameter8 => '',
+									:Parameter9 => '',
+									:Parameter10 => '',
+									:CurrencyCode => '',
+									:ExemptReasonCode => ''
 						};
 	    line_item_array.push(line_item_hash)
     end
