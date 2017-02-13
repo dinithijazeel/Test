@@ -366,13 +366,13 @@ class Bom < ActiveRecord::Base
 			puts tax["TaxTypeCode"]
 			puts tax["TaxTypeDesc"]
 			
-			 LineItem.new(
+			p = LineItem.new(
 				description: tax["TaxTypeDesc"],
 				quantity: 1,
 				unit_price: 0.05, #tax["TaxRate"],
 				product: tax["TaxTypeCode"]) 
 				
-				
+			new_line_item_array.push(p) 
 		end
 	end
 
