@@ -358,7 +358,7 @@ class Bom < ActiveRecord::Base
 	puts parsed["Successful"]
 	puts "&&&&&&&&&&&&&&&&&&&" 
 	
-	new_line_item_array = [] 
+	new_line_item_array =  [] 
 	 
 	parsed["GroupList"].each do |group|
 		puts group["LineNumber"]
@@ -366,11 +366,11 @@ class Bom < ActiveRecord::Base
 			puts tax["TaxTypeCode"]
 			puts tax["TaxTypeDesc"]
 			
-			 new_line_item_array.push(LineItem.new(
+			 new_line_item_array << LineItem.new(
 				description: tax["TaxTypeDesc"],
 				quantity: 1,
 				unit_price: tax["TaxRate"],
-				product: tax["TaxTypeCode"]))
+				product: tax["TaxTypeCode"]) 
 				
 				
 		end
