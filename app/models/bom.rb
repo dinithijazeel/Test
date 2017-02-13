@@ -140,7 +140,21 @@ class Bom < ActiveRecord::Base
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
 	line_items.each do |line_item| 
-		line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]} 
+		#line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]} 
+		line_item_hash ={:Item => [:LineNumber => '01',
+									:InvoiceNumber => '',
+									:CustomerNumber => '001',
+									:TransDate => '2015/05/26',
+									:BillingPeriodStartDate => '',
+									:BillingPeriodEndDate => '',
+									:Revenue => '100',
+									:TaxIncludedCode => '0',
+									:Units => '0',
+									:UnitType => '00',
+									:TaxSitusRule => '27',
+									:TransTypeCode => '050101',
+									:SalesTypeCode => 'R',
+									:RegulatoryCode => '00']};
 	    line_item_array.push(line_item_hash)
     end
 	
