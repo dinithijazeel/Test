@@ -223,9 +223,138 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	} 
 	
-	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 puts main_hash.to_json 
-	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 #puts main_hash.to_json 
+	 #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 
+	 #Calling SureTax API code comes here 
+	 
+	 #Extracting returned data from SureTax API
+	 json_Text ={
+					"Successful": "Y",
+					"ResponseCode": "9999",
+					"HeaderMessage": "Success",
+					"ItemMessages": [],
+					"ClientTracking": "Test Communications",
+					"TotalTax": "25.864212",
+					"TransId": 2477023,
+					"GroupList": [
+					{
+					"LineNumber": "1",
+					"StateCode": "TX",
+					"InvoiceNumber": "101", "CustomerNumber": "90120302",
+					"TaxList": [
+					{
+					"TaxTypeCode": "101",
+					"TaxTypeDesc": "STATE SALES TAX",
+					"TaxAmount": "7.220209",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0.0625,
+					"PercentTaxable": 1,
+					"FeeRate": 0,
+					"RevenueBase": "115.523344",
+					"TaxOnTax": "0.970209"
+					},
+					{
+					"TaxTypeCode": "403",
+					"TaxTypeDesc": "DALLAS MTA",
+					"TaxAmount": "1.155233",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0.01,
+					"PercentTaxable": 1,
+					"FeeRate": 0,
+					"RevenueBase": "115.523300",
+					"TaxOnTax": "0.155233"
+					},
+					{
+					"TaxTypeCode": "304",
+					"TaxTypeDesc": "CITY SALES TAX",
+					"TaxAmount": "1.155233",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0.01,
+					"PercentTaxable": 1,
+					"FeeRate": 0,
+					"RevenueBase": "115.523300",
+					"TaxOnTax": "0.155233"
+					},
+					{
+					"TaxTypeCode": "106",
+					"TaxTypeDesc": "9-1-1 EQUALIZATION FEE",
+					"TaxAmount": "0.060000",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0,
+					"PercentTaxable": 1,
+					"FeeRate": 0.06,
+					"RevenueBase": "100",
+					"TaxOnTax": "0"
+					},
+					{
+					"TaxTypeCode": "324",
+					"TaxTypeDesc": "MUNICIPAL RIGHT-OF-WAY FEE",
+					"TaxAmount": "4.230000",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0,
+					"PercentTaxable": 1,
+					"FeeRate": 4.23,
+					"RevenueBase": "100",
+					"TaxOnTax": "0"
+					},
+					{
+					"TaxTypeCode": "333",
+					"TaxTypeDesc": "PLANO 9-1-1 FEE",
+					"TaxAmount": "0.750000",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0,
+					"PercentTaxable": 1,
+					"FeeRate": 0.75,
+					"RevenueBase": "100",
+					"TaxOnTax": "0"
+					},
+					{
+					"TaxTypeCode": "035",
+					"TaxTypeDesc": "FEDERAL UNIVERSAL SERVICE FEE",
+					"TaxAmount": "10.231877",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0.156,
+					"PercentTaxable": 0.649,
+					"FeeRate": 0,
+					"RevenueBase": "65.588955", "TaxOnTax": "0.107477"
+					},
+					{
+					"TaxTypeCode": "060",
+					"TaxTypeDesc": "Federal Regulatory Assessment Fee",
+					"TaxAmount": "1.061660",
+					"Revenue": "100",
+					"CountyName": "COLLIN",
+					"CityName": "PLANO",
+					"TaxRate": 0.01484,
+					"PercentTaxable": 0.649,
+					"FeeRate": 0,
+					"RevenueBase": "71.540431",
+					"TaxOnTax": "0.098544"
+					}
+					]
+					}
+					]
+					}
+	
+	puts json_Text
+
+
   
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
