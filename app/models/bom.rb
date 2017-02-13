@@ -353,51 +353,60 @@ class Bom < ActiveRecord::Base
 					}.to_json
 	
 	#puts json_Text
-	 parsed = JSON.parse(json_Text)
-	 puts "&&&&&&&&&&&&&&&&&&&"
-	 puts parsed["Successful"]
-	  puts "&&&&&&&&&&&&&&&&&&&"
-	  
-	  
-	  parsed["GroupList"].each do |group|
-  puts group["LineNumber"]
-  group["TaxList"].each do |tax|
-    puts tax["TaxTypeCode"]
-     puts tax["TaxTypeDesc"]
+	parsed = JSON.parse(json_Text)
+	puts "&&&&&&&&&&&&&&&&&&&"
+	puts parsed["Successful"]
+	puts "&&&&&&&&&&&&&&&&&&&" 
+	
+	new_line_item_array = [] 
+	 
+	parsed["GroupList"].each do |group|
+		puts group["LineNumber"]
+		group["TaxList"].each do |tax|
+			puts tax["TaxTypeCode"]
+			puts tax["TaxTypeDesc"]
+			
+			 new_line_item_array.push(LineItem.new(
+				description: tax["TaxTypeDesc"],
+				quantity: 1,
+				unit_price: tax["TaxRate"],
+				product: tax["TaxTypeCode"]))
+				
+				
+		end
 	end
-end
 
 
   
-    # Calculate taxes
-    federal_tax_amount = invoice_total * 0.12
-    state_tax_amount = invoice_total * 0.05
-    local_tax_amount = invoice_total * 0.06
-    # Get products from sku's
-    federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:federal_tax])
-    state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
-    local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
-    # Create array of line items to return
-    [
-      LineItem.new(
-        description: federal_tax_product.description,
-        quantity: 1,
-        unit_price: federal_tax_amount,
-        product: federal_tax_product
-      ),
-      LineItem.new(
-        description: state_tax_product.description,
-        quantity: 1,
-        unit_price: state_tax_amount,
-        product: state_tax_product
-      ),
-      LineItem.new(
-        description: local_tax_product.description,
-        quantity: 1,
-        unit_price: local_tax_amount,
-        product: local_tax_product
-      ),
-    ]
+    # # Calculate taxes
+    # federal_tax_amount = invoice_total * 0.12
+    # state_tax_amount = invoice_total * 0.05
+    # local_tax_amount = invoice_total * 0.06
+    # # Get products from sku's
+    # federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:federal_tax])
+    # state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
+    # local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
+    # # Create array of line items to return
+    # [
+      # LineItem.new(
+        # description: federal_tax_product.description,
+        # quantity: 1,
+        # unit_price: federal_tax_amount,
+        # product: federal_tax_product
+      # ),
+      # LineItem.new(
+        # description: state_tax_product.description,
+        # quantity: 1,
+        # unit_price: state_tax_amount,
+        # product: state_tax_product
+      # ),
+      # LineItem.new(
+        # description: local_tax_product.description,
+        # quantity: 1,
+        # unit_price: local_tax_amount,
+        # product: local_tax_product
+      # ),
+    # ]
   end
 
   # View Helpers
