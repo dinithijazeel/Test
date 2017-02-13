@@ -186,6 +186,20 @@ class Bom < ActiveRecord::Base
 												:Country => '',
 												:Geocode => '',
 												:VerifyAddress => 'false'],
+									:P2PAddress => [:PrimaryAddressLine => '',
+													:SecondaryAddressLine => '',
+													:County => '',
+													:City => '',
+													:State => '',
+													:PostalCode => '',
+													:Plus4 => '',
+													:Country => '',
+													:Geocode => '',
+													:VerifyAddress => 'false'],
+									:OrigNumber =>'',
+									:TermNumber => '',
+									:BillToNumber => '',
+									:Seconds => '0' 
 						};
 	    line_item_array.push(line_item_hash)
     end
