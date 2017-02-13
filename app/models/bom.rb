@@ -352,7 +352,8 @@ class Bom < ActiveRecord::Base
 					]
 					}.to_json
 	
-	puts json_Text
+	#puts json_Text
+	 puts JSON.parse(json_Text)
 
 
   
