@@ -378,7 +378,7 @@ class Bom < ActiveRecord::Base
 				  description: tax["TaxTypeDesc"],
 				  quantity: 1,
 				  unit_price: 0.05,  
-				 product:  Product.find_by_sku(tax["TaxTypeCode"])) 
+				 product:  Product.find_by_sku("GS-GXP2160-01")) 
 				
 				# p = LineItem.new(
          # description: federal_tax_product.description,
@@ -391,7 +391,7 @@ class Bom < ActiveRecord::Base
 		end
 	end
 
-puts new_line_item_array.to_json
+#puts new_line_item_array.to_json
 return new_line_item_array
   
     # # Calculate taxes
