@@ -361,7 +361,10 @@ class Bom < ActiveRecord::Base
 	  
 	  parsed["GroupList"].each do |group|
   puts group["LineNumber"]
-    # puts group["TaxTypeDesc"]
+  group["TaxList"].each do |tax|
+    puts tax["TaxTypeCode"]
+     puts tax["TaxTypeDesc"]
+	end
 end
 
 
