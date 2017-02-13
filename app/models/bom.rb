@@ -374,18 +374,18 @@ class Bom < ActiveRecord::Base
 			puts tax["TaxTypeCode"]
 			puts tax["TaxTypeDesc"]
 			
-			# p = LineItem.new(
-				# description: tax["TaxTypeDesc"],
-				# quantity: 1,
-				# unit_price: 0.05, #tax["TaxRate"],
-				# product: tax["TaxTypeCode"]) 
+			 p = LineItem.new(
+				  description: tax["TaxTypeDesc"],
+				  quantity: 1,
+				  unit_price: 0.05, #tax["TaxRate"],
+				 product: tax["TaxTypeCode"]) 
 				
-				p = LineItem.new(
-         description: federal_tax_product.description,
-          quantity: 1,
-         unit_price: federal_tax_amount,
-         product: federal_tax_product
-       )
+				# p = LineItem.new(
+         # description: federal_tax_product.description,
+          # quantity: 1,
+         # unit_price: federal_tax_amount,
+         # product: federal_tax_product
+       # )
 				
 			new_line_item_array.push(p) 
 		end
