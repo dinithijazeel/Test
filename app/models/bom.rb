@@ -175,7 +175,17 @@ class Bom < ActiveRecord::Base
 									:Parameter9 => '',
 									:Parameter10 => '',
 									:CurrencyCode => '',
-									:ExemptReasonCode => ''
+									:ExemptReasonCode => '',
+									:Address => [:PrimaryAddressLine => '',
+												:SecondaryAddressLine => '',
+												:County => '', 
+												:City => '',
+												:State => '',
+												:PostalCode => '80112',
+												:Plus4 => '',
+												:Country => '',
+												:Geocode => '',
+												:VerifyAddress => 'false'],
 						};
 	    line_item_array.push(line_item_hash)
     end
