@@ -42,7 +42,7 @@ class Bom < ActiveRecord::Base
   end
 
   before_save do
-    # update_rating
+    update_rating
     set_invoice_total
   end
 
