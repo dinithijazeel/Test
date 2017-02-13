@@ -135,6 +135,15 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
+  
+  #generate line items hash
+	line_item_hash = Hash.new()  
+	line_item_array = [] 
+	line_items.each do |line_item| 
+		line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]} 
+	    line_item_array.push(line_item_hash)
+    end
+	
 	#generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000000',
 		:BusinessUnit => '',
@@ -148,7 +157,8 @@ class Bom < ActiveRecord::Base
 		:ResponseType => 'D2',
 		:ResponseGroup => '00',
 		:ReturnFileCode => '0',
-		:STAN => ''
+		:STAN => '',
+		:ItemList => line_item_array
 	};
 	
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
