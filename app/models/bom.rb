@@ -402,26 +402,26 @@ puts new_line_item_array.to_json
     # state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
     # local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
     # # Create array of line items to return
-    # [
-      # LineItem.new(
-        # description: federal_tax_product.description,
-        # quantity: 1,
-        # unit_price: federal_tax_amount,
-        # product: federal_tax_product
-      # ),
-      # LineItem.new(
-        # description: state_tax_product.description,
-        # quantity: 1,
-        # unit_price: state_tax_amount,
-        # product: state_tax_product
-      # ),
-      # LineItem.new(
-        # description: local_tax_product.description,
-        # quantity: 1,
-        # unit_price: local_tax_amount,
-        # product: local_tax_product
-      # ),
-    # ]
+     puts [
+       LineItem.new(
+         description: federal_tax_product.description,
+         quantity: 1,
+         unit_price: federal_tax_amount,
+         product: federal_tax_product
+       ),
+       LineItem.new(
+         description: state_tax_product.description,
+         quantity: 1,
+         unit_price: state_tax_amount,
+         product: state_tax_product
+       ),
+       LineItem.new(
+         description: local_tax_product.description,
+         quantity: 1,
+         unit_price: local_tax_amount,
+         product: local_tax_product
+       ),
+     ].to_json
   end
 
   # View Helpers
