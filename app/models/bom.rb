@@ -42,7 +42,7 @@ class Bom < ActiveRecord::Base
   end
 
   before_save do
-    update_rating
+    # update_rating
     set_invoice_total
   end
 
@@ -89,7 +89,7 @@ class Bom < ActiveRecord::Base
     # Use current user if we don't specify a sender
     sender_id = User.current.id if sender_id.nil?
     # Queue for execution
-    # SendInvoiceJob.perform_later(self.id, sender_id)
+    SendInvoiceJob.perform_later(self.id, sender_id)
   end
 
   def send_invoice(sender_id = nil)
@@ -133,85 +133,8 @@ class Bom < ActiveRecord::Base
     self.rated_at = Time.now
     self.rating_status = :rating_processed
   end
-  
-  def as_json(options={})
-  super(:only => [:id,:number,:invoice_state,:invoice_date] ,
-        :include => {
-           :line_items => {:only => [:description] }#,
-         # :roles => {:only => [:name]}
-        }
-	)
-	end
-	
-	 # def as_json(options={})
-  # super(:only => [:id,:number,:invoice_state,:invoice_date] ,
-        # :include => {
-           # :line_items => {:only => [:description]}#,
-         # # :roles => {:only => [:name]}
-        # }
-	# )
-	# end
-	
-	def line_item_hash
-    # line_item_hash = Hash.new()  
-	 # line_items.each do |line_item|
-      # line_item_hash = {:Test => item.description, :Test2 => item.id}
-    # end
-    # line_item_hash
-  end
 
   def get_rating_line_items
-    
-    5.times {puts "Hi there"};
-	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	line_item_hash = Hash.new()  
-	array = []
-	s = "";
-	 line_items.each do |line_item|
-	 
-      line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]}
-	#  line_item_hash ={"Item"  => {:Test => line_item.description, :Test2 => line_item.id}}
-	  
-	# line_item_hash = {"colors"  => ["red", "blue", "green"],
-     #"letters" => ["a", "b", "c" ]}
-	 
-	 # array <<
-         # {:Item => {
-                     # :Test => line_item.description,
-                     # :Test2 => line_item.id 
-          # }}
-	 
-	  # puts "hhhhhhhhhhhhhhhhhh"
-	  # line_item_hash.to_json
-	   # puts "hhhhhhhhhhhhhhhhhh"
-	    array.push(line_item_hash)
-    end
-	
-	puts "kkkkkkkkkkkkkkkkkkkkkk"
-	puts array.to_json;
-	puts "kkkkkkkkkkkkkkkkkkkkkk"
-	
-	# hash = { :firstname => "Mark", :lastname => "Martin", :age => 24, :gender => "M" }
-  #array = []
-  #array.push(hash)
-	
-	h = {:name => 'Charles', :ItemList => array};
-    # puts line_item_hash;
-	#puts line_item_hash;
-	#h = {:name => 'Charles', :ItemList => line_items};
-	# h = { :ItemList=> line_items(only: [  :description])};
-	 puts h.to_json;
-	 # puts self.to_json(only: [:id]);
-	# puts self.to_json(include: :line_items(only: [:description]));
-	
-	#h = { :ItemList=> line_items};
-	
-	puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-	
-	# puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
-	# puts line_items.to_json;
-	# puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
-    
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
     state_tax_amount = invoice_total * 0.05
