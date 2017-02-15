@@ -166,7 +166,7 @@ class Bom < ActiveRecord::Base
 									:BillingPeriodEndDate => '',#?
 									:Revenue => line_item.total.to_s,
 									:TaxIncludedCode => '0',#? 
-									:Units =>  product.billing =='usage' ? '1' : line_item.quantity.to_s, #?
+									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_s, #?
 									:UnitType => '00',
 									:TaxSitusRule => '27',
 									:TransTypeCode => '050101',
