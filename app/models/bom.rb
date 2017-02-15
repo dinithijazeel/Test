@@ -153,16 +153,87 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
+    #generate line items hash
+	line_item_hash = Hash.new()  
+	line_item_array = [] 
+	i = 0
+	line_items.each do |line_item| 
+		line_item_hash ={:Item => [:LineNumber => i,
+									:InvoiceNumber => '',
+									:CustomerNumber => '001',
+									:TransDate => '2015/05/26',
+									:BillingPeriodStartDate => '',
+									:BillingPeriodEndDate => '',
+									:Revenue => '100',
+									:TaxIncludedCode => '0',
+									:Units => '0',
+									:UnitType => '00',
+									:TaxSitusRule => '27',
+									:TransTypeCode => '050101',
+									:SalesTypeCode => 'R',
+									:RegulatoryCode => '00',
+									:TaxExemptionCodeList => [:string => ''],
+									:UDF => '',
+									:UDF2 => '',
+									:CostCenter => '',
+									:GLAccount => '',
+									:MaterialGroup => '',
+									:BillingDaysInPeriod => '0',
+									:OriginCountryCode => '',
+									:DestCountryCode => '',
+									:Parameter1 => '',
+									:Parameter2 => '',
+									:Parameter3 => '',
+									:Parameter4 => '',
+									:Parameter5 => '',
+									:Parameter6 => '',
+									:Parameter7 => '',
+									:Parameter8 => '',
+									:Parameter9 => '',
+									:Parameter10 => '',
+									:CurrencyCode => '',
+									:ExemptReasonCode => '',
+									:Address => [:PrimaryAddressLine => '',
+												:SecondaryAddressLine => '',
+												:County => '', 
+												:City => '',
+												:State => '',
+												:PostalCode => '80112',
+												:Plus4 => '',
+												:Country => '',
+												:Geocode => '',
+												:VerifyAddress => 'false'],
+									:P2PAddress => [:PrimaryAddressLine => '',
+													:SecondaryAddressLine => '',
+													:County => '',
+													:City => '',
+													:State => '',
+													:PostalCode => '',
+													:Plus4 => '',
+													:Country => '',
+													:Geocode => '',
+													:VerifyAddress => 'false'],
+									:OrigNumber =>'',
+									:TermNumber => '',
+									:BillToNumber => '',
+									:Seconds => '0' ]
+						}  
+	    line_item_array.push(line_item_hash)
+		i += 1
+    end
+  
+  
+  
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit => '',
+		:BusinessUnit => '',#?
 		:ValidationKey => '13290031-F004-4F00-BMN3-E979D6749B88',
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
 		:CmplDataYear => invoice_date.strftime("%Y"), #?
 		:CmplDataMonth =>  invoice_date.strftime("%m"), #?
-		:TotalRevenue => invoice_total,
-		:ClientTracking =>  contact.portal_id,
+		:TotalRevenue => invoice_total.to_s,
+		:ClientTracking =>  contact.portal_id==null ? '' : contact.portal_id,
 		:ResponseType => 'D2', #?
 		:ResponseGroup => '00',
 		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
