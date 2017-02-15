@@ -162,11 +162,11 @@ class Bom < ActiveRecord::Base
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
 									:TransDate =>invoice_date.strftime("%m-%d-%Y") ,
-									:BillingPeriodStartDate => '',
-									:BillingPeriodEndDate => '',
-									:Revenue => '100',
-									:TaxIncludedCode => '0',
-									:Units => '0',
+									:BillingPeriodStartDate => '', #?
+									:BillingPeriodEndDate => '',#?
+									:Revenue => line_item.total.to_s,
+									:TaxIncludedCode => '0',#? 
+									:Units =>  product.billing =='usage' ? '1' : line_item.quantity.to_s, #?
 									:UnitType => '00',
 									:TaxSitusRule => '27',
 									:TransTypeCode => '050101',
@@ -178,7 +178,7 @@ class Bom < ActiveRecord::Base
 									:CostCenter => '',
 									:GLAccount => '',
 									:MaterialGroup => '',
-									:BillingDaysInPeriod => '0',
+									:BillingDaysInPeriod => '',#?
 									:OriginCountryCode => '',
 									:DestCountryCode => '',
 									:Parameter1 => '',
