@@ -217,7 +217,7 @@ class Bom < ActiveRecord::Base
 									:TermNumber => '',#?  Optional fields
 									:BillToNumber => '',#?  Optional fields
 									#:Seconds =>  line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s :'1' ] #?  
-									:Seconds => line_item.product.billing =='usage' ? 'CA' : '1' ] #?  
+									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' ] #?  
 									 
 						}  
 	    line_item_array.push(line_item_hash)
