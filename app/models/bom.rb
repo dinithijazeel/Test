@@ -237,7 +237,9 @@ class Bom < ActiveRecord::Base
   
     begin
       response = site.post(json2,:content_type=>'application/json');
+	   #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
       puts JSON.parse(response.body);
+	   #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
     rescue RestClient::Exception => exception
      # puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
      # puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
@@ -370,16 +372,16 @@ class Bom < ActiveRecord::Base
 	
 	#puts json_Text
 	parsed = JSON.parse(json_Text)
-	puts "&&&&&&&&&&&&&&&&&&&"
-	puts parsed["Successful"]
-	puts "&&&&&&&&&&&&&&&&&&&" 
+	# puts "&&&&&&&&&&&&&&&&&&&"
+	# puts parsed["Successful"]
+	# puts "&&&&&&&&&&&&&&&&&&&" 
 	
 	new_line_item_array =  []   
 	parsed["GroupList"].each do |group|
-		puts group["LineNumber"]
+		# puts group["LineNumber"]
 		group["TaxList"].each do |tax|
-			puts tax["TaxTypeCode"]
-			puts tax["TaxTypeDesc"]
+			# puts tax["TaxTypeCode"]
+			# puts tax["TaxTypeDesc"]
 			
 			 p = LineItem.new(
 				  description: tax["TaxTypeDesc"],
