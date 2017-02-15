@@ -168,41 +168,41 @@ class Bom < ActiveRecord::Base
 									:TaxIncludedCode => '0',#? 
 									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
 									:UnitType => '00',
-									:TaxSitusRule => '27',
-									:TransTypeCode => '050101',
-									:SalesTypeCode => 'R',
-									:RegulatoryCode => '00',
-									:TaxExemptionCodeList => [:string => ''],
-									:UDF => '',
-									:UDF2 => '',
-									:CostCenter => '',
-									:GLAccount => '',
-									:MaterialGroup => '',
+									:TaxSitusRule => '04',
+									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
+									:SalesTypeCode => 'R', #? Residential / Business / Industrial / Lifeline - how do we determine this?
+									:RegulatoryCode => '3', #? 03 -> VOIP, recommended by CCH
+									:TaxExemptionCodeList => [:string => ''], #? Need clarification from CCH on this.
+									:UDF => '', #?  Optional fields
+									:UDF2 => '', #?  Optional fields
+									:CostCenter => '', #?  Optional fields
+									:GLAccount => '', #?  Optional fields
+									:MaterialGroup => '', #?  Optional fields
 									:BillingDaysInPeriod => '',#?
-									:OriginCountryCode => '',
-									:DestCountryCode => '',
-									:Parameter1 => '',
-									:Parameter2 => '',
-									:Parameter3 => '',
-									:Parameter4 => '',
-									:Parameter5 => '',
-									:Parameter6 => '',
-									:Parameter7 => '',
-									:Parameter8 => '',
-									:Parameter9 => '',
-									:Parameter10 => '',
-									:CurrencyCode => '',
-									:ExemptReasonCode => '',
+									:OriginCountryCode => '', #?  Optional fields
+									:DestCountryCode => '', #?  Optional fields
+									:Parameter1 => '', #?  Optional fields
+									:Parameter2 => '', #?  Optional fields
+									:Parameter3 => '', #?  Optional fields
+									:Parameter4 => '', #?  Optional fields
+									:Parameter5 => '', #?  Optional fields
+									:Parameter6 => '', #?  Optional fields
+									:Parameter7 => '', #?  Optional fields
+									:Parameter8 => '', #?  Optional fields
+									:Parameter9 => '', #?  Optional fields
+									:Parameter10 => '', #?  Optional fields
+									:CurrencyCode => '', #?  Optional fields
+									:ExemptReasonCode => '', #?Need clarification from CCH on this.
 									:Address => [:PrimaryAddressLine => '',
 												:SecondaryAddressLine => '',
 												:County => '', 
 												:City => '',
 												:State => '',
-												:PostalCode => '80112',
+												:PostalCode => invoice.contact.service_zip,
 												:Plus4 => '',
-												:Country => '',
+												:Country => line_item.contact.service_country =='Canada' ? 'CA' : 'US',
 												:Geocode => '',
-												:VerifyAddress => 'false'],
+												:VerifyAddress => '0'],
 									:P2PAddress => [:PrimaryAddressLine => '',
 													:SecondaryAddressLine => '',
 													:County => '',
@@ -213,10 +213,10 @@ class Bom < ActiveRecord::Base
 													:Country => '',
 													:Geocode => '',
 													:VerifyAddress => 'false'],
-									:OrigNumber =>'',
-									:TermNumber => '',
-									:BillToNumber => '',
-									:Seconds => '0' ]
+									:OrigNumber =>'',#?  Optional fields
+									:TermNumber => '',#?  Optional fields
+									:BillToNumber => '',#?  Optional fields
+									:Seconds =>  line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s :'1'] #? 
 						}  
 	    line_item_array.push(line_item_hash)
 		i += 1
@@ -242,7 +242,6 @@ class Bom < ActiveRecord::Base
 	} 
 	
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 puts invoice_status
 	 puts main_hash.to_json 
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
   
