@@ -46,7 +46,7 @@ class Bom < ActiveRecord::Base
   end
 
   before_save do
-    # update_rating
+    update_rating
     set_invoice_total
     if invoice_status == 'open'
       # Make sure open invoices have a token, date, and number
