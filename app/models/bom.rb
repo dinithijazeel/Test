@@ -157,15 +157,15 @@ class Bom < ActiveRecord::Base
 	main_hash = {:ClientNumber => '000000870',
 		:BusinessUnit => '',
 		:ValidationKey => '13290031-F004-4F00-BMN3-E979D6749B88',
-		:DataYear => self.invoice_date.strftime("%Y"),
-		:DataMonth => self.invoice_date.strftime("%m"),
-		:CmplDataYear => self.invoice_date.strftime("%Y"), #?
-		:CmplDataMonth => self.invoice_date.strftime("%m"), #?
+		:DataYear =>  invoice_date.strftime("%Y"),
+		:DataMonth =>  invoice_date.strftime("%m"),
+		:CmplDataYear => invoice_date.strftime("%Y"), #?
+		:CmplDataMonth =>  invoice_date.strftime("%m"), #?
 		:TotalRevenue => invoice_total,
 		:ClientTracking =>  contact.portal_id,
 		:ResponseType => 'D2', #?
 		:ResponseGroup => '00',
-		:ReturnFileCode => '0',  
+		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
 		:STAN => ''#, #?
 		#:ItemList => line_item_array
 	} 
