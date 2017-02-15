@@ -228,7 +228,8 @@ class Bom < ActiveRecord::Base
 	 #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
 	 
 	 #Calling SureTax API code comes here 
-	 
+	  json2={"ClientNumber"=> "000000870","BusinessUnit"=> "","ValidationKey"=> "dddcaf33-15e1-49af-a304-465651f75247","DataYear"=> "2016","DataMonth"=> "06","CmplDataYear"=> "2016","CmplDataMonth"=> "06","TotalRevenue"=> "0","ClientTracking"=> "Certi","ResponseType"=> "D2","ResponseGroup"=> "00","ReturnFileCode"=> "0","STAN"=> ""}.to_json;    
+  
 	 url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
     api_key = "Frfiuyg987qw"
     # site = RestClient::Resource.new(url, api_key, 'X')
