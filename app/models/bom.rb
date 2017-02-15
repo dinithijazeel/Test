@@ -159,9 +159,9 @@ class Bom < ActiveRecord::Base
 	i = 0
 	line_items.each do |line_item| 
 		line_item_hash ={:Item => [:LineNumber => i,
-									:InvoiceNumber => '',
-									:CustomerNumber => '001',
-									:TransDate => '2015/05/26',
+									:InvoiceNumber => number,
+									:CustomerNumber => contact.portal_id,
+									:TransDate =>invoice_date.strftime("%m-%d-%Y") ,
 									:BillingPeriodStartDate => '',
 									:BillingPeriodEndDate => '',
 									:Revenue => '100',
@@ -233,12 +233,12 @@ class Bom < ActiveRecord::Base
 		:CmplDataYear => invoice_date.strftime("%Y"), #?
 		:CmplDataMonth =>  invoice_date.strftime("%m"), #?
 		:TotalRevenue => invoice_total.to_s,
-		:ClientTracking =>  contact.portal_id==null ? '' : contact.portal_id,
+		:ClientTracking => contact.portal_id ,
 		:ResponseType => 'D2', #?
 		:ResponseGroup => '00',
 		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
-		:STAN => ''#, #?
-		#:ItemList => line_item_array
+		:STAN => '', #?
+		:ItemList => line_item_array
 	} 
 	
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
