@@ -171,6 +171,7 @@ class Bom < ActiveRecord::Base
 	} 
 	
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 puts invoice_status
 	 puts main_hash.to_json 
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
   
