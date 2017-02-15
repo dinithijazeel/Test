@@ -229,6 +229,21 @@ class Bom < ActiveRecord::Base
 	 
 	 #Calling SureTax API code comes here 
 	 
+	 url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+    api_key = "Frfiuyg987qw"
+    # site = RestClient::Resource.new(url, api_key, 'X')
+       site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+  
+    begin
+      response = site.post(json2,:content_type=>'application/json');
+      puts JSON.parse(response.body);
+    rescue RestClient::Exception => exception
+     # puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
+     # puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
+     # puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
+      puts  {exception.response.message}
+    end
+	
 	 #Extracting returned data from SureTax API
 	 json_Text ={
 					"Successful" => "Y",
