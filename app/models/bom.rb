@@ -162,7 +162,7 @@ class Bom < ActiveRecord::Base
 		:CmplDataYear => self.invoice_date.strftime("%Y"), #?
 		:CmplDataMonth => self.invoice_date.strftime("%m"), #?
 		:TotalRevenue => invoice_total,
-		:ClientTracking =>  invoice.contact.portal_id,
+		:ClientTracking =>  contact.portal_id,
 		:ResponseType => 'D2', #?
 		:ResponseGroup => '00',
 		:ReturnFileCode => '0',  
