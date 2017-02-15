@@ -231,9 +231,9 @@ class Bom < ActiveRecord::Base
 	  json2={"ClientNumber"=> "000000870","BusinessUnit"=> "","ValidationKey"=> "dddcaf33-15e1-49af-a304-465651f75247","DataYear"=> "2016","DataMonth"=> "06","CmplDataYear"=> "2016","CmplDataMonth"=> "06","TotalRevenue"=> "0","ClientTracking"=> "Certi","ResponseType"=> "D2","ResponseGroup"=> "00","ReturnFileCode"=> "0","STAN"=> ""}.to_json;    
     puts "555555555555555555555555555555555555555555555"
 	 url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-    api_key = "Frfiuyg987qw"
-    # site = RestClient::Resource.new(url, api_key, 'X')
-       site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+    api_key = "dddcaf33-15e1-49af-a304-465651f75247"
+    site = RestClient::Resource.new(url, api_key, 'X')
+      # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
   
     begin
       response = site.post(json2,:content_type=>'application/json');
