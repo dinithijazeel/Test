@@ -26,6 +26,10 @@ class Bom < ActiveRecord::Base
   #
   ## Scopes
   #
+  scope :open_invoices_for, -> (contact_id) {
+    where(invoice_status: Invoice.invoice_statuses[:open], contact_id: contact_id).
+    where('boms.type IN (\'Invoice\',\'ServiceInvoice\')')
+  }
   scope :invoices_updated_this_month, -> {
     where(updated_at: 4.weeks.ago..Time.now).
     where('boms.type IN (\'Invoice\',\'ServiceInvoice\')')
@@ -42,8 +46,14 @@ class Bom < ActiveRecord::Base
   end
 
   before_save do
-    update_rating
+    # update_rating
     set_invoice_total
+    if invoice_status == 'open'
+      # Make sure open invoices have a token, date, and number
+      self.payment_token = SecureRandom.uuid if payment_token.blank?
+      self.invoice_date = Time.now if invoice_date.blank?
+      self.number = generate_number if number.blank?
+    end
   end
 
   # Listings
@@ -89,7 +99,7 @@ class Bom < ActiveRecord::Base
     # Use current user if we don't specify a sender
     sender_id = User.current.id if sender_id.nil?
     # Queue for execution
-    # SendInvoiceJob.perform_later(self.id, sender_id)
+    SendInvoiceJob.perform_later(self.id, sender_id)
   end
 
   def send_invoice(sender_id = nil)
@@ -121,6 +131,14 @@ class Bom < ActiveRecord::Base
     line_items.select { |li| product_sku.include? li.product.sku }
   end
 
+  def payable_amount
+    total_due
+  end
+
+  def payable_name
+    contact.company_name
+  end
+
   def update_rating
     # Get existing tax items
     old_tax_items = line_items.joins(:product).where(products: {product_type: Product.product_types[:tax]})
@@ -135,295 +153,35 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
-  
-  #generate line items hash
-	line_item_hash = Hash.new()  
-	line_item_array = [] 
-	i = 1
-	line_items.each do |line_item| 
-		#line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]} 
-		line_item_hash ={:Item => [:LineNumber => i,
-									:InvoiceNumber => '',
-									:CustomerNumber => '001',
-									:TransDate => '2015/05/26',
-									:BillingPeriodStartDate => '',
-									:BillingPeriodEndDate => '',
-									:Revenue => '100',
-									:TaxIncludedCode => '0',
-									:Units => '0',
-									:UnitType => '00',
-									:TaxSitusRule => '27',
-									:TransTypeCode => '050101',
-									:SalesTypeCode => 'R',
-									:RegulatoryCode => '00',
-									:TaxExemptionCodeList => [:string => ''],
-									:UDF => '',
-									:UDF2 => '',
-									:CostCenter => '',
-									:GLAccount => '',
-									:MaterialGroup => '',
-									:BillingDaysInPeriod => '0',
-									:OriginCountryCode => '',
-									:DestCountryCode => '',
-									:Parameter1 => '',
-									:Parameter2 => '',
-									:Parameter3 => '',
-									:Parameter4 => '',
-									:Parameter5 => '',
-									:Parameter6 => '',
-									:Parameter7 => '',
-									:Parameter8 => '',
-									:Parameter9 => '',
-									:Parameter10 => '',
-									:CurrencyCode => '',
-									:ExemptReasonCode => '',
-									:Address => [:PrimaryAddressLine => '',
-												:SecondaryAddressLine => '',
-												:County => '', 
-												:City => '',
-												:State => '',
-												:PostalCode => '80112',
-												:Plus4 => '',
-												:Country => '',
-												:Geocode => '',
-												:VerifyAddress => 'false'],
-									:P2PAddress => [:PrimaryAddressLine => '',
-													:SecondaryAddressLine => '',
-													:County => '',
-													:City => '',
-													:State => '',
-													:PostalCode => '',
-													:Plus4 => '',
-													:Country => '',
-													:Geocode => '',
-													:VerifyAddress => 'false'],
-									:OrigNumber =>'',
-									:TermNumber => '',
-									:BillToNumber => '',
-									:Seconds => '0' ]
-						}  
-	    line_item_array.push(line_item_hash)
-		i += 1
-    end
-	
-	#generate main hash for SureTax API call 
-	main_hash = {:ClientNumber => '000000000',
-		:BusinessUnit => '',
-		:ValidationKey => '13290031-F004-4F00-BMN3-E979D6749B88',
-		:DataYear => '2016',
-		:DataMonth => '06',
-		:CmplDataYear => '2016',
-		:CmplDataMonth => '06',
-		:TotalRevenue => '0',
-		:ClientTracking =>  'Certi',
-		:ResponseType => 'D2',
-		:ResponseGroup => '00',
-		:ReturnFileCode => '0',
-		:STAN => '',
-		:ItemList => line_item_array
-	} 
-	
-	 #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 #puts main_hash.to_json 
-	 #puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 
-	 #Calling SureTax API code comes here 
-	  json2={"ClientNumber"=> "000000870","BusinessUnit"=> "","ValidationKey"=> "dddcaf33-15e1-49af-a304-465651f75247","DataYear"=> "2016","DataMonth"=> "06","CmplDataYear"=> "2016","CmplDataMonth"=> "06","TotalRevenue"=> "0","ClientTracking"=> "Certi","ResponseType"=> "D2","ResponseGroup"=> "00","ReturnFileCode"=> "0","STAN"=> ""}.to_json;    
-    puts "555555555555555555555555555555555555555555555"
-	 url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-    api_key = "dddcaf33-15e1-49af-a304-465651f75247"
-    site = RestClient::Resource.new(url, api_key, 'X')
-      # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
-  
-    begin
-      response = site.post(json2,:content_type=>'application/json');
-	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-      puts JSON.parse(response.body);
-	  puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-    rescue RestClient::Exception => exception
-       puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
-      puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
-      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
-      puts  {exception.response.message}
-    end
-	
-	 #Extracting returned data from SureTax API
-	 json_Text ={
-					"Successful" => "Y",
-					"ResponseCode" => "9999",
-					"HeaderMessage" => "Success",
-					"ItemMessages" => [],
-					"ClientTracking" => "Test Communications",
-					"TotalTax" => "25.864212",
-					"TransId" => 2477023,
-					"GroupList" => [
-					{
-					"LineNumber" => "1",
-					"StateCode" => "TX",
-					"InvoiceNumber" => "101", "CustomerNumber" => "90120302",
-					"TaxList" => [
-					{
-					"TaxTypeCode" => "101",
-					"TaxTypeDesc" => "STATE SALES TAX",
-					"TaxAmount" => "7.220209",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0.0625,
-					"PercentTaxable" => 1,
-					"FeeRate" => 0,
-					"RevenueBase" => "115.523344",
-					"TaxOnTax" => "0.970209"
-					},
-					{
-					"TaxTypeCode" => "403",
-					"TaxTypeDesc" => "DALLAS MTA",
-					"TaxAmount" => "1.155233",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0.01,
-					"PercentTaxable" => 1,
-					"FeeRate" => 0,
-					"RevenueBase" => "115.523300",
-					"TaxOnTax" => "0.155233"
-					},
-					{
-					"TaxTypeCode" => "304",
-					"TaxTypeDesc" => "CITY SALES TAX",
-					"TaxAmount" => "1.155233",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0.01,
-					"PercentTaxable" => 1,
-					"FeeRate" => 0,
-					"RevenueBase" => "115.523300",
-					"TaxOnTax" => "0.155233"
-					},
-					{
-					"TaxTypeCode" => "106",
-					"TaxTypeDesc" => "9-1-1 EQUALIZATION FEE",
-					"TaxAmount" => "0.060000",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0,
-					"PercentTaxable" => 1,
-					"FeeRate" => 0.06,
-					"RevenueBase" => "100",
-					"TaxOnTax" => "0"
-					},
-					{
-					"TaxTypeCode" => "324",
-					"TaxTypeDesc" => "MUNICIPAL RIGHT-OF-WAY FEE",
-					"TaxAmount" => "4.230000",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0,
-					"PercentTaxable" => 1,
-					"FeeRate" => 4.23,
-					"RevenueBase" => "100",
-					"TaxOnTax" => "0"
-					},
-					{
-					"TaxTypeCode" => "333",
-					"TaxTypeDesc" => "PLANO 9-1-1 FEE",
-					"TaxAmount" => "0.750000",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0,
-					"PercentTaxable" => 1,
-					"FeeRate" => 0.75,
-					"RevenueBase" => "100",
-					"TaxOnTax" => "0"
-					},
-					{
-					"TaxTypeCode" => "035",
-					"TaxTypeDesc" => "FEDERAL UNIVERSAL SERVICE FEE",
-					"TaxAmount" => "10.231877",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0.156,
-					"PercentTaxable" => 0.649,
-					"FeeRate" => 0,
-					"RevenueBase" => "65.588955", "TaxOnTax" => "0.107477"
-					},
-					{
-					"TaxTypeCode" => "060",
-					"TaxTypeDesc" => "Federal Regulatory Assessment Fee",
-					"TaxAmount" => "1.061660",
-					"Revenue" => "100",
-					"CountyName" => "COLLIN",
-					"CityName" => "PLANO",
-					"TaxRate" => 0.01484,
-					"PercentTaxable" => 0.649,
-					"FeeRate" => 0,
-					"RevenueBase" => "71.540431",
-					"TaxOnTax" => "0.098544"
-					}
-					]
-					}
-					]
-					}.to_json
-	
-	#puts json_Text
-	parsed = JSON.parse(json_Text)
-	# puts "&&&&&&&&&&&&&&&&&&&"
-	# puts parsed["Successful"]
-	# puts "&&&&&&&&&&&&&&&&&&&" 
-	
-	new_line_item_array =  []   
-	parsed["GroupList"].each do |group|
-		# puts group["LineNumber"]
-		group["TaxList"].each do |tax|
-			# puts tax["TaxTypeCode"]
-			# puts tax["TaxTypeDesc"]
-			
-			 p = LineItem.new(
-				  description: tax["TaxTypeDesc"],
-				  quantity: 1,
-				  unit_price: tax["TaxRate"],  
-				  product:  Product.find_by_sku("GS-GXP2160-01"))  
-			new_line_item_array.push(p) 
-		end
-	end
-
-	#puts new_line_item_array.to_json
-	return new_line_item_array
-  
-    # # Calculate taxes
-    # federal_tax_amount = invoice_total * 0.12
-    # state_tax_amount = invoice_total * 0.05
-    # local_tax_amount = invoice_total * 0.06
-    # # Get products from sku's
-    # federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:federal_tax])
-    # state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
-    # local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
-    # # Create array of line items to return
-    # [
-      # LineItem.new(
-        # description: federal_tax_product.description,
-        # quantity: 1,
-        # unit_price: federal_tax_amount,
-        # product: federal_tax_product
-      # ),
-      # LineItem.new(
-        # description: state_tax_product.description,
-        # quantity: 1,
-        # unit_price: state_tax_amount,
-        # product: state_tax_product
-      # ),
-      # LineItem.new(
-        # description: local_tax_product.description,
-        # quantity: 1,
-        # unit_price: local_tax_amount,
-        # product: local_tax_product
-      # ),
-    # ]
+    # Calculate taxes
+    federal_tax_amount = invoice_total * 0.12
+    state_tax_amount = invoice_total * 0.05
+    local_tax_amount = invoice_total * 0.06
+    # Get products from sku's
+    federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:federal_tax])
+    state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
+    local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
+    # Create array of line items to return
+    [
+      LineItem.new(
+        description: federal_tax_product.description,
+        quantity: 1,
+        unit_price: federal_tax_amount,
+        product: federal_tax_product
+      ),
+      LineItem.new(
+        description: state_tax_product.description,
+        quantity: 1,
+        unit_price: state_tax_amount,
+        product: state_tax_product
+      ),
+      LineItem.new(
+        description: local_tax_product.description,
+        quantity: 1,
+        unit_price: local_tax_amount,
+        product: local_tax_product
+      ),
+    ]
   end
 
   # View Helpers

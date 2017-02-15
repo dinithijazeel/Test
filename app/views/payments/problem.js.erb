@@ -1,2 +1,2 @@
-$('.payment .card-problems').html('<%= escape_javascript (render 'alert') %>');
-payments.resetForm($('.payment form'));
+$('.payment-problems', 'form.payment').html('<%= escape_javascript (render 'errors', obj: @payment, title: 'The payment could not be processed.') %>');
+payments.resetForm($('form.payment'));

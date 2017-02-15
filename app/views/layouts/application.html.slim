@@ -9,7 +9,7 @@ html lang="en"
     meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" /
     link rel="icon" href=image_url("icons/#{Rails.application.config.x.theme.name}_favicon.ico")
 
-    = javascript_include_tag 'https://js.stripe.com/v2/' if ['invoices','customers'].include? params[:controller]
+    = javascript_include_tag 'https://js.stripe.com/v2/' if ['proposals','invoices','customers'].include? params[:controller]
     = stylesheet_link_tag    Rails.application.config.x.theme.name, media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags

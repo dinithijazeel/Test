@@ -32,6 +32,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1/edit
   def edit
+    authorize @contact
     render :layout => false
   end
 
@@ -53,6 +54,7 @@ class ContactsController < ApplicationController
 
   # PATCH/PUT /contacts/1
   def update
+    authorize @contact
     if params[:status].nil?
       respond_to do |format|
         if @contact.update(contact_params)

@@ -1,7 +1,8 @@
 / Contact
 = myrject :card do |c|
-  - c.action
-    = link_to fa('edit'), edit_contact_path(contact), remote: true
+  - if policy(contact).update?
+    - c.action
+      = link_to fa('edit'), edit_contact_path(contact), remote: true
   - c.title 'Contact'
   - c.body
     = row

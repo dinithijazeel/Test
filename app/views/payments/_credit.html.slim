@@ -1,8 +1,19 @@
 .row
   .col-md-4
-    = f.input :payment_type, :collection => Payment.credits, :label => 'Credit Type'
+    = f.input :payment_type,
+      label: true,
+      collection: Payment.credits,
+      prompt: 'Type'
   .col-md-4
-    = f.input :payment_date, :prepend => fa('calendar'), as: :string, placeholder: 'Date', :label => 'Credit Date', input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format': 'yyyy-mm-dd'}}
+    = f.input :payment_date,
+      label: true,
+      prepend: fa('calendar'),
+      as: :string,
+      input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format': 'yyyy-mm-dd'}}
   .col-md-4
-    = f.input :amount, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-amount', value: sprintf('%.2f', f.object.amount)}
-= f.input :memo, :input_html => {:class => 'autogrow', rows: 1}
+    = f.input :amount,
+      label: true,
+      prepend: fa('dollar'),
+      as: :number, 
+      input_html: {class: 'cc-amount', value: sprintf('%.2f', f.object.amount)}
+= f.input :memo, input_html: {class: 'autogrow', rows: 1}

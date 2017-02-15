@@ -5,7 +5,7 @@
       = link_to 'Edit', edit_customer_payment_path, :class => 'btn btn-primary', :remote => true
   - modal.body
     = render 'info', :payment => @payment
-    = myrject :view_panel do |card|
+    = myrject :card do |card|
       - card.title "Credits"
       - card.body
         table.table.table-condensed

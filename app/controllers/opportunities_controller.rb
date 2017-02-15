@@ -1,6 +1,3 @@
-#
-# OpportunityController
-#
 class OpportunitiesController < ApplicationController
   respond_to :html, :js
   before_action :set_opportunity, :only => [:show, :edit, :update, :destroy]

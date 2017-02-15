@@ -2,79 +2,72 @@ class PaymentsController < ApplicationController
   respond_to :html, :js
   before_action :set_payment, :only => [:show, :edit, :update, :destroy]
 
+  # GET /payments/:id
   def show
-    render 'show', :layout => false
+    render :show, layout: false
+  end
+
+  def new
+    if payable
+      @payment = make_new_payment
+      # Add date and amount to payment
+      @payment.payment_date = Date.today
+      # Figure out customer for payment
+      @payment.customer_id = params[:customer_id] || @payment.payable.contact_id
+      # Set type
+      @form_type = params[:form_type]
+      # Create stripe transaction
+      @payment.build_stripe_transaction
+      # Load tests if we're in development
+      @tests = PaymentsController.tests if Rails.env.development?
+      # Figure out which form to show
+      if params[:payment_token]
+        render :pay, layout: 'portal'
+      else
+        render :edit, layout: false
+      end
+    else
+      render :unknown, layout: 'portal'
+    end
+  end
+
+  def create
+    # Build invoice and payment
+    @payment = make_new_payment(payment_params, false) # false to skip building credits
+    @payment.client_ip = request.remote_ip
+    # Respond
+    if @payment.save
+      # Log activity
+      Comment.build_from(@payment.customer, current_user.id, "Payment received: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_type})").save
+      # Send payment receipt
+      PaymentMailer.payment(@payment).deliver_now
+      # Reload page to show successful payment
+      respond_to do |format|
+        format.js { helper_reload }
+      end
+    else
+      respond_to do |format|
+        # Show problems
+        format.js { render :problem }
+      end
+    end
   end
 
   def edit
     # Add any open invoices
     payment_invoices.each do |invoice|
-      print "ADD INVOICE #{invoice.id}\n"
       unless @payment.credits.exists?(:invoice_id => invoice.id)
         @payment.credits.build(:invoice => invoice)
       end
     end
     # Figure out the payment form to use
-    if Payment.bank_deposits.include? @payment.payment_type
-      @payment_type = 'Bank Deposit'
-    elsif Payment.credits.include? @payment.payment_type
-      @payment_type = 'Credit'
-    else
-      @payment_type = 'Stripe'
-    end
-  end
-
-  def new
-    # Load Tests
-    @tests = PaymentsController.tests
-    # Create new payment
-    @payment = Payment.new
-    # Create payment credits from invoices
-    invoices = payment_invoices
-    invoices.each do |invoice|
-      @payment.credits.build(:invoice => invoice)
-    end
-    # Add date and amount to payment
-    @payment.amount = @payment.invoice_total
-    @payment.payment_date = Date.today
-    # Figure out customer for payment
-    @payment.customer_id = params[:customer_id] || invoices[0].contact_id
-    # Create stripe transaction
-    @payment.build_stripe_transaction
-    # Show form
-    render 'edit', :layout => false
-  end
-
-  def create
-    # Load tests
-    @tests = PaymentsController.tests
-    # Build invoice and payment
-    @payment = Payment.new(payment_params)
-    # Respond
-    if @payment.valid?
-      # Attempt to run Stripe payments
-      if @payment.payment_type == 'Stripe'
-        success = process_stripe
+    @form_type = if Payment.bank_deposits.include? @payment.payment_type
+        'bank_deposit'
+      elsif Payment.credits.include? @payment.payment_type
+        'credit'
       else
-        success = true
+        'stripe'
       end
-      # Continue processing if Stripe was good
-      if success
-        @payment.client_ip = request.remote_ip
-        @payment.memo = "#{@payment.payment_type} - #{@payment.customer.company_name}" if @payment.memo.nil? || @payment.memo.empty?
-        @payment.save
-        Comment.build_from(@payment.customer, current_user.id, "Payment received: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_type})").save
-        respond_to do |format|
-          format.js { helper_reload }
-        end
-      end
-    else
-      print "\n\n\nERRORS: #{@payment.errors.inspect}\n\n\n"
-      @invoices = payment_invoices
-      respond_to do |format|
-        format.js { render :edit }
-      end
-    end
   end
 
   def update
@@ -93,7 +86,6 @@ class PaymentsController < ApplicationController
       # Continue processing if Stripe was good
       if success
         @payment.client_ip = request.remote_ip
-        @payment.memo = "#{@payment.payment_type} - #{@payment.customer.company_name}" if @payment.memo.nil? || @payment.memo.empty?
         @payment.save
         Comment.build_from(@payment.customer, current_user.id, "Payment updated: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_type})").save
         respond_to do |format|
@@ -106,8 +98,6 @@ class PaymentsController < ApplicationController
       end
     end
   end
-
-
 
   #
   ## Helpers
@@ -186,78 +176,66 @@ class PaymentsController < ApplicationController
 
   private
 
-  def process_stripe
-    # Process Stripe payments
-    unless @payment.stripe_transaction.token.empty? || (@payment.amount <= 0)
-      begin
-        Stripe::Charge.create(
-          :amount => (@payment.amount * 100).to_i, # amount in cents
-          :currency => 'usd',
-          :source => @payment.stripe_transaction.token,
-          :description => @payment.memo
-        )
-        true
-      rescue Stripe::CardError => e
-        flash[:error] = e.message
-        respond_to do |format|
-          # format.html { render :new }
-          format.json { render :json => @payment.errors, :status => :unprocessable_entity }
-          format.js { render :problem }
+  def payment_invoices
+    if params[:customer_id]
+      Bom.open_invoices_for(params[:customer_id])
+    elsif params[:invoice_id]
+      [Invoice.find(params[:invoice_id])]
+    # TODO: Get rid of this once PayController goes away?
+    elsif params[:payment_token]
+      [Invoice.find_by_payment_token(params[:payment_token])]
+    else
+      []
+    end
+  end
+
+  def payable
+    if params[:customer_id]
+      Customer.find(params[:customer_id]).becomes(Customer )
+    elsif params[:invoice_id]
+      Invoice.find(params[:invoice_id]).becomes(Invoice)
+    # TODO: Get rid of this once PayController goes away?
+    elsif params[:payment_token]
+      Invoice.find_by_payment_token(params[:payment_token])
+    elsif params[:proposal_id]
+      Proposal.find(params[:proposal_id])
+    else
+      nil
+    end
+  end
+
+  def make_new_payment(params = {}, build_credits = true)
+    # Create new payment
+    payment = Payment.new(params)
+    # Attach payable
+    payment.payable = payable
+    if payment.payable
+      # Set type
+      payment.payable_type = payable.type unless payable.is_a?(Proposal) # Rails shortcoming
+      # Set amount
+      amount_left = payment.amount = payable.payable_amount unless params[:amount]
+      # Create payment credits from invoices
+      if build_credits
+        invoices = payment_invoices
+        invoices.each do |invoice|
+          if amount_left > 0
+            amount_to_apply = amount_left > invoice.total_due ? invoice.total_due : amount_left
+            payment.credits.build(:invoice => invoice, :amount => amount_to_apply)
+            amount_left -= amount_to_apply
+          else
+            payment.credits.build(:invoice => invoice)
+          end
         end
-        false
       end
     end
+    payment
   end
 
-  def payment_invoices
-    if params[:invoice_id].nil?
-      Customer.open_invoices(params[:customer_id])
-    else
-      [Invoice.find(params[:invoice_id])]
-    end
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
   def set_payment
     @payment = Payment.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def payment_params
-    params.require(:payment).permit(
-      :payment_type,
-      :payment_date,
-      :amount,
-      :fee,
-      :memo,
-      :customer_id,
-      :credits_attributes => [
-        :id,
-        :invoice_id,
-        :amount,
-      ],
-      :stripe_transaction_attributes => [
-        :token,
-        :stripe_created,
-        :card_id,
-        :card_type,
-        :brand,
-        :name,
-        :exp_month,
-        :exp_year,
-        :last4,
-        :country,
-        :funding,
-        :address_line1,
-        :address_line2,
-        :address_state,
-        :address_city,
-        :address_zip,
-        :address_country,
-        :address_line1_check,
-        :address_zip_check,
-        :cvc_check,
-      ],
-    )
+    params.require(:payment).permit(Payment.controller_params)
   end
 end

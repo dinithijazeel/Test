@@ -4,7 +4,7 @@
 
 - content_for :page_body
   = myr_form @customer, :html => {:id => 'new-customer'} do |f|
-    = form_header 'New Invoice'
+    = form_header 'New Customer'
     = form_body
       = render 'fields', f: f
     = form_footer

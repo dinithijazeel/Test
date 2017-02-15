@@ -1,10 +1,36 @@
-.payment data-stripe-key=Rails.configuration.stripe[:publishable_key]
-  = render 'form'
+- if @payment.payable.is_a?(ServiceInvoice)
+  - payable = @payment.payable.becomes(Invoice)
+- else
+  - payable = @payment.payable
+
+= semantic_form_for [payable, @payment], html: {'data-stripe-key': Rails.configuration.stripe[:publishable_key]}, remote: true do |f|
+  = myrject :modal do |m|
+    - m.title 'Payment'
+    - m.body
+      .payment-problems
+        = render 'errors', obj: @payment, title: 'The payment could not be processed.'
+      - if (@payment.persisted? ? policy(@payment).update? : policy(@payment).create?)
+        .form-wrapper style="margin-bottom: 20px;"
+          = select_tag :form_type, options_for_select(Payment.payments_accepted, @form_type), :class => 'form-control'
+        = myrject :card do |c|
+          - c.title 'Details'
+          - c.body
+            - Payment.payments_accepted.each do |payment_type|
+              .payment-form class=payment_type
+                = render payment_type[1], :f => f
+      - else
+        = render 'info', :payment => @payment
+        = f.hidden_field :amount, :class => 'cc-amount'
+      - unless @payment.payable.is_a?(Proposal)
+        = render 'open_invoices', :f => f
+    - m.footer
+      = f.hidden_field :customer_id
+      = f.hidden_field :payable_id
+      = f.hidden_field :payable_type
+      = f.action :submit, as: :input, label: 'Submit Payment'
 
 coffee:
-  payments.initTestData('select.test-data', 'div.payment')
-  payments.initPayment('div.payment')
-  h.focusModal('select#payment_type')
-
-javascript:
-  stripeResponseHandler = payments.responseHandler
+  payments.initTestData('select.test-data', 'form.payment')
+  payments.initPayment('form.payment')
+  h.focusModal('select#form_type')
+  window.stripeResponseHandler = payments.responseHandler

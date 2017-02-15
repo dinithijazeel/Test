@@ -11,4 +11,10 @@ class Credit < ActiveRecord::Base
   before_create do
     self.creator = User.current
   end
+
+  def self.controller_params
+    [ :invoice_id,
+      :amount ]
+  end
+
 end

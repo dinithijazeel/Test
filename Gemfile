@@ -52,6 +52,9 @@ group :development do
   gem 'spring'
 end
 
+# TODO: Get rid of this once vagrant is going
+gem 'nokogiri',   '1.6.8'
+
 # Configuration
 gem 'dotenv-rails'
 

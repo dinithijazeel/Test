@@ -1,5 +1,35 @@
 namespace :myriander do
 
+  task check_contacts: :environment do
+    c = Customer.where('portal_id IS NOT NULL')
+    c.each do |customer|
+      # Get portal info
+      account = {
+        customerdata: ",,#{customer.portal_id}"
+      }
+      portal_info = Fractel.get_account(account)
+      portal_info = %w{BillingEmail Email CompanyName FirstName LastName}.collect { |name| [name, portal_info[name][0]]}.to_h
+      # Get Myr info
+      myr_info = {
+        "BillingEmail" => customer.billing_email,
+        "Email" => customer.admin_email,
+        "CompanyName" => customer.company_name,
+        "FirstName" => customer.contact_first,
+        "LastName" => customer.contact_last
+      }
+      if portal_info != myr_info
+        print "#{customer.company_name} / #{customer.portal_id}\n\n"
+        portal_info.each do |name, value|
+          print "#{name}:\n  P -> #{value}\n  M -> #{myr_info[name]}\n" if value != myr_info[name]
+        end
+        print "\n\n"
+      else
+        print "#{customer.company_name} / #{customer.portal_id} OK\n\n"
+      end
+    end
+  end
+
+
   # Remove service invoices
   #
   # DELETE FROM `line_items` WHERE `bom_id` IN (SELECT `id` FROM `boms` WHERE `type`='ServiceInvoice');

@@ -25,7 +25,7 @@ class Contact < ActiveRecord::Base
   #
   ## Scopes
   #
-  scope :query, -> (q) { where('company_name LIKE ? OR contact_first LIKE ? OR contact_last LIKE ? OR admin_email LIKE ? OR billing_email LIKE ? OR phone LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
+  scope :query, -> (q) { where('company_name LIKE ? OR contact_first LIKE ? OR contact_last LIKE ? OR admin_email LIKE ? OR billing_email LIKE ? OR phone LIKE ? OR portal_id LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
   scope :updated_this_month, -> {
     where(updated_at: 4.weeks.ago..Time.now).
     order(:company_name)
@@ -52,10 +52,6 @@ class Contact < ActiveRecord::Base
     self.last_editor = User.current
     # Remove non-numbers from phone
     self.phone = phone.gsub(/\D/, '')
-    # Update portal record
-    if has_portal_account?
-      Fractel.update_account(update_portal_record)
-    end
   end
 
   #
@@ -156,6 +152,15 @@ class Contact < ActiveRecord::Base
   end
 
   # Helpers
+
+  def payable_name
+    company_name
+  end
+
+  def payable_amount
+    # TODO: This should probably be the outstanding balance
+    0
+  end
 
   def invoice_email
     if billing_email.nil? || billing_email.empty?

@@ -3,18 +3,20 @@ class Payment < ActiveRecord::Base
   ## Validation
   #
   validate :not_negative_balance
+  validate :process_payment
   validates :payment_type, :presence => true
   validates :amount, :numericality => { :greater_than_or_equal_to => 0.01, :message => 'Must be greater than $0.00' }
   validates :fee, :numericality => true
   #
   ## Associations
   #
+  has_one :stripe_transaction
   has_many :credits
   has_many :invoices, :through => :credits
+  belongs_to :payable, polymorphic: true
   belongs_to :customer
   belongs_to :creator, :class_name => 'User'
   belongs_to :last_editor, :class_name => 'User'
-  has_one :stripe_transaction
   accepts_nested_attributes_for :credits
   accepts_nested_attributes_for :stripe_transaction, :reject_if => :all_blank, :allow_destroy => true
   #
@@ -25,6 +27,8 @@ class Payment < ActiveRecord::Base
   #
   before_create do
     self.creator = User.current
+    self.memo = "#{payment_type} - #{payable.payable_name}" if memo.blank?
+    self.payment_date = Time.now if payment_date.blank?
   end
 
   before_save do
@@ -34,6 +38,7 @@ class Payment < ActiveRecord::Base
     else
       self.payment_status = :payment
     end
+    record_portal_payment
   end
 
   after_save do
@@ -59,6 +64,20 @@ class Payment < ActiveRecord::Base
     invoices.each &:recalculate
   end
 
+  # TODO: Ditch when portal no longer records payments
+  def record_portal_payment
+    if payable.is_a?(ServiceInvoice)
+      portal_payment = {
+        :accountcode => payable_contact.portal_id,
+        :amount      => amount,
+        :invoiceid   => payable.number,
+        :paymentdata => stripe_transaction.to_json,
+      }
+      Fractel.record_invoice_payment(portal_payment)
+    # Fractel.record_prepaid_payment(portal_payment)
+    end
+  end
+
   def credit_total
     credit_total = 0
     credits.each do |credit|
@@ -73,6 +92,24 @@ class Payment < ActiveRecord::Base
       invoice_total += credit.invoice.total_due
     end
     invoice_total
+  end
+
+  def payable_contact
+    case payable.class.name
+    when 'Customer'
+      payable
+    else
+      payable.contact
+    end
+  end
+
+  def self.payments_accepted
+    payments = [:stripe, :bank_deposit, :credit].collect do |payment_type|
+      if Pundit.policy(User.current, :payment).send("use_#{payment_type}?")
+        [payment_type.to_s.humanize.capitalize, payment_type.to_s]
+      end
+    end
+    payments.compact
   end
 
   def self.bank_deposits
@@ -97,5 +134,37 @@ class Payment < ActiveRecord::Base
       'Return',
       'Other',
     ]
+  end
+
+  def self.controller_params
+    [ :payment_type,
+      :payment_date,
+      :amount,
+      :fee,
+      :memo,
+      :customer_id,
+      :payable_id,
+      :payable_type,
+      :credits_attributes => ([:id] + Credit.controller_params),
+      :stripe_transaction_attributes => (StripeTransaction.controller_params) ]
+  end
+
+  def process_payment
+    # Process Stripe payments
+    # TODO: This should probably be a property, eg "if remote_transaction?"
+    unless payment_type != 'Stripe' || stripe_transaction.token.empty? || (amount <= 0)
+      begin
+        Stripe::Charge.create(
+          :amount => (amount * 100).to_i, # amount in cents
+          :currency => 'usd',
+          :source => stripe_transaction.token,
+          :description => memo
+        )
+        true
+      rescue Stripe::CardError => e
+        errors.add(:card_error, e.message)
+        false
+      end
+    end
   end
 end

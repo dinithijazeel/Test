@@ -1,23 +1,28 @@
 // Test data select
 - unless @tests.nil?
-  span.form-wrapper
-    span.form-label
-      label.control-label Test Cards
-    select.form-control.test-data.pull-left
-      option selected="selected"
-      - @tests.each do |name, settings|
-        option*settings = name
+  = row
+    = col md: 12
+      .select.input.optional.form-group
+        span.form-wrapper
+          span.form-label
+            label.control-label Test Cards
+          select.form-control.test-data.pull-left
+            option selected="selected"
+            - @tests.each do |name, settings|
+              option*settings = name
 .card-problems
-.string.input.optional.stringish.form-group
-  span.form-label
-    label.control-label for="payment_cc" Card Number
-  span.form-wrapper
-    .input-group
-      span.input-group-addon
-        = fa('credit-card')
-      input#payment_cc.cc-number.form-control maxlength="255" type="text" data-stripe="number"
-.row
-  .col-md-4
+= row
+  = col md: 12
+    .string.input.optional.stringish.form-group
+      span.form-label
+        label.control-label for="payment_cc" Card Number
+      span.form-wrapper
+        .input-group
+          span.input-group-addon
+            = fa('credit-card')
+          input#payment_cc.cc-number.form-control maxlength="255" type="text" data-stripe="number"
+= row
+  = col md: 4
     .string.input.optional.stringish.form-group
       span.form-label
         label.control-label for="payment_exp" Expiration (MM/YY)
@@ -26,7 +31,7 @@
           span.input-group-addon
             = fa('calendar')
           input#payment_exp.cc-expiration.form-control maxlength="255" type="text" data-stripe="exp"
-  .col-md-4
+  = col md: 4
     .string.input.optional.stringish.form-group
       span.form-label
         label.control-label for="payment_cvc" CVC
@@ -35,15 +40,16 @@
           span.input-group-addon
             = fa('hashtag')
           input#payment_cvc.cc-cvc.form-control maxlength="255" type="text" data-stripe="cvc"
-  .col-md-4
-    = f.input :amount, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-amount', value: sprintf('%.2f', f.object.amount)}
+  = col md: 4
+    = f.input :amount, label: true, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-amount', readonly: (defined?(read_only_amount) && read_only_amount), value: sprintf('%.2f', f.object.amount)}
   = f.hidden_field :payment_date
   = f.hidden_field :payment_type, :value => 'Stripe'
   = f.fields_for :stripe_transaction do |f|
     = f.hidden_field :token, :id => 'st_token'
-    = f.hidden_field :stripe_created, :id => 'st_stripe_created'
+    = f.hidden_field :stripe_created, :id => 'st_created'
+    = f.hidden_field :client_ip, :id => 'st_client_ip'
     = f.hidden_field :card_id, :id => 'st_card_id'
-    = f.hidden_field :card_type, :id => 'st_card_type'
+    = f.hidden_field :card_type, :id => 'st_type'
     = f.hidden_field :brand, :id => 'st_brand'
     = f.hidden_field :name, :id => 'st_name'
     = f.hidden_field :exp_month, :id => 'st_exp_month'

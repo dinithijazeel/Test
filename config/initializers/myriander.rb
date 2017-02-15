@@ -9,6 +9,7 @@ Rails.application.config.x.users.roles = {
   :partner  => 15,
   :customer => 20,
 }
+Rails.application.config.x.default_user_id = ENV['DEFAULT_USER_ID'];
 #
 # Load profile
 #

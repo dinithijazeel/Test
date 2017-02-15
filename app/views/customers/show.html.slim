@@ -9,9 +9,9 @@
   - unless @customer.opportunity.nil?
     = render 'opportunities/opportunity', contact: @customer
   = render 'proposals', customer: @customer
-  / = render 'invoices', customer: @customer
-  / = render 'payments', customer: @customer
-  / = render 'credits', customer: @customer
+  = render 'invoices', customer: @customer
+  = render 'payments', customer: @customer
+  = render 'credits', customer: @customer
   - if @customer.signup? || @customer.pre_production? || @customer.production?
     .loa-buttons style="width: 250px;"
       p = link_to "Local Provider Letter of Agency (LOA)", @customer.local_loa_path, target: '_blank', class: "btn btn-xs btn-block btn-default"

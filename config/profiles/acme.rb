@@ -26,6 +26,8 @@ Rails.application.config.x.email.invoice_subject      = 'Acme Invoice'
 Rails.application.config.x.email.new_account_sender   = 'onboarding@fractel.com'
 Rails.application.config.x.email.new_account_subject  = 'Your new Acme account is ready to use'
 Rails.application.config.x.email.new_customer_subject = 'New Acme Account'
+Rails.application.config.x.email.payment_sender       = 'billing@fractel.net'
+Rails.application.config.x.email.payment_subject      = 'FracTEL Payment Received'
 #
 ## Proposals
 #

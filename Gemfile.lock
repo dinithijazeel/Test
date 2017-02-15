@@ -6,7 +6,7 @@ GIT
       rest-client (~> 1.6.7)
 
 PATH
-  remote: ../fractel-ruby
+  remote: ~/Code/fractel-ruby
   specs:
     fractel (0.0.1)
       httparty
@@ -315,6 +315,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   mysql2
+  nokogiri (= 1.6.8)
   paranoia (~> 2.0)
   pundit
   rails (= 4.2.6)
@@ -341,4 +342,4 @@ DEPENDENCIES
   wkhtmltopdf-binary-edge
 
 BUNDLED WITH
-   1.14.3
+   1.12.4

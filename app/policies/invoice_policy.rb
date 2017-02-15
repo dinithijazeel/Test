@@ -9,11 +9,14 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def create?
-    user.is(:manager)
+    user.is(:root)
   end
 
   def update?
     user.is(:manager)
   end
 
+  def accept_payment?
+    @record.invoice_status == 'open'
+  end
 end

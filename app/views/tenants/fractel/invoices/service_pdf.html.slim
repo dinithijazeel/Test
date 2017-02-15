@@ -3,8 +3,6 @@
 - page_counter = 0
 #invoice
   #first-page
-    / - billing_group_page_total = billing_group[:line_items].count
-    / - billing_group[:line_items].each_with_index do |billing_group_line_items, billing_group_page_number|
     .print-page
         - page_counter += 1
         #invoice-header
@@ -95,5 +93,3 @@
                 :total_class => 'invoice-subtotal',
                 :total_label => "#{billing_group[:type]} Subtotal:",
                 :total_amount => money(billing_group[:subtotal])
-              tr
-              td colspan=4 &nbsp;

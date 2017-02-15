@@ -21,7 +21,12 @@ class InvoicesController < ApplicationController
     authorize @invoice
     respond_to do |format|
       format.html do
-        @new_comment = Comment.build_from(@invoice.contact.becomes(Contact), current_user.id, '')
+        if params[:view] == 'preview'
+          @pdf_invoice = @invoice
+          render @invoice.pdf_template, :layout => 'preview'
+        else
+          @new_comment = Comment.build_from(@invoice.contact.becomes(Contact), current_user.id, '')
+        end
       end
       format.pdf do
         pdf_invoice = @invoice.becomes(@invoice.type.constantize)
@@ -105,7 +110,6 @@ class InvoicesController < ApplicationController
         case params[:status]
         when 'open'
           @invoice.invoice_status = :open
-          @invoice.generate_number if @invoice.number.nil?
           @invoice.send_invoice_later
         when 'resend'
           @invoice.send_invoice_later

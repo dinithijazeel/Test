@@ -55,7 +55,6 @@ module Myr
           options[:class] = classes
         end
       end
-      print "#{options.to_s}\n"
       options
     end
 

@@ -10,7 +10,7 @@
       = col md:3
         = f.input :terms, label: false, :input_html => {:class => 'default_terms'}
       = col md:3
-        = f.input :invoice_date, as: :string, label: false, :prepend => fa('calendar'), input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format'=> 'yyyy-mm-dd'}}
+        = f.input :invoice_date, as: :string, label: false, :prepend => fa('calendar'), input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format' => 'yyyy-mm-dd'}}
       
     = render 'contacts/info', :contact => f.object.contact
 

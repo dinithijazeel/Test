@@ -1,10 +1,16 @@
 / Errors
 - if obj.errors.any?
-  #error_explanation.alert.alert-danger
-    strong
-      = pluralize(obj.errors.count, "error")
-      | &nbsp;
-      = "prohibited this #{(defined? name) ? name : obj.model_name.human.downcase} from being saved:"
-    ul
-      - obj.errors.full_messages.each do |message|
-        li= message
+  .alert.alert-danger
+    - if obj.errors.size > 1
+      strong
+        - if defined?(title)
+          = title
+        - else
+          = pluralize(obj.errors.count, "error")
+          | &nbsp;
+          = "prohibited this #{(defined? name) ? name : obj.model_name.human.downcase} from being saved:"
+      ul
+        - obj.errors.to_hash.each do |field, message|
+          li = "#{field.to_s.humanize} : #{message.first}"
+    - else
+      => obj.errors.messages.first[1][0]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170126230423) do
+ActiveRecord::Schema.define(version: 20170210170115) do
 
   create_table "boms", force: :cascade do |t|
     t.string   "type",           limit: 255
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20170126230423) do
     t.string   "portal_id",      limit: 255
     t.string   "cdr_url",        limit: 255
     t.string   "did_url",        limit: 255
+    t.string   "payment_token",  limit: 255
     t.integer  "creator_id",     limit: 4
     t.integer  "last_editor_id", limit: 4
     t.datetime "rated_at"
@@ -180,6 +181,8 @@ ActiveRecord::Schema.define(version: 20170126230423) do
     t.float    "fee",            limit: 24,    default: 0.0
     t.text     "memo",           limit: 65535,               null: false
     t.integer  "customer_id",    limit: 4
+    t.integer  "payable_id",     limit: 4
+    t.string   "payable_type",   limit: 255
     t.string   "client_ip",      limit: 255,                 null: false
     t.integer  "creator_id",     limit: 4
     t.datetime "created_at",                                 null: false
@@ -246,6 +249,7 @@ ActiveRecord::Schema.define(version: 20170126230423) do
   create_table "stripe_transactions", force: :cascade do |t|
     t.string  "token",               limit: 255, null: false
     t.integer "stripe_created",      limit: 4
+    t.string  "client_ip",           limit: 255
     t.string  "card_id",             limit: 255, null: false
     t.string  "card_type",           limit: 255, null: false
     t.string  "brand",               limit: 255, null: false

@@ -5,12 +5,28 @@ class ServiceInvoice < Invoice
   def self.parse_portal(json_invoice)
     json_invoice = json_invoice[0]
     invoice = self.new
+    billing_info = {}
     billing_code = nil
     total = nil
     json_invoice.each_pair do |name, value|
       case name
       when 'BillingCode'
         billing_code = value[0]
+      when 'BillTo'
+        billing_info = value[0]
+        billing_info = {
+          company_name: billing_info['Name'][0],
+          contact_first: billing_info['FirstName'][0],
+          contact_last: billing_info['LastName'][0],
+          billing_email: billing_info['Email'][0],
+          billing_street_1: billing_info['Addr1'][0],
+          billing_street_2: billing_info['Addr2'][0],
+          billing_city: billing_info['City'][0],
+          billing_state: billing_info['State'][0],
+          billing_zip: billing_info['Zip'][0],
+          phone: billing_info['Phone'][0],
+        }
+        # print "#{billing_info}\n"
       when 'InvoiceDate'
         invoice.invoice_date = value[0]
       when 'InvoiceStatus'
@@ -74,6 +90,7 @@ class ServiceInvoice < Invoice
       if customer.nil?
         invoice.errors.add(:errors, "Unknown customer account: #{billing_code}")
       else
+        customer.update_columns(billing_info)
         invoice.contact = customer
         invoice.terms = customer.default_terms
       end

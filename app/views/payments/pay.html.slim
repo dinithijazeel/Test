@@ -1,0 +1,7 @@
+.payment data-stripe-key=Rails.configuration.stripe[:publishable_key]
+  = render 'pay_form'
+
+coffee:
+  payments.initTestData('select.test-data', 'form.payment')
+  payments.initPayment('form.payment')
+  window.stripeResponseHandler = payments.responseHandler

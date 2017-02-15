@@ -25,33 +25,26 @@
   = table
     = render 'invoice_line_items',
       :line_items => @invoice.line_items
-    tbody.totals
-      = render 'invoice_line_total',
-        :total_class => 'invoice-total',
-        :total_label => 'Invoice Total:',
-        :total_amount => money(@invoice.invoice_total)
-      = render 'invoice_line_total',
-        :total_class => 'payments',
-        :total_label => 'Payments:',
-        :total_amount => link_to(money(@invoice.total_payments), new_invoice_payment_path(@invoice), remote: true, class: 'btn btn-default btn-sm')
-      = render 'invoice_line_total',
-        :total_class => 'total-due',
-        :total_label => 'Amount Due:',
-        :total_amount => money(@invoice.total_due)
+    = render 'invoices/invoice_totals',
+      :invoice => @invoice,
+      :link_payment => (@invoice.invoice_status == 'open')
+      
+  / Memo
   = field 'Memo', @invoice.memo
   / Payment History
   - if @invoice.credits.any?
     = myrject :card do |c|
       - c.title 'Payment History'
-      = table
-        thead
-          tr
-            th Date
-            th Type
-            th Amount
-        tbody
-          - @invoice.credits.each do |credit|
+      - c.body
+        = table
+          thead
             tr
-              td = credit.payment.payment_date
-              td = credit.payment.payment_type
-              td = money(credit.amount)
+              th Date
+              th Type
+              th Amount
+          tbody
+            - @invoice.credits.each do |credit|
+              tr
+                td = credit.payment.payment_date
+                td = credit.payment.payment_type
+                td = money(credit.amount)

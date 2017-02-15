@@ -1,0 +1,17 @@
+tbody.totals
+  = render 'invoices/invoice_line_total',
+    :total_class => 'invoice-total',
+    :total_label => 'Invoice Total:',
+    :total_amount => money(invoice.invoice_total)
+  - if defined?(link_payment) && link_payment
+    - payments = link_to(money(invoice.total_payments), new_invoice_payment_path(invoice), remote: true, class: 'btn btn-default btn-sm')
+  - else
+    - payments = money(invoice.total_payments)
+  = render 'invoices/invoice_line_total',
+    :total_class => 'payments',
+    :total_label => 'Payments:',
+    :total_amount => payments
+  = render 'invoices/invoice_line_total',
+    :total_class => 'total-due',
+    :total_label => 'Amount Due:',
+    :total_amount => money(invoice.total_due)

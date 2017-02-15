@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
   # Model access
 
   def self.current
-    Thread.current[:user]
+    Thread.current[:user] || User.find(Rails.application.config.x.default_user_id)
   end
 
   def self.current=(user)
@@ -79,6 +79,6 @@ class User < ActiveRecord::Base
       :last_name,
       :phone,
       :nickname,
-      :about ]    
+      :about ]
   end
 end

@@ -12,6 +12,7 @@ class Proposal < ActiveRecord::Base
   belongs_to :creator,           :class_name => 'User'
   belongs_to :last_editor,       :class_name => 'User'
   has_one    :onboarding
+  has_many   :payments, as: :payable
   accepts_nested_attributes_for :contact, :services_proposal, :products_proposal, :onboarding
   #
   ## Enumeration
@@ -88,6 +89,14 @@ class Proposal < ActiveRecord::Base
 
   def owner
     creator
+  end
+
+  def paid?
+    false
+  end
+
+  def payable_amount
+    total
   end
 
   def pdf_template

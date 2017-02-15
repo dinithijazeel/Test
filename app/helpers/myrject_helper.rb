@@ -12,8 +12,8 @@ module MyrjectHelper
     f.input(method, options)
   end
 
-  def myrject(type, &block)
-    Myrject::Myrject.render(type, self, &block)
+  def myrject(type, options = {}, &block)
+    Myrject::Myrject.render(type, options, self, &block)
   end
   #
   # Forms
@@ -64,19 +64,6 @@ module MyrjectHelper
       content_tag(:div, content, class: 'form-footer')
     end
   end
-  #
-  # Form Elements
-  #
-  # def field(label, content = '', options = {}, &block)
-  #   label = content_tag(:label, label, class: 'control-label')
-  #   label = content_tag(:span, label, class: 'form-label')
-  #   if block_given?
-  #     content = content_tag(:div, capture(&block), class: 'form-control-static')
-  #   else
-  #     content = content_tag(:div, content, class: 'form-control-static')
-  #   end
-  #   "#{label}#{content}".html_safe
-  # end
 
   def field(label, content = '', options = {}, &block)
     # Move options to proper place if we have a block
@@ -164,18 +151,17 @@ module Myrject
   class Myrject
     attr_reader :blocks
 
-    def initialize(type, view_context = nil)
+    def initialize(type, options, view_context = nil)
       # Set view context for class if missing and given
       @view_context = view_context if @view_context.nil? && view_context
       @type = type
+      @options = options
       @blocks = {}
       @buffer = ''
-      # print "--- #{module_name}\n"
       extend module_name unless uses_template?
     end
 
     def execute(&block)
-      # print "--> #{block.source_location}\n"
       buffer(yield self)
       self
     end
@@ -226,8 +212,8 @@ module Myrject
       @view_context.content_tag(name, content_or_options_with_block, options, escape, &block)
     end
 
-    def self.render(type, view_context = nil, &block)
-      Myrject.new(type, view_context).execute(&block).render
+    def self.render(type, options, view_context = nil, &block)
+      Myrject.new(type, options, view_context).execute(&block).render
     end
 
     def render
@@ -263,7 +249,7 @@ module Myrject
   module Modal
     def render
       modal_classes = 'modal-dialog modal-lg'
-      show_close = true
+      show_close = @options[:show_close].nil? || @options[:show_close]
       # show_close = false
       if show_close
         top_close_button = tag(:span, '&times;', 'aria-hidden' => 'true')

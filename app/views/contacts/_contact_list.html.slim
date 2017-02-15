@@ -27,7 +27,8 @@
           - if contact.lead?
             = link_to fa('file-text-o'), new_contact_opportunity_path(contact), remote: true
             | &nbsp;
-          = link_to fa('edit'), edit_contact_path(contact), remote: true
+          - if policy(contact).update?
+            = link_to fa('edit'), edit_contact_path(contact), remote: true
 
     - else
         tr

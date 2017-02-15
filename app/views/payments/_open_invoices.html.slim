@@ -1,0 +1,45 @@
+= myrject :card do |c|
+  - c.title
+    - if f.object.credits.size > 1
+      | Open Invoices
+    - else
+      | Apply to Invoice
+  - c.body
+    = table
+      thead
+        tr
+          th width="15%" Date
+          th width="15%" Number
+          th width="35%" Memo
+          th width="15%" Due
+          th width="20%" Amount Applied
+      tbody
+        - if f.object.credits.any?
+          = f.semantic_fields_for :credits, f.object.credits do |credit_fields|
+            - invoice = credit_fields.object.invoice
+            tr.credit-row
+              td
+                p.form-control-static = invoice.invoice_date
+              td
+                p.form-control-static = invoice.number
+              td
+                p.form-control-static = invoice.memo
+              td
+                p.form-control-static = money(invoice.total_due)
+              td
+                = credit_fields.input :amount, as: :string, prepend: fa('dollar'), placeholder:'0.00', label: false, input_html: {class: 'credit-amount', readonly: (defined?(read_only_amounts) && read_only_amounts), style: 'text-align: right;'}
+                = hidden_field_tag :invoice_amount, invoice.total_due, :class => 'invoice-amount'
+                = credit_fields.hidden_field :invoice_id
+                = credit_fields.hidden_field :id
+        - else
+          tr
+            td colspan=5
+              em No open invoices.
+        - unless (defined?(read_only_amounts) && read_only_amounts)
+          tr.total-row
+            td colspan=3
+            td.text-right colspan=2
+              p.form-control-static.credit-balance-field
+                strong
+                  | Payment Balance: $&nbsp;
+                  span.credit-balance

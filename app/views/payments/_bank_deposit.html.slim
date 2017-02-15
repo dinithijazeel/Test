@@ -1,10 +1,27 @@
 .row
   .col-md-3
-    = f.input :payment_type, :collection => Payment.bank_deposits
+    = f.input :payment_type,
+      label: true,
+      collection: Payment.bank_deposits,
+      prompt: 'Type'
   .col-md-3
-    = f.input :payment_date, :prepend => fa('calendar'), as: :string, placeholder: 'Date', input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format': 'yyyy-mm-dd'}}
+    = f.input :payment_date,
+      label: true,
+      prepend: fa('calendar'),
+      as: :string,
+      placeholder: 'Date',
+      input_html: {data: {provide: 'datepicker', locale: 'en', 'date-format': 'yyyy-mm-dd'}}
   .col-md-3
-    = f.input :amount, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-amount', value: sprintf('%.2f', f.object.amount)}
+    = f.input :amount,
+      label: true,
+      prepend: fa('dollar'),
+      as: :number, 
+      input_html: {class: 'cc-amount', value: sprintf('%.2f', f.object.amount)}
   .col-md-3
-    = f.input :fee, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-fee', value: sprintf('%.2f', f.object.fee)}
-= f.input :memo, :input_html => {:class => 'autogrow', rows: 1}
+    = f.input :fee,
+      label: true,
+      prepend: fa('dollar'),
+      as: :number,
+      input_html: {class: 'cc-fee', value: sprintf('%.2f', f.object.fee)}
+= f.input :memo,
+  input_html: {class: 'autogrow', rows: 1}

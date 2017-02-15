@@ -7,7 +7,9 @@ class Invoice < Bom
   #
   ## Associations
   #
-  has_many :credits
+  has_many   :credits
+  has_many   :payments, as: :payable
+  belongs_to :creator, :class_name => 'User'
   #
   ## Helpers
   #
@@ -15,7 +17,7 @@ class Invoice < Bom
   #
   ## Scopes
   #
-  scope :query, -> (q) { joins(:contact).where('boms.number LIKE ? OR boms.memo LIKE ? OR contacts.company_name LIKE ? OR contacts.contact_first LIKE ? OR contacts.contact_last LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
+  scope :query, -> (q) { joins(:contact).where('boms.number LIKE ? OR boms.memo LIKE ? OR contacts.company_name LIKE ? OR contacts.contact_first LIKE ? OR contacts.contact_last LIKE ? OR contacts.portal_id LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
   scope :updated_this_month, -> {
     where(updated_at: Time.now.beginning_of_month..Time.now.end_of_month).
     where('boms.type IN (\'Invoice\',\'ServiceInvoice\')')
@@ -38,17 +40,7 @@ class Invoice < Bom
   end
 
   def payment_link
-    base = Rails.application.config.x.portal.billing_endpoint
-    parameters = {
-      action:        'PAYINVOICES3',
-      name:          "#{contact.contact_first} #{contact.contact_last}",
-      accountcode:   contact.portal_id,
-      email:         contact.admin_email,
-      invoiceid:     portal_id,
-      invoicenumber: number,
-      amount:        invoice_total
-    }
-    "#{base}?#{parameters.to_query}"
+    Rails.application.routes.url_helpers.payment_url(payment_token)
   end
 
   def pdf_filename

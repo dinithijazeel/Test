@@ -19,7 +19,7 @@
           - customer.invoices.each do |invoice|
             tr
               td = invoice.invoice_date
-              td = link_to (invoice.number.nil? ? 'Draft' : invoice.number), invoice
+              td = link_to (invoice.number.nil? ? 'Draft' : invoice.number), invoice.becomes(Invoice)
               td = invoice.memo
               td = invoice.invoice_status.capitalize
               td.text-right

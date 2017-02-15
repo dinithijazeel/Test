@@ -4,5 +4,5 @@
   = col md: 4
     = f.input :title
   = col md: 4
-    = f.input :role, collection: User.roles, prompt: 'Role'
+    = f.input :role, as: :select, collection: User.roles, prompt: 'Role'
 = render partial = 'profiles/fields', f: f

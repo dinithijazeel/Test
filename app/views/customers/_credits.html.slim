@@ -1,7 +1,8 @@
 = myrject :card do |c|
   - c.title "Credits"
-  - c.action
-    = link_to fa('plus'), new_customer_payment_path(customer), :remote => true
+  - if policy(:payment).use_credit?
+    - c.action
+      = link_to fa('plus'), new_customer_payment_path(customer, form_type: 'credit'), :remote => true
   - c.body
     = table
       thead

@@ -5,8 +5,10 @@ class Customer < Contact
   #
   ## Associations
   #
-  has_many :invoices, :foreign_key => :contact_id
+  has_many :invoices, -> { where(type: ['Invoice','ServiceInvoice']) }, foreign_key: :contact_id, class_name: 'Bom'
   has_many :payments
+  has_many :credits, -> { where(payment_status: Payment.payment_statuses[:credit])}, class_name: 'Payment'
+
   accepts_nested_attributes_for :opportunity, :reject_if => :all_blank, :allow_destroy => true
   #
   ## Listings
@@ -25,8 +27,12 @@ class Customer < Contact
     I18n.t :"activerecord.attributes.customer.customer_statuses.#{customer_status}"
   end
 
-  def self.open_invoices(customer_id)
-    invoices.where(:invoice_status => Invoice.invoice_statuses[:open])
+  def payable_amount
+    0.0
+  end
+
+  def payable_name
+    company_name
   end
 
   def self.controller_params
