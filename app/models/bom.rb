@@ -169,6 +169,10 @@ class Bom < ActiveRecord::Base
 		:STAN => ''#, #?
 		#:ItemList => line_item_array
 	} 
+	
+	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 puts main_hash.to_json 
+	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
   
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
