@@ -157,52 +157,118 @@ class Bom < ActiveRecord::Base
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
 	i = 1
+	# line_items.each do |line_item| 
+		# line_item_hash ={:Item => [:LineNumber => i,
+									# :InvoiceNumber => number,
+									# :CustomerNumber => contact.portal_id,
+									# :TransDate => invoice_date.strftime("%m/%d/%Y") ,
+									# :BillingPeriodStartDate => '', #?
+									# :BillingPeriodEndDate => '',#?
+									# :Revenue => line_item.total.to_s,
+									# :TaxIncludedCode => '0',#? 
+									# :Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
+									# :UnitType => '00',
+									# :TaxSitusRule => '04',
+									# :TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
+									# :SalesTypeCode => 'R', #? Residential / Business / Industrial / Lifeline - how do we determine this?
+									# :RegulatoryCode => '3', #? 03 -> VOIP, recommended by CCH
+									# :TaxExemptionCodeList => [:string => ''], #? Need clarification from CCH on this.
+									# :UDF => '', #?  Optional fields
+									# :UDF2 => '', #?  Optional fields
+									# :CostCenter => '', #?  Optional fields
+									# :GLAccount => '', #?  Optional fields
+									# :MaterialGroup => '', #?  Optional fields
+									# :BillingDaysInPeriod => '',#?
+									# :OriginCountryCode => '', #?  Optional fields
+									# :DestCountryCode => '', #?  Optional fields
+									# :Parameter1 => '', #?  Optional fields
+									# :Parameter2 => '', #?  Optional fields
+									# :Parameter3 => '', #?  Optional fields
+									# :Parameter4 => '', #?  Optional fields
+									# :Parameter5 => '', #?  Optional fields
+									# :Parameter6 => '', #?  Optional fields
+									# :Parameter7 => '', #?  Optional fields
+									# :Parameter8 => '', #?  Optional fields
+									# :Parameter9 => '', #?  Optional fields
+									# :Parameter10 => '', #?  Optional fields
+									# :CurrencyCode => '', #?  Optional fields
+									# :ExemptReasonCode => '', #?Need clarification from CCH on this.
+									# :Address => [:PrimaryAddressLine => '',
+												# :SecondaryAddressLine => '',
+												# :County => '', 
+												# :City => '',
+												# :State => '',
+												# :PostalCode => contact.service_zip,
+												# :Plus4 => '',
+												# :Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
+												# :Geocode => '',
+												# :VerifyAddress => '0'],
+									# :P2PAddress => [:PrimaryAddressLine => '',
+													# :SecondaryAddressLine => '',
+													# :County => '',
+													# :City => '',
+													# :State => '',
+													# :PostalCode => '',
+													# :Plus4 => '',
+													# :Country => '',
+													# :Geocode => '',
+													# :VerifyAddress => 'false'],
+									# :OrigNumber =>'',#?  Optional fields
+									# :TermNumber => '',#?  Optional fields
+									# :BillToNumber => '',#?  Optional fields  
+									# :Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' ] #?   
+						# }  
+	    # line_item_array.push(line_item_hash)
+		# i += 1
+    # end 
+	
 	line_items.each do |line_item| 
+		#line_item_hash ={:Item => [:Test => line_item.description, :Test2 => line_item.id]} 
 		line_item_hash ={:Item => [:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
-									:TransDate => '2017-02-15T12:00:27' ,# invoice_date.strftime("%m/%d/%Y") ,
-									:BillingPeriodStartDate => '', #?
-									:BillingPeriodEndDate => '',#?
-									:Revenue => line_item.total.to_s,
-									:TaxIncludedCode => '0',#? 
-									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
+									:TransDate => '2017/02/16',
+									:BillingPeriodStartDate => '',
+									:BillingPeriodEndDate => '',
+									:Revenue => '100',
+									:TaxIncludedCode => '0',
+									:Units => '0',
 									:UnitType => '00',
-									:TaxSitusRule => '04',
-									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
-									:SalesTypeCode => 'R', #? Residential / Business / Industrial / Lifeline - how do we determine this?
-									:RegulatoryCode => '3', #? 03 -> VOIP, recommended by CCH
-									:TaxExemptionCodeList => [:string => ''], #? Need clarification from CCH on this.
-									:UDF => '', #?  Optional fields
-									:UDF2 => '', #?  Optional fields
-									:CostCenter => '', #?  Optional fields
-									:GLAccount => '', #?  Optional fields
-									:MaterialGroup => '', #?  Optional fields
-									:BillingDaysInPeriod => '',#?
-									:OriginCountryCode => '', #?  Optional fields
-									:DestCountryCode => '', #?  Optional fields
-									:Parameter1 => '', #?  Optional fields
-									:Parameter2 => '', #?  Optional fields
-									:Parameter3 => '', #?  Optional fields
-									:Parameter4 => '', #?  Optional fields
-									:Parameter5 => '', #?  Optional fields
-									:Parameter6 => '', #?  Optional fields
-									:Parameter7 => '', #?  Optional fields
-									:Parameter8 => '', #?  Optional fields
-									:Parameter9 => '', #?  Optional fields
-									:Parameter10 => '', #?  Optional fields
-									:CurrencyCode => '', #?  Optional fields
-									:ExemptReasonCode => '', #?Need clarification from CCH on this.
+									:TaxSitusRule => '27',
+									:TransTypeCode => '050101',
+									:SalesTypeCode => 'R',
+									:RegulatoryCode => '00',
+									:TaxExemptionCodeList => [:string => ''],
+									:UDF => '',
+									:UDF2 => '',
+									:CostCenter => '',
+									:GLAccount => '',
+									:MaterialGroup => '',
+									:BillingDaysInPeriod => '0',
+									:OriginCountryCode => '',
+									:DestCountryCode => '',
+									:Parameter1 => '',
+									:Parameter2 => '',
+									:Parameter3 => '',
+									:Parameter4 => '',
+									:Parameter5 => '',
+									:Parameter6 => '',
+									:Parameter7 => '',
+									:Parameter8 => '',
+									:Parameter9 => '',
+									:Parameter10 => '',
+									:CurrencyCode => '',
+									:ExemptReasonCode => '',
 									:Address => [:PrimaryAddressLine => '',
 												:SecondaryAddressLine => '',
 												:County => '', 
 												:City => '',
 												:State => '',
-												:PostalCode => contact.service_zip,
+												:PostalCode => '80112',
 												:Plus4 => '',
-												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
+												:Country => '',
 												:Geocode => '',
-												:VerifyAddress => '0'],
+												:VerifyAddress => 'false'],
 									:P2PAddress => [:PrimaryAddressLine => '',
 													:SecondaryAddressLine => '',
 													:County => '',
@@ -213,14 +279,14 @@ class Bom < ActiveRecord::Base
 													:Country => '',
 													:Geocode => '',
 													:VerifyAddress => 'false'],
-									:OrigNumber =>'',#?  Optional fields
-									:TermNumber => '',#?  Optional fields
-									:BillToNumber => '',#?  Optional fields  
-									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' ] #?   
+									:OrigNumber =>'',
+									:TermNumber => '',
+									:BillToNumber => '',
+									:Seconds => '0' ]
 						}  
 	    line_item_array.push(line_item_hash)
 		i += 1
-    end 
+    end
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
