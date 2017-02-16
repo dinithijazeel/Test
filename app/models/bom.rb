@@ -220,9 +220,7 @@ class Bom < ActiveRecord::Base
 						}  
 	    line_item_array.push(line_item_hash)
 		i += 1
-    end
-  
-  
+    end 
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
@@ -240,41 +238,23 @@ class Bom < ActiveRecord::Base
 		:STAN => '', #?
 		:ItemList => line_item_array
 	} 
-	
-	 # puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 # puts main_hash.to_json 
-	 # puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+
+	#Add request wrapper to json data
+	json_text = {:request => main_hash.to_json}.to_json  
 	 
-	 
-	 
-	#Calling SureTax API
-	
-	 json_text = {:request => main_hash.to_json}.to_json
-	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 puts json_text
-	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	
+	#Calling SureTax API 
 	
 	url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-    api_key = "dddcaf33-15e1-49af-a304-465651f75247"
-    #site = RestClient::Resource.new(url, api_key, 'X')
-	 puts "11111111111111111111111111"
-    # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
-	 site = RestClient::Resource.new(url)
-   puts "22222222222222222222222222222@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-    begin
-	 puts "3333333333333333333"
-      #response = site.post(json_text ,:content_type=>'application/x-www-form-urlencoded');
-	  response = site.post(json_text ,:content_type=>'application/json');
-	   puts "4444444444444444444"
-	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-      puts JSON.parse(response.body);
-	  puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+    api_key = "dddcaf33-15e1-49af-a304-465651f75247" 
+	site = RestClient::Resource.new(url) 
+    begin 
+		response = site.post(json_text ,:content_type=>'application/json');
+		puts JSON.parse(response.body);
+	  
     rescue RestClient::Exception => exception
-       puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
+	  puts 'API Error: Your request is not successful.'  
       puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
       puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
-      puts  {exception.response.message}
     end
   
     # Calculate taxes
