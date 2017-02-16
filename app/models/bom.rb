@@ -264,7 +264,7 @@ class Bom < ActiveRecord::Base
    puts "22222222222222222222222222222"
     begin
 	 puts "3333333333333333333"
-      response = site.post(json_text ,:content_type=>'Content-Type: application/x-www-form-urlencoded');
+      response = site.post(json_text ,:content_type=>'application/x-www-form-urlencoded');
 	   puts "4444444444444444444"
 	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
       puts JSON.parse(response.body);
