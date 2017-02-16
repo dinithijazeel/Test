@@ -248,22 +248,43 @@ class Bom < ActiveRecord::Base
 	 
 	 
 	#Calling SureTax API
-	url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-    api_key = "dddcaf33-15e1-49af-a304-465651f75247"
-    #site = RestClient::Resource.new(url, api_key, 'X')
-    site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+	
+	response = RestClient::Request.new({
+method: :post,
+url: 'https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest',
+user: 'ian@fractel.net',
+password: 'Frfiuyg987qw',
+payload: { post_this: 'some value', post_that: 'other value' },
+headers: { :accept => :json, content_type: :json }
+}).execute do |response, request, result|
+case response.code
+when 400
+[ :error, parse_json(response.to_str) ]
+when 200
+[ :success, parse_json(response.to_str) ]
+else
+fail "Invalid response #{response.to_str} received."
+end
+end
+	
+	
+	
+	# url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+    # api_key = "dddcaf33-15e1-49af-a304-465651f75247"
+    # #site = RestClient::Resource.new(url, api_key, 'X')
+    # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
   
-    begin
-      response = site.post(main_hash.to_json ,:content_type=>'application/json');
-	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-      puts JSON.parse(response.body);
-	  puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-    rescue RestClient::Exception => exception
-       puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
-      puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
-      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
-      puts  {exception.response.message}
-    end
+    # begin
+      # response = site.post(main_hash.to_json ,:content_type=>'application/json');
+	   # puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+      # puts JSON.parse(response.body);
+	  # puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+    # rescue RestClient::Exception => exception
+       # puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
+      # puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
+      # puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
+      # puts  {exception.response.message}
+    # end
   
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
