@@ -161,7 +161,7 @@ class Bom < ActiveRecord::Base
 		line_item_hash ={:Item => [:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
-									:TransDate =>invoice_date.strftime("%m-%d-%Y") ,
+									:TransDate =>invoice_date.strftime("%m/%d/%Y") ,
 									:BillingPeriodStartDate => '', #?
 									:BillingPeriodEndDate => '',#?
 									:Revenue => line_item.total.to_s,
@@ -238,6 +238,10 @@ class Bom < ActiveRecord::Base
 		:STAN => '', #?
 		:ItemList => line_item_array
 	} 
+	
+	puts "%%%%%%%%%%%%%%%%%%%%%%%"
+	puts main_hash.to_json
+	puts "%%%%%%%%%%%%%%%%%%%%%%%"
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
