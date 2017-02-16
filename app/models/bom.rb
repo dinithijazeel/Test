@@ -250,8 +250,8 @@ class Bom < ActiveRecord::Base
 	#Calling SureTax API
 	url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
     api_key = "dddcaf33-15e1-49af-a304-465651f75247"
-    site = RestClient::Resource.new(url, api_key, 'X')
-      # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+    #site = RestClient::Resource.new(url, api_key, 'X')
+    site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
   
     begin
       response = site.post(main_hash.to_json ,:content_type=>'application/json');
