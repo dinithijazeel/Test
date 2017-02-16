@@ -257,7 +257,8 @@ class Bom < ActiveRecord::Base
     api_key = "dddcaf33-15e1-49af-a304-465651f75247"
     #site = RestClient::Resource.new(url, api_key, 'X')
 	 puts "11111111111111111111111111"
-    site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+    #site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+	 site = RestClient::Resource.new(url)
    puts "22222222222222222222222222222"
     begin
 	 puts "3333333333333333333"
