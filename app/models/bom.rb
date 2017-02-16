@@ -249,7 +249,7 @@ class Bom < ActiveRecord::Base
 	 
 	#Calling SureTax API
 	
-	 json_text ="request=" + main_hash.to_json
+	 json_text = {:request => main_hash}.to_json
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
 	 puts json_text
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
@@ -259,12 +259,13 @@ class Bom < ActiveRecord::Base
     api_key = "dddcaf33-15e1-49af-a304-465651f75247"
     #site = RestClient::Resource.new(url, api_key, 'X')
 	 puts "11111111111111111111111111"
-     site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
-	 #site = RestClient::Resource.new(url)
-   puts "22222222222222222222222222222"
+    # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+	 site = RestClient::Resource.new(url)
+   puts "22222222222222222222222222222@@@@@@@@@@@@@@@@@@@@@@@@@@@"
     begin
 	 puts "3333333333333333333"
-      response = site.post(json_text ,:content_type=>'application/x-www-form-urlencoded');
+      #response = site.post(json_text ,:content_type=>'application/x-www-form-urlencoded');
+	  response = site.post(json_text ,:content_type=>'application/json');
 	   puts "4444444444444444444"
 	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
       puts JSON.parse(response.body);
