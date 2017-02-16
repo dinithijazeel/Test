@@ -161,9 +161,9 @@ class Bom < ActiveRecord::Base
 		line_item_hash ={:Item => [:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
-									:TransDate =>invoice_date.strftime("%m/%d/%Y") ,
-									:BillingPeriodStartDate => invoice_date.strftime("%m/%d/%Y") , #?
-									:BillingPeriodEndDate => invoice_date.strftime("%m/%d/%Y") ,#?
+									:TransDate => Time.now ,# invoice_date.strftime("%m/%d/%Y") ,
+									:BillingPeriodStartDate => '', #?
+									:BillingPeriodEndDate => '',#?
 									:Revenue => line_item.total.to_s,
 									:TaxIncludedCode => '0',#? 
 									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
