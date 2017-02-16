@@ -249,7 +249,7 @@ class Bom < ActiveRecord::Base
 	 
 	#Calling SureTax API
 	
-	 
+	 json_text = main_hash.to_json
 	
 	
 	
@@ -261,7 +261,7 @@ class Bom < ActiveRecord::Base
    puts "22222222222222222222222222222"
     begin
 	 puts "3333333333333333333"
-      response = site.post(main_hash.to_json ,:content_type=>'application/json');
+      response = site.post(json_text ,:content_type=>'application/json');
 	   puts "4444444444444444444"
 	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
       puts JSON.parse(response.body);
