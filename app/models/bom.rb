@@ -249,7 +249,7 @@ class Bom < ActiveRecord::Base
 	 
 	#Calling SureTax API
 	
-	 json_text ={:data => main_hash}.to_json
+	 json_text ={:request => main_hash}.to_json
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
 	 puts json_text
 	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
