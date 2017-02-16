@@ -215,10 +215,8 @@ class Bom < ActiveRecord::Base
 													:VerifyAddress => 'false'],
 									:OrigNumber =>'',#?  Optional fields
 									:TermNumber => '',#?  Optional fields
-									:BillToNumber => '',#?  Optional fields
-									#:Seconds =>  line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s :'1' ] #?  
-									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' ] #?  
-									 
+									:BillToNumber => '',#?  Optional fields  
+									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' ] #?   
 						}  
 	    line_item_array.push(line_item_hash)
 		i += 1
@@ -229,7 +227,7 @@ class Bom < ActiveRecord::Base
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
 		:BusinessUnit => '',#?
-		:ValidationKey => '13290031-F004-4F00-BMN3-E979D6749B88',
+		:ValidationKey => 'dddcaf33-15e1-49af-a304-465651f75247',
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
 		:CmplDataYear => invoice_date.strftime("%Y"), #?
@@ -243,9 +241,29 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	} 
 	
-	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
-	 puts main_hash.to_json 
-	 puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 # puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 # puts main_hash.to_json 
+	 # puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+	 
+	 
+	 
+	#Calling SureTax API
+	url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+    api_key = "dddcaf33-15e1-49af-a304-465651f75247"
+    site = RestClient::Resource.new(url, api_key, 'X')
+      # site = RestClient::Resource.new(url, "ian@fractel.net", "Frfiuyg987qw")
+  
+    begin
+      response = site.post(main_hash.to_json ,:content_type=>'application/json');
+	   puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+      puts JSON.parse(response.body);
+	  puts "@@@@@@@@@@@@@@@@@@@@@@@@";
+    rescue RestClient::Exception => exception
+       puts 'API Error: Your request is not successful. If you are not able to debug this error properly, mail us at support@freshdesk.com with the follwing X-Request-Id'
+      puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
+      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
+      puts  {exception.response.message}
+    end
   
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
