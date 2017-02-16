@@ -170,7 +170,7 @@ class Bom < ActiveRecord::Base
 									:Revenue => line_item.total.to_s,
 									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
 									:UnitType => '00',
-									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' #?
+									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1', #?
 									:TaxIncludedCode => '0',#? 
 									:TaxSitusRule => '04',
 									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
@@ -216,7 +216,7 @@ class Bom < ActiveRecord::Base
 													:Plus4 => '',
 													:Country => '',
 													:Geocode => '',
-													:VerifyAddress => 'false'],  
+													:VerifyAddress => 'false']   
 									]     
 						}  
 	    line_item_array.push(line_item_hash)
