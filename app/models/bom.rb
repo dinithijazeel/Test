@@ -156,14 +156,14 @@ class Bom < ActiveRecord::Base
     #generate line items hash
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
-	i = 0
+	i = 1
 	line_items.each do |line_item| 
 		line_item_hash ={:Item => [:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
 									:TransDate =>invoice_date.strftime("%m/%d/%Y") ,
-									:BillingPeriodStartDate => '', #?
-									:BillingPeriodEndDate => '',#?
+									:BillingPeriodStartDate => invoice_date.strftime("%m/%d/%Y") , #?
+									:BillingPeriodEndDate => invoice_date.strftime("%m/%d/%Y") ,#?
 									:Revenue => line_item.total.to_s,
 									:TaxIncludedCode => '0',#? 
 									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
