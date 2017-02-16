@@ -297,10 +297,10 @@ class Bom < ActiveRecord::Base
 		:CmplDataYear => invoice_date.strftime("%Y"), #?
 		:CmplDataMonth =>  invoice_date.strftime("%m"), #?
 		:TotalRevenue => invoice_total.to_s,
-		:ClientTracking => contact.portal_id ,
-		:ResponseType => 'D2', #?
-		:ResponseGroup => '00',
 		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
+		:ClientTracking => contact.portal_id ,
+		:ResponseGroup => '00',
+		:ResponseType => 'D2', #?
 		:STAN => '', #?
 		:ItemList => line_item_array
 	} 
