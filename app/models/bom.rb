@@ -302,7 +302,7 @@ class Bom < ActiveRecord::Base
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
-		:STAN => number + '-' + Time.now.strftime("%H:%M"), #?
+		:STAN => number + '-' + Time.now.strftime("%H:%M:%S"), #?
 		:ItemList => line_item_array
 	} 
 	
