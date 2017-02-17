@@ -291,18 +291,18 @@ class Bom < ActiveRecord::Base
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit => '',#?
+		:BusinessUnit => ENV['PROFILE'] ,#? DJ Need to get the confirmation on which profile
 		:ValidationKey => 'dddcaf33-15e1-49af-a304-465651f75247',
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
-		:CmplDataYear => invoice_date.strftime("%Y"), #?
-		:CmplDataMonth =>  invoice_date.strftime("%m"), #?
+		:CmplDataYear => invoice_date.strftime("%Y"),  
+		:CmplDataMonth =>  invoice_date.strftime("%m"),  
 		:TotalRevenue => invoice_total.to_s,
 		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
-		:ResponseType => 'D2', #?
-		:STAN => '', #?
+		:ResponseType => 'D2',  
+		:STAN => number + '-' Time.now.strftime("%H:%M"), #?
 		:ItemList => line_item_array
 	} 
 	
