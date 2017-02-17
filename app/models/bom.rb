@@ -153,6 +153,9 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
+    #generate number if blank
+	self.number = generate_number if number.blank?
+	
     #generate line items hash
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
