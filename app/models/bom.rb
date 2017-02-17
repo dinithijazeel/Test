@@ -190,9 +190,9 @@ class Bom < ActiveRecord::Base
 									:BillingDaysInPeriod => '',#?
 									:Parameter1 => line_item.product.sku,  
 									:Parameter2 => line_item.product.name,  
-									:Parameter3 => line_item.unit_price,  
-									:Parameter4 => line_item.quantity,  
-									:Parameter5 => line_item.total,  
+									:Parameter3 => line_item.unit_price.to_s,  
+									:Parameter4 => line_item.quantity.to_s,  
+									:Parameter5 => line_item.total.to_s,  
 									# :Parameter6 => '', #?  Optional fields
 									# :Parameter7 => '', #?  Optional fields
 									# :Parameter8 => '', #?  Optional fields
