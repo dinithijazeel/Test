@@ -161,42 +161,42 @@ class Bom < ActiveRecord::Base
 		line_item_hash ={:Item => [:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
-									:OrigNumber =>'',#?  Optional fields
-									:TermNumber => '',#?  Optional fields
-									:BillToNumber => '',#?  Optional fields  
+									# :OrigNumber =>'',#?  Optional fields
+									# :TermNumber => '',#?  Optional fields
+									# :BillToNumber => '',#?  Optional fields  
 									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
 									:BillingPeriodStartDate => '', #?
 									:BillingPeriodEndDate => '',#?
 									:Revenue => line_item.total.to_s,
-									:Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
+									:Units => line_item.quantity.to_i.to_s,   
 									:UnitType => '00',
-									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1', #?
-									:TaxIncludedCode => '0',#? 
+									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
+									:TaxIncludedCode => '0',
 									:TaxSitusRule => '04',
 									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
-									:SalesTypeCode => 'R', #? Residential / Business / Industrial / Lifeline - how do we determine this?
-									:RegulatoryCode => '3', #? 03 -> VOIP, recommended by CCH
+									:SalesTypeCode => 'B',  # (B for everyone)
+									:RegulatoryCode => '3', # 03 -> VOIP, recommended by CCH
 									:TaxExemptionCodeList => [:string => '00'], #? Need clarification from CCH on this. #DJ Added '00' as default
 									:ExemptReasonCode => 'None', #?Need clarification from CCH on this. #DJ Added 'None' as default
-									:CostCenter => '', #?  Optional fields
-									:GLAccount => '', #?  Optional fields
-									:MaterialGroup => '', #?  Optional fields
-									:CurrencyCode => '', #?  Optional fields
-									:OriginCountryCode => '', #?  Optional fields
-									:DestCountryCode => '', #?  Optional fields
+									# :CostCenter => '', #?  Optional fields
+									# :GLAccount => '', #?  Optional fields
+									# :MaterialGroup => '', #?  Optional fields
+									# :CurrencyCode => '', #?  Optional fields
+									# :OriginCountryCode => '', #?  Optional fields
+									# :DestCountryCode => '', #?  Optional fields
 									:BillingDaysInPeriod => '',#?
-									:Parameter1 => '', #?  Optional fields
-									:Parameter2 => '', #?  Optional fields
-									:Parameter3 => '', #?  Optional fields
-									:Parameter4 => '', #?  Optional fields
-									:Parameter5 => '', #?  Optional fields
-									:Parameter6 => '', #?  Optional fields
-									:Parameter7 => '', #?  Optional fields
-									:Parameter8 => '', #?  Optional fields
-									:Parameter9 => '', #?  Optional fields
-									:Parameter10 => '', #?  Optional fields
-									:UDF => '', #?  Optional fields
-									:UDF2 => '', #?  Optional fields
+									:Parameter1 => line_item.product.sku,  
+									:Parameter2 => line_item.product.name,  
+									:Parameter3 => line_item.product.unit_price,  
+									:Parameter4 => line_item.product.quantity,  
+									:Parameter5 => line_item.product.total,  
+									# :Parameter6 => '', #?  Optional fields
+									# :Parameter7 => '', #?  Optional fields
+									# :Parameter8 => '', #?  Optional fields
+									# :Parameter9 => '', #?  Optional fields
+									# :Parameter10 => '', #?  Optional fields
+									# :UDF => '', #?  Optional fields
+									# :UDF2 => '', #?  Optional fields
 									:Address => [:PrimaryAddressLine => '',
 												:SecondaryAddressLine => '',
 												:County => '', 
@@ -291,7 +291,7 @@ class Bom < ActiveRecord::Base
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit => ENV['PROFILE'] ,#? DJ Need to get the confirmation on which profile
+		:BusinessUnit => ENV['PROFILE'] ,#DJ Need to get the confirmation on which profile
 		:ValidationKey => 'dddcaf33-15e1-49af-a304-465651f75247',
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
@@ -302,7 +302,7 @@ class Bom < ActiveRecord::Base
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
-		:STAN => number + '-' + Time.now.strftime("%H:%M:%S"), #?
+		:STAN => number + '-' + Time.now.strftime("%H:%M:%S"), 
 		:ItemList => line_item_array
 	} 
 	
