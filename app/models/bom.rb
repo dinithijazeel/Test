@@ -294,7 +294,7 @@ class Bom < ActiveRecord::Base
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit => ENV['PROFILE'] ,#DJ Need to get the confirmation on which profile
+		:BusinessUnit => Rails.application.config.x.tenant, #ENV['PROFILE'] ,#DJ Need to get the confirmation on which profile
 		:ValidationKey => 'dddcaf33-15e1-49af-a304-465651f75247',
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
@@ -309,9 +309,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	} 
 	
-	puts "%%%%%%%%%%%%%%%%%%%%%%%"
+	puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
 	puts main_hash.to_json
-	puts "%%%%%%%%%%%%%%%%%%%%%%%"
+	puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
