@@ -327,6 +327,14 @@ class Bom < ActiveRecord::Base
 		
 		#reading SureTax response
 		response = JSON.parse(response.body)
+		
+		
+		#$$$$$$$$$$$$$$$$$$$$$
+		fff = JSON.parse(response.body["d"]);
+		puts fff
+		#$$$$$$$$$$$$$$$$$$$$$$
+		
+		
 		puts "000000000000000"
 		puts response
 		puts "111111111111"
