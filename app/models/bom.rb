@@ -161,7 +161,7 @@ class Bom < ActiveRecord::Base
 	line_item_array = [] 
 	i = 1
 	line_items.each do |line_item| 
-		line_item_hash ={ :LineNumber => i,
+		line_item_hash ={:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
 									# :OrigNumber =>'',#?  Optional fields
@@ -220,7 +220,7 @@ class Bom < ActiveRecord::Base
 													:Country => '',
 													:Geocode => '',
 													:VerifyAddress => 'false']   
-									]     
+								 
 						}  
 	    line_item_array.push(line_item_hash)
 		i += 1
