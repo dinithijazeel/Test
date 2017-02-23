@@ -309,9 +309,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	} 
 	
-	puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
-	puts main_hash.to_json
-	puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
+	# puts main_hash.to_json
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
@@ -325,8 +325,8 @@ class Bom < ActiveRecord::Base
 		response = site.post(json_text ,:content_type=>'application/json');
 		 puts JSON.parse(response.body);
 		 #$$$$$$$$$$$$$$$$$$$$$
-		 
-		 puts response.body["d"]["Successful"];
+		 puts response.body.to_json  
+		# puts response.body["d"]["Successful"];
 		#fff =  JSON.parse(response.body["d"]) ;
 		#puts fff
 		#$$$$$$$$$$$$$$$$$$$$$$
