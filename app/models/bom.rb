@@ -348,7 +348,9 @@ class Bom < ActiveRecord::Base
 		# puts "33333333333333"
 		# parsed = JSON.parse(data)
 		# puts parsed
+		puts "BBBBBBBBBBBBBBBBBBBBBBBB"
 		puts parsed["Successful"]
+		puts "BBBBBBBBBBBBBBBBBBBBBBBB"
 		# new_line_item_array =  []   
 		# parsed["GroupList"].each do |group|
 		# # puts group["LineNumber"]
