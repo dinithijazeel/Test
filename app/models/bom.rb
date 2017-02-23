@@ -325,8 +325,10 @@ class Bom < ActiveRecord::Base
 		response = site.post(json_text ,:content_type=>'application/json');
 		 puts JSON.parse(response.body);
 		 #$$$$$$$$$$$$$$$$$$$$$
-		fff =  JSON.parse(response.body["d"]) ;
-		puts fff
+		 
+		 puts response.body;
+		#fff =  JSON.parse(response.body["d"]) ;
+		#puts fff
 		#$$$$$$$$$$$$$$$$$$$$$$
 		
 		#reading SureTax response
