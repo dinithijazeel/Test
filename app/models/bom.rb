@@ -324,7 +324,7 @@ class Bom < ActiveRecord::Base
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
 		# puts JSON.parse(response.body);
-		 puts JSON.parse(response.body)["d"]
+		 puts JSON.parse(JSON.parse(response.body)["d"])
 		 puts response.body   
 		# puts response.body["d"]["Successful"];
 		#fff =  JSON.parse(response.body["d"]) ;
