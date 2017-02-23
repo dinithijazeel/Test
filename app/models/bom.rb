@@ -309,9 +309,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	} 
 	
-	# puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
-	# puts main_hash.to_json
-	# puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
+	  puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
+	  puts main_hash.to_json
+	  puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
@@ -348,9 +348,9 @@ class Bom < ActiveRecord::Base
 		# puts "33333333333333"
 		# parsed = JSON.parse(data)
 		# puts parsed
-		puts "BBBBBBBBBBBBBBBBBBBBBBBB"
-		puts parsed["Successful"]
-		puts "BBBBBBBBBBBBBBBBBBBBBBBB"
+		# puts "BBBBBBBBBBBBBBBBBBBBBBBB"
+		# puts parsed["Successful"]
+		# puts "BBBBBBBBBBBBBBBBBBBBBBBB"
 		new_line_item_array =  []   
 		parsed["GroupList"].each do |group|
 		# puts group["LineNumber"]
@@ -358,12 +358,12 @@ class Bom < ActiveRecord::Base
 			 puts tax["TaxTypeCode"]
 			 puts tax["TaxTypeDesc"]
 			
-			 # p = LineItem.new(
-				  # description: tax["TaxTypeDesc"],
-				  # quantity: 1,
-				  # unit_price: tax["TaxRate"],  
-				  # product:  Product.find_by_sku("GS-GXP2160-01"))  
-			# new_line_item_array.push(p) 
+			 p = LineItem.new(
+				  description: tax["TaxTypeDesc"],
+				  quantity: 1,
+				  unit_price: tax["TaxRate"],  
+				  product:  Product.find_by_sku("GS-GXP2160-01"))  
+			new_line_item_array.push(p) 
 		end
 	 end
 		
