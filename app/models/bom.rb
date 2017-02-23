@@ -331,7 +331,7 @@ class Bom < ActiveRecord::Base
 		# puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
 		# puts data
 		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
-		
+		puts parsed
 		puts parsed["Successful"]
 		# new_line_item_array =  []   
 		# parsed["GroupList"].each do |group|
