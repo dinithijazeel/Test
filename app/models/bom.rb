@@ -345,7 +345,7 @@ class Bom < ActiveRecord::Base
 				  # # product:  Product.find_by_sku("GS-GXP2160-01"))  
 			# # new_line_item_array.push(p) 
 		# end
-	end
+	#end
 		
 	  
     rescue RestClient::Exception => exception
