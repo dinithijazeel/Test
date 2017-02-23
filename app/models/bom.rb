@@ -324,12 +324,35 @@ class Bom < ActiveRecord::Base
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
 		puts JSON.parse(response.body);
+		
+		#reading SureTax response
+		parsed = JSON.parse(response.body)
+		new_line_item_array =  []   
+		parsed["GroupList"].each do |group|
+		# puts group["LineNumber"]
+		group["TaxList"].each do |tax|
+			 puts tax["TaxTypeCode"]
+			 puts tax["TaxTypeDesc"]
+			
+			 # p = LineItem.new(
+				  # description: tax["TaxTypeDesc"],
+				  # quantity: 1,
+				  # unit_price: tax["TaxRate"],  
+				  # product:  Product.find_by_sku("GS-GXP2160-01"))  
+			# new_line_item_array.push(p) 
+		end
+	end
+		
 	  
     rescue RestClient::Exception => exception
 	  puts 'API Error: Your request is not successful.'  
       puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
       puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
     end
+	
+	
+	 
+	
   
     # Calculate taxes
     federal_tax_amount = invoice_total * 0.12
