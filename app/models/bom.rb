@@ -200,7 +200,7 @@ class Bom < ActiveRecord::Base
 									# :Parameter10 => '', #?  Optional fields
 									# :UDF => '', #?  Optional fields
 									# :UDF2 => '', #?  Optional fields
-									:Address => [:PrimaryAddressLine => '',
+									:Address => {:PrimaryAddressLine => '',
 												:SecondaryAddressLine => '',
 												:County => '', 
 												:City => '',
@@ -209,7 +209,7 @@ class Bom < ActiveRecord::Base
 												:Plus4 => '',
 												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
 												:Geocode => '',
-												:VerifyAddress => '0'],
+												:VerifyAddress => '0'},
 									:P2PAddress => [:PrimaryAddressLine => '',
 													:SecondaryAddressLine => '',
 													:County => '',
