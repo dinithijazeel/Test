@@ -326,26 +326,26 @@ class Bom < ActiveRecord::Base
 		puts JSON.parse(response.body);
 		
 		#reading SureTax response
-		parsed = JSON.parse(response.body)
-		data = parsed["d"]
+		response = JSON.parse(response.body)
+		parsed = response["d"]
 		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
 		puts data
 		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
 		new_line_item_array =  []   
-		# parsed["GroupList"].each do |group|
-		# # puts group["LineNumber"]
-		# group["TaxList"].each do |tax|
-			 # puts tax["TaxTypeCode"]
-			 # puts tax["TaxTypeDesc"]
+		parsed["GroupList"].each do |group|
+		# puts group["LineNumber"]
+		group["TaxList"].each do |tax|
+			 puts tax["TaxTypeCode"]
+			 puts tax["TaxTypeDesc"]
 			
-			 # # p = LineItem.new(
-				  # # description: tax["TaxTypeDesc"],
-				  # # quantity: 1,
-				  # # unit_price: tax["TaxRate"],  
-				  # # product:  Product.find_by_sku("GS-GXP2160-01"))  
-			# # new_line_item_array.push(p) 
-		# end
-	#end
+			 # p = LineItem.new(
+				  # description: tax["TaxTypeDesc"],
+				  # quantity: 1,
+				  # unit_price: tax["TaxRate"],  
+				  # product:  Product.find_by_sku("GS-GXP2160-01"))  
+			# new_line_item_array.push(p) 
+		end
+	end
 		
 	  
     rescue RestClient::Exception => exception
