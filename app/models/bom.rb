@@ -179,7 +179,7 @@ class Bom < ActiveRecord::Base
 									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
 									:SalesTypeCode => 'B',  # (B for everyone)
 									:RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
-									:TaxExemptionCodeList => [:string => '00'], #? Need clarification from CCH on this. #DJ Added '00' as default
+									:TaxExemptionCodeList => [''], #? Need clarification from CCH on this.  
 									:ExemptReasonCode => 'None', #?Need clarification from CCH on this. #DJ Added 'None' as default
 									# :CostCenter => '', #?  Optional fields
 									# :GLAccount => '', #?  Optional fields
