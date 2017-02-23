@@ -161,7 +161,7 @@ class Bom < ActiveRecord::Base
 	line_item_array = [] 
 	i = 1
 	line_items.each do |line_item| 
-		line_item_hash ={:Item => [:LineNumber => i,
+		line_item_hash ={ :LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
 									# :OrigNumber =>'',#?  Optional fields
@@ -294,7 +294,7 @@ class Bom < ActiveRecord::Base
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit => Rails.application.config.x.tenant, #ENV['PROFILE'] ,#DJ Need to get the confirmation on which profile
+		:BusinessUnit => Rails.application.config.x.tenant,  
 		:ValidationKey => 'dddcaf33-15e1-49af-a304-465651f75247',
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
