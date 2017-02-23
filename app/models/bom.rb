@@ -323,9 +323,9 @@ class Bom < ActiveRecord::Base
 	site = RestClient::Resource.new(url) 
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
-		 puts JSON.parse(response.body);
+		# puts JSON.parse(response.body);
 		 #$$$$$$$$$$$$$$$$$$$$$
-		 puts response.body.to_json  
+		 puts response.body   
 		# puts response.body["d"]["Successful"];
 		#fff =  JSON.parse(response.body["d"]) ;
 		#puts fff
