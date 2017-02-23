@@ -323,14 +323,18 @@ class Bom < ActiveRecord::Base
 	site = RestClient::Resource.new(url) 
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
-		puts JSON.parse(response.body);
+		 puts JSON.parse(response.body);
 		
 		#reading SureTax response
 		response = JSON.parse(response.body)
+		puts "000000000000000"
+		puts response
+		puts "111111111111"
+		
 		data = response["d"]
-		# puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
-		# puts data
-		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
+		puts "22222222222"
+		puts data
+		puts "33333333333333"
 		parsed = JSON.parse(data)
 		puts parsed
 		puts parsed["Successful"]
