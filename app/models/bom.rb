@@ -326,7 +326,7 @@ class Bom < ActiveRecord::Base
 		 puts JSON.parse(response.body);
 		 #$$$$$$$$$$$$$$$$$$$$$
 		 
-		 puts response.body["d"];
+		 puts response.body["d"]["Successful"];
 		#fff =  JSON.parse(response.body["d"]) ;
 		#puts fff
 		#$$$$$$$$$$$$$$$$$$$$$$
