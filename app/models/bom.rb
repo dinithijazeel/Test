@@ -164,9 +164,9 @@ class Bom < ActiveRecord::Base
 		line_item_hash ={:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber => contact.portal_id,
-									# :OrigNumber =>'',#?  Optional fields
-									# :TermNumber => '',#?  Optional fields
-									# :BillToNumber => '',#?  Optional fields  
+									:OrigNumber =>'',#?  Optional fields
+									:TermNumber => '',#?  Optional fields
+									:BillToNumber => '',#?  Optional fields  
 									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
 									:BillingPeriodStartDate => '', #?
 									:BillingPeriodEndDate => '',#?
@@ -178,7 +178,7 @@ class Bom < ActiveRecord::Base
 									:TaxSitusRule => '04',
 									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
 									:SalesTypeCode => 'B',  # (B for everyone)
-									:RegulatoryCode => '3', # 03 -> VOIP, recommended by CCH
+									:RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
 									:TaxExemptionCodeList => [:string => '00'], #? Need clarification from CCH on this. #DJ Added '00' as default
 									:ExemptReasonCode => 'None', #?Need clarification from CCH on this. #DJ Added 'None' as default
 									# :CostCenter => '', #?  Optional fields
@@ -187,7 +187,7 @@ class Bom < ActiveRecord::Base
 									# :CurrencyCode => '', #?  Optional fields
 									# :OriginCountryCode => '', #?  Optional fields
 									# :DestCountryCode => '', #?  Optional fields
-									:BillingDaysInPeriod => '',#?
+									:BillingDaysInPeriod => 0,#?
 									:Parameter1 => line_item.product.sku,  
 									:Parameter2 => line_item.product.name,  
 									:Parameter3 => line_item.unit_price.to_s,  
