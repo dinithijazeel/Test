@@ -332,22 +332,22 @@ class Bom < ActiveRecord::Base
 		# puts data
 		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
 		
-		puts parsed["Successful"] 
-		new_line_item_array =  []   
-		parsed["GroupList"].each do |group|
-		# puts group["LineNumber"]
-		group["TaxList"].each do |tax|
-			 puts tax["TaxTypeCode"]
-			 puts tax["TaxTypeDesc"]
+		puts parsed["Successful"]
+		# new_line_item_array =  []   
+		# parsed["GroupList"].each do |group|
+		# # puts group["LineNumber"]
+		# group["TaxList"].each do |tax|
+			 # puts tax["TaxTypeCode"]
+			 # puts tax["TaxTypeDesc"]
 			
-			 # p = LineItem.new(
-				  # description: tax["TaxTypeDesc"],
-				  # quantity: 1,
-				  # unit_price: tax["TaxRate"],  
-				  # product:  Product.find_by_sku("GS-GXP2160-01"))  
-			# new_line_item_array.push(p) 
-		end
-	end
+			 # # p = LineItem.new(
+				  # # description: tax["TaxTypeDesc"],
+				  # # quantity: 1,
+				  # # unit_price: tax["TaxRate"],  
+				  # # product:  Product.find_by_sku("GS-GXP2160-01"))  
+			# # new_line_item_array.push(p) 
+		# end
+	# end
 		
 	  
     rescue RestClient::Exception => exception
