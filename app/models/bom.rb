@@ -324,30 +324,30 @@ class Bom < ActiveRecord::Base
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
 		# puts JSON.parse(response.body);
-		 puts JSON.parse(JSON.parse(response.body)["d"])
-		 puts response.body   
+		 parsed= JSON.parse(JSON.parse(response.body)["d"])
+		   
 		# puts response.body["d"]["Successful"];
 		#fff =  JSON.parse(response.body["d"]) ;
 		#puts fff
 		#$$$$$$$$$$$$$$$$$$$$$$
 		
 		#reading SureTax response
-		response = JSON.parse(response.body)
+		# response = JSON.parse(response.body)
 		
 		
 		
 		
 		
-		puts "000000000000000"
-		puts response
-		puts "111111111111"
+		# puts "000000000000000"
+		# puts response
+		# puts "111111111111"
 		
-		data = response["d"]
-		puts "22222222222"
-		puts data
-		puts "33333333333333"
-		parsed = JSON.parse(data)
-		puts parsed
+		# data = response["d"]
+		# puts "22222222222"
+		# puts data
+		# puts "33333333333333"
+		# parsed = JSON.parse(data)
+		# puts parsed
 		puts parsed["Successful"]
 		# new_line_item_array =  []   
 		# parsed["GroupList"].each do |group|
