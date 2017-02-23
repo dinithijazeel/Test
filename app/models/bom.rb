@@ -327,6 +327,10 @@ class Bom < ActiveRecord::Base
 		
 		#reading SureTax response
 		parsed = JSON.parse(response.body)
+		data = parsed["Data"]
+		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
+		puts data
+		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
 		new_line_item_array =  []   
 		parsed["GroupList"].each do |group|
 		# puts group["LineNumber"]
