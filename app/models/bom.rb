@@ -327,10 +327,11 @@ class Bom < ActiveRecord::Base
 		
 		#reading SureTax response
 		response = JSON.parse(response.body)
-		parsed = response["d"]
+		data = response["d"]
 		# puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
 		# puts data
 		puts "RRRRRRRRRRRRRRRRRRRRRRRRR"
+		parsed = JSON.parse(data)
 		puts parsed
 		puts parsed["Successful"]
 		# new_line_item_array =  []   
