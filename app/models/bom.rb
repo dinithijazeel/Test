@@ -210,7 +210,7 @@ class Bom < ActiveRecord::Base
 												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
 												:Geocode => '',
 												:VerifyAddress => '0'},
-									:P2PAddress => [:PrimaryAddressLine => '',
+									:P2PAddress => {:PrimaryAddressLine => '',
 													:SecondaryAddressLine => '',
 													:County => '',
 													:City => '',
@@ -219,7 +219,7 @@ class Bom < ActiveRecord::Base
 													:Plus4 => '',
 													:Country => '',
 													:Geocode => '',
-													:VerifyAddress => 'false']   
+													:VerifyAddress => 'false'}  
 								 
 						}  
 	    line_item_array.push(line_item_hash)
