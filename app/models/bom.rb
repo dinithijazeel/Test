@@ -293,6 +293,8 @@ class Bom < ActiveRecord::Base
 	  puts 'API Error: Your request is not successful.'  
       puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
       puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"  
+	rescue SocketError => e
+		puts 'hhhhhhhhhhhhhhhhhhhhh'
     end
 	
   
