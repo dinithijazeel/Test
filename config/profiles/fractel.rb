@@ -58,7 +58,7 @@ Rails.application.config.x.products.special_products = {
 #
 Rails.application.config.x.freshdesk.url = 'https://fractel.freshdesk.com/'
 Rails.application.config.x.freshdesk.api_key = '3oFZAyvGj90FTEyTHh'
-Rails.application.config.x.freshdesk.onboarding_subject = 'Onboarding Request 1234'
+Rails.application.config.x.freshdesk.onboarding_subject = 'Onboarding Request'
 Rails.application.config.x.freshdesk.onboarding_description = 'Onboarding Request'
 Rails.application.config.x.freshdesk.groups_onboarding = 14000107507
 #
@@ -70,4 +70,3 @@ Rails.application.config.x.portal.billing_endpoint = 'https://billing.fractel.ne
 #
 Rails.application.config.x.suretax.url = 'https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx'
 Rails.application.config.x.suretax.api_key = 'dddcaf33-15e1-49af-a304-465651f75247'
-
