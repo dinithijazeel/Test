@@ -180,7 +180,7 @@ class Bom < ActiveRecord::Base
 									:SalesTypeCode => 'B',  # (B for everyone)
 									:RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
 									:TaxExemptionCodeList => [''], #? Need clarification from CCH on this.  
-									:ExemptReasonCode => 'None', #?Need clarification from CCH on this. #DJ Added 'None' as default
+									:ExemptReasonCode => 'None', #?Need clarification from CCH on this.  
 									# :CostCenter => '', #?  Optional fields
 									# :GLAccount => '', #?  Optional fields
 									# :MaterialGroup => '', #?  Optional fields
@@ -224,73 +224,7 @@ class Bom < ActiveRecord::Base
 						}  
 	    line_item_array.push(line_item_hash)
 		i += 1
-    end 
-	
-	
-	# line_items.each do |line_item| 
-		# line_item_hash ={:Item => [:LineNumber => i,
-									# :InvoiceNumber => number,
-									# :CustomerNumber => contact.portal_id,
-									# :TransDate => invoice_date.strftime("%m/%d/%Y") ,
-									# :BillingPeriodStartDate => '', #?
-									# :BillingPeriodEndDate => '',#?
-									# :Revenue => line_item.total.to_s,
-									# :TaxIncludedCode => '0',#? 
-									# :Units =>  line_item.product.billing =='usage' ? '1' : line_item.quantity.to_i.to_s, #?
-									# :UnitType => '00',
-									# :TaxSitusRule => '04',
-									# :TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
-									# :SalesTypeCode => 'R', #? Residential / Business / Industrial / Lifeline - how do we determine this?
-									# :RegulatoryCode => '3', #? 03 -> VOIP, recommended by CCH
-									# :TaxExemptionCodeList => [:string => ''], #? Need clarification from CCH on this.
-									# :UDF => '', #?  Optional fields
-									# :UDF2 => '', #?  Optional fields
-									# :CostCenter => '', #?  Optional fields
-									# :GLAccount => '', #?  Optional fields
-									# :MaterialGroup => '', #?  Optional fields
-									# :BillingDaysInPeriod => '',#?
-									# :OriginCountryCode => '', #?  Optional fields
-									# :DestCountryCode => '', #?  Optional fields
-									# :Parameter1 => '', #?  Optional fields
-									# :Parameter2 => '', #?  Optional fields
-									# :Parameter3 => '', #?  Optional fields
-									# :Parameter4 => '', #?  Optional fields
-									# :Parameter5 => '', #?  Optional fields
-									# :Parameter6 => '', #?  Optional fields
-									# :Parameter7 => '', #?  Optional fields
-									# :Parameter8 => '', #?  Optional fields
-									# :Parameter9 => '', #?  Optional fields
-									# :Parameter10 => '', #?  Optional fields
-									# :CurrencyCode => '', #?  Optional fields
-									# :ExemptReasonCode => '', #?Need clarification from CCH on this.
-									# :Address => [:PrimaryAddressLine => '',
-												# :SecondaryAddressLine => '',
-												# :County => '', 
-												# :City => '',
-												# :State => '',
-												# :PostalCode => contact.service_zip,
-												# :Plus4 => '',
-												# :Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
-												# :Geocode => '',
-												# :VerifyAddress => '0'],
-									# :P2PAddress => [:PrimaryAddressLine => '',
-													# :SecondaryAddressLine => '',
-													# :County => '',
-													# :City => '',
-													# :State => '',
-													# :PostalCode => '',
-													# :Plus4 => '',
-													# :Country => '',
-													# :Geocode => '',
-													# :VerifyAddress => 'false'],
-									# :OrigNumber =>'',#?  Optional fields
-									# :TermNumber => '',#?  Optional fields
-									# :BillToNumber => '',#?  Optional fields  
-									# :Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1' ] #?   
-						# }  
-	    # line_item_array.push(line_item_hash)
-		# i += 1
-    # end 
+    end   
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
@@ -318,54 +252,31 @@ class Bom < ActiveRecord::Base
 	 
 	#Calling SureTax API 
 	
-	url  = "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-    api_key = "dddcaf33-15e1-49af-a304-465651f75247" 
+	url  = "#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+    api_key =Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
 	site = RestClient::Resource.new(url) 
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
-		# puts JSON.parse(response.body);
-		 parsed= JSON.parse(JSON.parse(response.body)["d"])
-		   
-		# puts response.body["d"]["Successful"];
-		#fff =  JSON.parse(response.body["d"]) ;
-		#puts fff
-		#$$$$$$$$$$$$$$$$$$$$$$
-		
-		#reading SureTax response
-		# response = JSON.parse(response.body)
-		
-		
-		
-		
-		
-		# puts "000000000000000"
-		# puts response
-		# puts "111111111111"
-		
-		# data = response["d"]
-		# puts "22222222222"
-		# puts data
-		# puts "33333333333333"
-		# parsed = JSON.parse(data)
-		# puts parsed
-		# puts "BBBBBBBBBBBBBBBBBBBBBBBB"
-		# puts parsed["Successful"]
-		# puts "BBBBBBBBBBBBBBBBBBBBBBBB"
-		new_line_item_array =  []   
-		parsed["GroupList"].each do |group|
-		# puts group["LineNumber"]
-		group["TaxList"].each do |tax|
-			 puts tax["TaxTypeCode"]
-			 puts tax["TaxTypeDesc"]
-			
-			 p = LineItem.new(
-				  description: tax["TaxTypeDesc"],
-				  quantity: 1,
-				  unit_price: tax["TaxRate"],  
-				  product:  Product.find_by_sku("GS-GXP2160-01"))  
-			new_line_item_array.push(p) 
+		 
+		parsed= JSON.parse(JSON.parse(response.body)["d"])
+		if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
+			new_line_item_array =  []   
+			parsed["GroupList"].each do |group| 
+				group["TaxList"].each do |tax|
+					puts tax["TaxTypeCode"]
+					puts tax["TaxTypeDesc"]
+
+					p = LineItem.new(
+						  description: tax["TaxTypeDesc"],
+						  quantity: 1,
+						  unit_price: tax["TaxRate"],  
+						  product:  Product.find_by_sku("GS-GXP2160-01"))  
+					new_line_item_array.push(p) 
+				end
+			end
+		else
+			# Handle if SureTax API return any error
 		end
-	 end
 		
 	  
     rescue RestClient::Exception => exception
@@ -373,9 +284,6 @@ class Bom < ActiveRecord::Base
       puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
       puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
     end
-	
-	
-	 
 	
   
     # Calculate taxes
