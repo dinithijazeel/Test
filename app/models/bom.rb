@@ -292,7 +292,7 @@ class Bom < ActiveRecord::Base
 												:County => '', 
 												:City => '',
 												:State => '',
-												:PostalCode =>  #contact.service_zip,
+												:PostalCode =>   contact.service_zip,
 												:Plus4 => '',
 												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
 												:Geocode => '',
