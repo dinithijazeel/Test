@@ -274,7 +274,7 @@ class Bom < ActiveRecord::Base
 									# :CurrencyCode => '', #?  Optional fields
 									# :OriginCountryCode => '', #?  Optional fields
 									# :DestCountryCode => '', #?  Optional fields
-									:BillingDaysInPeriod => 0,#?
+									:BillingDaysInPeriod => '0',#?
 									:Parameter1 => line_item.product.sku,  
 									:Parameter2 => line_item.product.name,  
 									:Parameter3 => line_item.unit_price.to_s,  
@@ -292,7 +292,7 @@ class Bom < ActiveRecord::Base
 												:County => '', 
 												:City => '',
 												:State => '',
-												:PostalCode => '11',#contact.service_zip,
+												:PostalCode =>  #contact.service_zip,
 												:Plus4 => '',
 												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
 												:Geocode => '',
