@@ -152,9 +152,7 @@ class Bom < ActiveRecord::Base
     self.rating_status = :rating_processed
   end
 
-  def get_rating_line_items
-	url  = "https://testapi.tarating.net/Services/Communications/V01/SureTax.asmx" # "#{Rails.application.config.x.suretax.url}/PostRequest"  
-	api_key = Rails.application.config.x.suretax.api_key 
+  def get_rating_line_items 
   
     #generate number if blank
 	self.number = generate_number if number.blank?
@@ -230,9 +228,9 @@ class Bom < ActiveRecord::Base
     end   
   
     #generate main hash for SureTax API call 
-	main_hash = {:ClientNumber => '000000870',
+	main_hash = {:ClientNumber => Rails.application.config.x.suretax.client_number,
 		:BusinessUnit => Rails.application.config.x.tenant,  
-		:ValidationKey => api_key,
+		:ValidationKey => Rails.application.config.x.suretax.validation_key ,
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
 		:CmplDataYear => invoice_date.strftime("%Y"),  
@@ -253,9 +251,9 @@ class Bom < ActiveRecord::Base
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
 	 
-	
-    begin 
-		#Calling SureTax API 
+	#Calling SureTax API 
+	url  = "#{Rails.application.config.x.suretax.url}/PostRequest"  
+    begin  
 		site = RestClient::Resource.new(url) 
 		response = site.post(json_text ,:content_type=>'application/json'); 
 		
@@ -275,9 +273,7 @@ class Bom < ActiveRecord::Base
 					new_line_item_array.push(p) 
 				end
 			end
-		else
-		puts"???????????????????????????????????????????????????????????????"
-		
+		else 
 			# Handle if SureTax API return any errors
 			puts 'API Error: Your request is not successful.' 
 			puts "Transaction ID: #{parsed["TransId"]}" 

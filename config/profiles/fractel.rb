@@ -69,4 +69,5 @@ Rails.application.config.x.portal.billing_endpoint = 'https://billing.fractel.ne
 ## SureTax Integration
 #
 Rails.application.config.x.suretax.url = 'https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx'
-Rails.application.config.x.suretax.api_key = 'dddcaf33-15e1-49af-a304-465651f75247'
+Rails.application.config.x.suretax.validation_key = 'dddcaf33-15e1-49af-a304-465651f75247'
+Rails.application.config.x.suretax.client_number = '000000870'
