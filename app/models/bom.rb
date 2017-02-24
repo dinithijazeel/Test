@@ -153,6 +153,9 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
+	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest"  
+	api_key = Rails.application.config.x.suretax.api_key 
+  
     #generate number if blank
 	self.number = generate_number if number.blank?
 	
@@ -160,6 +163,90 @@ class Bom < ActiveRecord::Base
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
 	i = 1
+	# line_items.each do |line_item| 
+		# line_item_hash ={:LineNumber => i,
+									# :InvoiceNumber => number,
+									# :CustomerNumber => contact.portal_id,
+									# :OrigNumber =>'',#?  Optional fields
+									# :TermNumber => '',#?  Optional fields
+									# :BillToNumber => '',#?  Optional fields  
+									# :TransDate => invoice_date.strftime("%m/%d/%Y")  ,
+									# :BillingPeriodStartDate => '', #?
+									# :BillingPeriodEndDate => '',#?
+									# :Revenue => line_item.total.to_s,
+									# :Units => line_item.quantity.to_i.to_s,   
+									# :UnitType => '00',
+									# :Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
+									# :TaxIncludedCode => '0',
+									# :TaxSitusRule => '04',
+									# :TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
+									# :SalesTypeCode => 'B',  # (B for everyone)
+									# :RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
+									# :TaxExemptionCodeList => [''], #? Need clarification from CCH on this.  
+									# :ExemptReasonCode => 'None', #?Need clarification from CCH on this.  
+									# # :CostCenter => '', #?  Optional fields
+									# # :GLAccount => '', #?  Optional fields
+									# # :MaterialGroup => '', #?  Optional fields
+									# # :CurrencyCode => '', #?  Optional fields
+									# # :OriginCountryCode => '', #?  Optional fields
+									# # :DestCountryCode => '', #?  Optional fields
+									# :BillingDaysInPeriod => 0,#?
+									# :Parameter1 => line_item.product.sku,  
+									# :Parameter2 => line_item.product.name,  
+									# :Parameter3 => line_item.unit_price.to_s,  
+									# :Parameter4 => line_item.quantity.to_s,  
+									# :Parameter5 => line_item.total.to_s,  
+									# # :Parameter6 => '', #?  Optional fields
+									# # :Parameter7 => '', #?  Optional fields
+									# # :Parameter8 => '', #?  Optional fields
+									# # :Parameter9 => '', #?  Optional fields
+									# # :Parameter10 => '', #?  Optional fields
+									# # :UDF => '', #?  Optional fields
+									# # :UDF2 => '', #?  Optional fields
+									# :Address => {:PrimaryAddressLine => '',
+												# :SecondaryAddressLine => '',
+												# :County => '', 
+												# :City => '',
+												# :State => '',
+												# :PostalCode => contact.service_zip,
+												# :Plus4 => '',
+												# :Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
+												# :Geocode => '',
+												# :VerifyAddress => '0'},
+									# :P2PAddress => {:PrimaryAddressLine => '',
+													# :SecondaryAddressLine => '',
+													# :County => '',
+													# :City => '',
+													# :State => '',
+													# :PostalCode => '',
+													# :Plus4 => '',
+													# :Country => '',
+													# :Geocode => '',
+													# :VerifyAddress => 'false'}  
+								 
+						# }  
+	    # line_item_array.push(line_item_hash)
+		# i += 1
+    # end   
+  
+    # #generate main hash for SureTax API call 
+	# main_hash = {:ClientNumber => '000000870',
+		# :BusinessUnit => Rails.application.config.x.tenant,  
+		# :ValidationKey => api_key,
+		# :DataYear =>  invoice_date.strftime("%Y"),
+		# :DataMonth =>  invoice_date.strftime("%m"),
+		# :CmplDataYear => invoice_date.strftime("%Y"),  
+		# :CmplDataMonth =>  invoice_date.strftime("%m"),  
+		# :TotalRevenue => invoice_total.to_s,
+		# :ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
+		# :ClientTracking => contact.portal_id ,
+		# :ResponseGroup => '00',
+		# :ResponseType => 'D2',  
+		# :STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
+		# :ItemList => line_item_array
+	# } 
+	
+	
 	line_items.each do |line_item| 
 		line_item_hash ={:LineNumber => i,
 									:InvoiceNumber => number,
@@ -229,7 +316,7 @@ class Bom < ActiveRecord::Base
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
 		:BusinessUnit => Rails.application.config.x.tenant,  
-		:ValidationKey => 'dddcaf33-15e1-49af-a304-465651f75247',
+		:ValidationKey => api_key,
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
 		:CmplDataYear => invoice_date.strftime("%Y"),  
@@ -239,27 +326,18 @@ class Bom < ActiveRecord::Base
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
-		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
+		:STAN =>'123'#number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
 		:ItemList => line_item_array
 	} 
 	
-	  puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
-	  puts main_hash.to_json
-	  puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
+	  # puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
+	  # puts main_hash.to_json
+	  # puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
 	 
 	#Calling SureTax API 
-	#url  =  "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-   #api_key =  "dddcaf33-15e1-49af-a304-465651f75247" 
-	
-	  url  =  "#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-     api_key = Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
-	
-	puts url
-	puts api_key
-	
 	site = RestClient::Resource.new(url) 
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
@@ -281,13 +359,20 @@ class Bom < ActiveRecord::Base
 				end
 			end
 		else
-			# Handle if SureTax API return any error
-		end
-		
+			# Handle if SureTax API return any errors
+			puts 'API Error: Your request is not successful.' 
+			puts "Transaction ID: #{parsed["TransId"]}" 
+			puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
+			if parsed["ResponseCode"] =='9001' # have item errors 
+				parsed["ItemMessages"].each do |itemmsg|  
+					puts "LineNumber: #{itemmsg["TaxTypeCode"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
+				end  
+			end
+		end 
 	  
     rescue RestClient::Exception => exception
 	  puts 'API Error: Your request is not successful.'  
-      puts "X-Request-Id : #{exception.response.headers[:x_request_id]}"
+      puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
       puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
     end
 	
