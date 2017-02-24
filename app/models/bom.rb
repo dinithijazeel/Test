@@ -257,7 +257,7 @@ class Bom < ActiveRecord::Base
 	site = RestClient::Resource.new(url) 
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
-		 
+		puts response.body
 		parsed= JSON.parse(JSON.parse(response.body)["d"])
 		if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
 			new_line_item_array =  []   
@@ -291,9 +291,7 @@ class Bom < ActiveRecord::Base
     rescue RestClient::Exception => exception
 	  puts 'API Error: Your request is not successful.'  
       puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
-      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
-	rescue SocketError => e
-		puts '4444444444'  
+      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n" 
     end
 	
   
