@@ -246,9 +246,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	}  
 	
-	puts "%%%%%%%%%%%%%%%%%%%%%%%"
-	puts main_hash.to_json
-	puts "%%%%%%%%%%%%%%%%%%%%%%%" 
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%"
+	# puts main_hash.to_json
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
@@ -257,37 +257,37 @@ class Bom < ActiveRecord::Base
     begin 
 		#Calling SureTax API 
 		site = RestClient::Resource.new(url) 
-		response = site.post(json_text ,:content_type=>'application/json');
-		puts response.body
-		# parsed= JSON.parse(JSON.parse(response.body)["d"])
-		# if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
-			# new_line_item_array =  []   
-			# parsed["GroupList"].each do |group| 
-				# group["TaxList"].each do |tax|
-					# puts tax["TaxTypeCode"]
-					# puts tax["TaxTypeDesc"]
-
-					# p = LineItem.new(
-						  # description: tax["TaxTypeDesc"],
-						  # quantity: 1,
-						  # unit_price: tax["TaxRate"],  
-						  # product:  Product.find_by_sku("GS-GXP2160-01"))  
-					# new_line_item_array.push(p) 
-				# end
-			# end
-		# else
-		# puts"???????????????????????????????????????????????????????????????"
+		response = site.post(json_text ,:content_type=>'application/json'); 
 		
-			# # Handle if SureTax API return any errors
-			# puts 'API Error: Your request is not successful.' 
-			# puts "Transaction ID: #{parsed["TransId"]}" 
-			# puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
-			# if parsed["ResponseCode"] =='9001' # have item errors 
-				# parsed["ItemMessages"].each do |itemmsg|  
-					# puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
-				# end  
-			# end
-		# end 
+		parsed= JSON.parse(JSON.parse(response.body)["d"])
+		if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
+			new_line_item_array =  []   
+			parsed["GroupList"].each do |group| 
+				group["TaxList"].each do |tax|
+					puts tax["TaxTypeCode"]
+					puts tax["TaxTypeDesc"]
+
+					p = LineItem.new(
+						  description: tax["TaxTypeDesc"],
+						  quantity: 1,
+						  unit_price: tax["TaxRate"],  
+						  product:  Product.find_by_sku("GS-GXP2160-01"))  
+					new_line_item_array.push(p) 
+				end
+			end
+		else
+		puts"???????????????????????????????????????????????????????????????"
+		
+			# Handle if SureTax API return any errors
+			puts 'API Error: Your request is not successful.' 
+			puts "Transaction ID: #{parsed["TransId"]}" 
+			puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
+			if parsed["ResponseCode"] =='9001' # have item errors 
+				parsed["ItemMessages"].each do |itemmsg|  
+					puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
+				end  
+			end
+		end 
 	  
     rescue RestClient::Exception => exception
 		puts 'API Error: Your request is not successful.'  
