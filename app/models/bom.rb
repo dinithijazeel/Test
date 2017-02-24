@@ -292,7 +292,7 @@ class Bom < ActiveRecord::Base
 												:County => '', 
 												:City => '',
 												:State => '',
-												:PostalCode => contact.service_zip,
+												:PostalCode => '11',#contact.service_zip,
 												:Plus4 => '',
 												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
 												:Geocode => '',
@@ -326,7 +326,7 @@ class Bom < ActiveRecord::Base
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
-		:STAN =>'9999',# number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
+		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
 		:ItemList => line_item_array
 	} 
 	
