@@ -251,9 +251,11 @@ class Bom < ActiveRecord::Base
 	json_text = {:request => main_hash.to_json}.to_json  
 	 
 	#Calling SureTax API 
+	url  =  "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+    api_key =  "dddcaf33-15e1-49af-a304-465651f75247" 
 	
-	url  = "#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-    api_key =Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
+	# url  = "#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+    # api_key =Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
 	
 	post url
 	post api_key
