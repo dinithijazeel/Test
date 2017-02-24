@@ -315,8 +315,8 @@ class Bom < ActiveRecord::Base
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit =>"5555"# Rails.application.config.x.tenant,  
-		:ValidationKey => api_key,
+		:BusinessUnit => Rails.application.config.x.tenant,  
+		:ValidationKey => '6666666',#api_key,
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
 		:CmplDataYear => invoice_date.strftime("%Y"),  
