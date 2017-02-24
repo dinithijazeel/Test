@@ -316,7 +316,7 @@ class Bom < ActiveRecord::Base
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
 		:BusinessUnit => Rails.application.config.x.tenant,  
-		:ValidationKey => '6666666',#api_key,
+		:ValidationKey => api_key,
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
 		:CmplDataYear => invoice_date.strftime("%Y"),  
@@ -326,7 +326,7 @@ class Bom < ActiveRecord::Base
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
-		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
+		:STAN =>'9999',# number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
 		:ItemList => line_item_array
 	} 
 	
@@ -359,6 +359,8 @@ class Bom < ActiveRecord::Base
 				end
 			end
 		else
+		puts"???????????????????????????????????????????????????????????????"
+		
 			# Handle if SureTax API return any errors
 			puts 'API Error: Your request is not successful.' 
 			puts "Transaction ID: #{parsed["TransId"]}" 
