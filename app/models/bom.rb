@@ -153,7 +153,7 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
-	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest1"  
+	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest"  
 	api_key = Rails.application.config.x.suretax.api_key 
   
     #generate number if blank
@@ -315,7 +315,7 @@ class Bom < ActiveRecord::Base
   
     #generate main hash for SureTax API call 
 	main_hash = {:ClientNumber => '000000870',
-		:BusinessUnit => Rails.application.config.x.tenant,  
+		:BusinessUnit =>"5555"# Rails.application.config.x.tenant,  
 		:ValidationKey => api_key,
 		:DataYear =>  invoice_date.strftime("%Y"),
 		:DataMonth =>  invoice_date.strftime("%m"),
