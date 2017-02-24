@@ -258,42 +258,40 @@ class Bom < ActiveRecord::Base
     begin 
 		response = site.post(json_text ,:content_type=>'application/json');
 		puts response.body
-		parsed= JSON.parse(JSON.parse(response.body)["d"])
-		if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
-			new_line_item_array =  []   
-			parsed["GroupList"].each do |group| 
-				group["TaxList"].each do |tax|
-					puts tax["TaxTypeCode"]
-					puts tax["TaxTypeDesc"]
+		# parsed= JSON.parse(JSON.parse(response.body)["d"])
+		# if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
+			# new_line_item_array =  []   
+			# parsed["GroupList"].each do |group| 
+				# group["TaxList"].each do |tax|
+					# puts tax["TaxTypeCode"]
+					# puts tax["TaxTypeDesc"]
 
-					p = LineItem.new(
-						  description: tax["TaxTypeDesc"],
-						  quantity: 1,
-						  unit_price: tax["TaxRate"],  
-						  product:  Product.find_by_sku("GS-GXP2160-01"))  
-					new_line_item_array.push(p) 
-				end
-			end
-		else
-		puts"???????????????????????????????????????????????????????????????"
+					# p = LineItem.new(
+						  # description: tax["TaxTypeDesc"],
+						  # quantity: 1,
+						  # unit_price: tax["TaxRate"],  
+						  # product:  Product.find_by_sku("GS-GXP2160-01"))  
+					# new_line_item_array.push(p) 
+				# end
+			# end
+		# else
+		# puts"???????????????????????????????????????????????????????????????"
 		
-			# Handle if SureTax API return any errors
-			puts 'API Error: Your request is not successful.' 
-			puts "Transaction ID: #{parsed["TransId"]}" 
-			puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
-			if parsed["ResponseCode"] =='9001' # have item errors 
-				parsed["ItemMessages"].each do |itemmsg|  
-					puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
-				end  
-			end
-		end 
+			# # Handle if SureTax API return any errors
+			# puts 'API Error: Your request is not successful.' 
+			# puts "Transaction ID: #{parsed["TransId"]}" 
+			# puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
+			# if parsed["ResponseCode"] =='9001' # have item errors 
+				# parsed["ItemMessages"].each do |itemmsg|  
+					# puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
+				# end  
+			# end
+		# end 
 	  
     rescue RestClient::Exception => exception
 	  puts 'API Error: Your request is not successful.'  
       puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
-      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n" 
-	rescue RestClient::SocketError => e
-	  puts 'rrrrr.'  
+      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"  
     end
 	
   
