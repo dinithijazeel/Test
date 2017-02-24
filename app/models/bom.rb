@@ -153,7 +153,7 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
-	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest"  
+	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest1"  
 	api_key = Rails.application.config.x.suretax.api_key 
   
     #generate number if blank
