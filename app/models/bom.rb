@@ -294,7 +294,7 @@ class Bom < ActiveRecord::Base
 		puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
 		puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"  
 	rescue SocketError => socketerror
-		puts "API Error:#{socketerror.response.body}"
+		puts "API Error:#{socketerror}"
     end
 	
   
