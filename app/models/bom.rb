@@ -253,9 +253,10 @@ class Bom < ActiveRecord::Base
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
 	 
-	#Calling SureTax API 
-	site = RestClient::Resource.new(url) 
+	
     begin 
+		#Calling SureTax API 
+		site = RestClient::Resource.new(url) 
 		response = site.post(json_text ,:content_type=>'application/json');
 		puts response.body
 		# parsed= JSON.parse(JSON.parse(response.body)["d"])
