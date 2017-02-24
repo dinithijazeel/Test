@@ -254,8 +254,8 @@ class Bom < ActiveRecord::Base
 	#url  =  "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
    #api_key =  "dddcaf33-15e1-49af-a304-465651f75247" 
 	
-	  url  = "#{Rails.application.config.x.freshdesk.url}api/v2/tickets" #"#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
-     api_key =Rails.application.config.x.freshdesk.onboarding_subject #Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
+	  url  =  "#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
+     api_key = Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
 	
 	puts url
 	puts api_key
