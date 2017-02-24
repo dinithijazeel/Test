@@ -367,7 +367,7 @@ class Bom < ActiveRecord::Base
 			puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
 			if parsed["ResponseCode"] =='9001' # have item errors 
 				parsed["ItemMessages"].each do |itemmsg|  
-					puts "LineNumber: #{itemmsg["TaxTypeCode"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
+					puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
 				end  
 			end
 		end 
