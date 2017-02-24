@@ -330,9 +330,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	} 
 	
-	  # puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
-	  # puts main_hash.to_json
-	  # puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
+	  puts "%%%%%%%%%%%%%%%%%%%%%%%333333333"
+	  puts main_hash.to_json
+	  puts "%%%%%%%%%%%%%%%%%%%%%%%33333333333" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
