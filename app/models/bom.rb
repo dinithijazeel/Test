@@ -153,7 +153,7 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items
-	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest"  
+	url  =  "#{Rails.application.config.x.suretax.url}/PostRequest1"  
 	api_key = Rails.application.config.x.suretax.api_key 
   
     #generate number if blank
@@ -326,7 +326,7 @@ class Bom < ActiveRecord::Base
 		:ClientTracking => contact.portal_id ,
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
-		:STAN =>'123'#number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
+		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
 		:ItemList => line_item_array
 	} 
 	
