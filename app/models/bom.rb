@@ -257,8 +257,8 @@ class Bom < ActiveRecord::Base
 	# url  = "#{Rails.application.config.x.suretax.url}/PostRequest" # "https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx/PostRequest"
     # api_key =Rails.application.config.x.suretax.api_key # "dddcaf33-15e1-49af-a304-465651f75247" 
 	
-	post url
-	post api_key
+	puts url
+	puts api_key
 	
 	site = RestClient::Resource.new(url) 
     begin 
