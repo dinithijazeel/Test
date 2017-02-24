@@ -58,7 +58,7 @@ Rails.application.config.x.products.special_products = {
 #
 Rails.application.config.x.freshdesk.url = 'https://fractel.freshdesk.com/'
 Rails.application.config.x.freshdesk.api_key = '3oFZAyvGj90FTEyTHh'
-Rails.application.config.x.freshdesk.onboarding_subject = 'Onboarding Request'
+Rails.application.config.x.freshdesk.onboarding_subject = 'Onboarding Request 1234'
 Rails.application.config.x.freshdesk.onboarding_description = 'Onboarding Request'
 Rails.application.config.x.freshdesk.groups_onboarding = 14000107507
 #
