@@ -264,7 +264,7 @@ class Bom < ActiveRecord::Base
 				group["TaxList"].each do |tax|
 					puts tax["TaxTypeCode"]
 					puts tax["TaxTypeDesc"]
-
+					puts tax["TaxRate"]
 					p = LineItem.new(
 						  description: tax["TaxTypeDesc"],
 						  quantity: 1,
