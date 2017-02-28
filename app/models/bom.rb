@@ -262,6 +262,10 @@ class Bom < ActiveRecord::Base
 			new_line_item_array =  []   
 			parsed["GroupList"].each do |group| 
 				group["TaxList"].each do |tax|
+				puts "ooooooooooooooooooooooooooooooooooo"
+				 federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:tax["TaxTypeCode"]])
+				 puts federal_tax_product.name
+				 
 					puts tax["TaxTypeCode"]
 					puts tax["TaxTypeDesc"]
 					puts tax["TaxRate"]
@@ -269,7 +273,7 @@ class Bom < ActiveRecord::Base
 						  description: tax["TaxTypeDesc"],
 						  quantity: 1,
 						  unit_price: tax["TaxRate"],  
-						  product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"]]))  
+						  product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[:tax["TaxTypeCode"]]))  
 					new_line_item_array.push(p) 
 				end
 			end
