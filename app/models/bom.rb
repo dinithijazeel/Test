@@ -269,6 +269,7 @@ class Bom < ActiveRecord::Base
 				 
 				 puts ":'#{tax["TaxTypeCode"]}'"
 				 puts Rails.application.config.x.products.tax_products[":'#{tax["TaxTypeCode"]}'"]
+				 puts Rails.application.config.x.products.tax_products[:'101']
 					#puts tax["TaxTypeCode"].to_s
 					#puts tax["TaxTypeDesc"]
 					#puts tax["TaxRate"]
