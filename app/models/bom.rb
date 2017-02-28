@@ -265,7 +265,7 @@ class Bom < ActiveRecord::Base
 				puts "ooooooooooooooooooooooooooooooooooo"
 				 #federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:" #{tax["TaxTypeCode"]}"])
 				  federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[:'101'])
-				 puts federal_tax_product
+				 puts federal_tax_product.name
 				 
 					puts tax["TaxTypeCode"]
 					puts tax["TaxTypeDesc"]
