@@ -267,9 +267,10 @@ class Bom < ActiveRecord::Base
 				#  federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[:'101'])
 				# puts federal_tax_product.name
 				 
-					puts tax["TaxTypeCode"].to_s
-					puts tax["TaxTypeDesc"]
-					puts tax["TaxRate"]
+				 puts "'#{tax["TaxTypeCode"]}'"
+					#puts tax["TaxTypeCode"].to_s
+					#puts tax["TaxTypeDesc"]
+					#puts tax["TaxRate"]
 					p = LineItem.new(
 						  description: tax["TaxTypeDesc"],
 						  quantity: 1,
