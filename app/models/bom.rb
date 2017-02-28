@@ -264,17 +264,17 @@ class Bom < ActiveRecord::Base
 				group["TaxList"].each do |tax|
 				puts "ooooooooooooooooooooooooooooooooooo"
 				 #federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:" #{tax["TaxTypeCode"]}"])
-				  federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[:'101'])
-				 puts federal_tax_product.name
+				#  federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[:'101'])
+				# puts federal_tax_product.name
 				 
-					puts tax["TaxTypeCode"]
+					puts tax["TaxTypeCode"].to_s
 					puts tax["TaxTypeDesc"]
 					puts tax["TaxRate"]
 					p = LineItem.new(
 						  description: tax["TaxTypeDesc"],
 						  quantity: 1,
 						  unit_price: tax["TaxRate"],  
-						  product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[:tax["TaxTypeCode"]]))  
+						  product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[: tax["TaxTypeCode"].to_s ]))  
 					new_line_item_array.push(p) 
 				end
 			end
