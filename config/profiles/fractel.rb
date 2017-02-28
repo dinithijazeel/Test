@@ -56,7 +56,7 @@ Rails.application.config.x.products.special_products = {
 #
 ## SureTax Tax Products
 #
-Rails.application.config.x.products.tax_products = {
+Rails.application.config.x.products.tax_products = { 
 	:000   =>  'TX-CIT-CLLRT-01',
 	:101   =>  'TX-CIT-CLRT-01',
 	:040   =>  'TX-CIT-CLST-01',
@@ -117,7 +117,7 @@ Rails.application.config.x.products.tax_products = {
 	:416   =>  'TX-STA-SST-01',
 	:417   =>  'TX-STA-SUT-01',
 	:433   =>  'TX-STA-ULTSS-01',
-	:5C2   =>  'TX-STA-USF-01' 
+	:5C2   =>  'TX-STA-USF-01' ,
 }
 #
 ## Freshdesk Integration
