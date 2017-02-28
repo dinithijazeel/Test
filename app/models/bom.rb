@@ -263,7 +263,7 @@ class Bom < ActiveRecord::Base
 			parsed["GroupList"].each do |group| 
 				group["TaxList"].each do |tax|
 				puts "ooooooooooooooooooooooooooooooooooo"
-				 federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:tax["TaxTypeCode"]])
+				 federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:" #{tax["TaxTypeCode"]}"])
 				 puts federal_tax_product.name
 				 
 					puts tax["TaxTypeCode"]
