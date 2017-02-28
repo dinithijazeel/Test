@@ -275,7 +275,7 @@ class Bom < ActiveRecord::Base
 						  description: tax["TaxTypeDesc"],
 						  quantity: 1,
 						  unit_price: tax["TaxRate"],  
-						  product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[:"'#{tax["TaxTypeCode"]}'"]))  
+						  product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[":'#{tax["TaxTypeCode"]}'"]))  
 					new_line_item_array.push(p) 
 				end
 			end
