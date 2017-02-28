@@ -268,7 +268,7 @@ class Bom < ActiveRecord::Base
 					p = LineItem.new(
 						  description: tax["TaxTypeDesc"],
 						  quantity: 1,
-						  unit_price: tax["TaxRate"],  
+						  unit_price: 1.20, #tax["TaxRate"],  
 						  product:  Product.find_by_sku(tax["TaxTypeCode"]))  
 					new_line_item_array.push(p) 
 				end
