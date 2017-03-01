@@ -363,7 +363,7 @@ class Bom < ActiveRecord::Base
     names = []
     line_items.each do |line_item|
 	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-	line_item.product.product_type
+	puts line_item.product.product_type
 	
       # Make float into int if it's a whole number
       quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
