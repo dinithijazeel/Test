@@ -362,13 +362,13 @@ class Bom < ActiveRecord::Base
   def summary(divider = ' / ')
     names = []
     line_items.each do |line_item|
-	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-	puts line_item.product.product_type
-	
-      # Make float into int if it's a whole number
-      quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
-      # Add to array
-      names << "#{quantity} x #{line_item.product.name}"
+		#Consider only service and merchandise products to generate summary
+		if line_item.product.product_type == 'service' || line_item.product.product_type == 'merchandise' 
+			# Make float into int if it's a whole number
+			quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
+			# Add to array
+			names << "#{quantity} x #{line_item.product.name}"
+		end
     end
     names.join(divider)
   end
