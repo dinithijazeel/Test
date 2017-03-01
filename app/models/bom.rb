@@ -271,17 +271,17 @@ class Bom < ActiveRecord::Base
 						if tax["TaxRate"] !=0 
 							#check whether the tax product is already added to the array
 							existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
-							#if existing_tax_product.nil?
+							if existing_tax_product.nil?
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
 									unit_price: tax["TaxRate"],  
 									product:  current_tax_product)
 								new_line_item_array.push(p)
-							#else 
-							#	existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
-							#	existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
-							#end
+							else 
+								existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
+								existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
+							end
 						end 
 					end
 				end
@@ -363,12 +363,12 @@ class Bom < ActiveRecord::Base
     names = []
     line_items.each do |line_item|
 		#Consider only service and merchandise products to generate summary
-		#if line_item.product.product_type == 'service' || line_item.product.product_type == 'merchandise' 
+		if line_item.product.product_type == :service  || line_item.product.product_type == :merchandise  
 			# Make float into int if it's a whole number
 			quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
 			# Add to array
 			names << "#{quantity} x #{line_item.product.name}"
-		#end
+		end
     end
     names.join(divider)
   end
