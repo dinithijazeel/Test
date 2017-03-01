@@ -281,9 +281,9 @@ class Bom < ActiveRecord::Base
 							else 	
 							puts "rrrrrrrrrrrrrrrrrrrr"
 								puts existing_tax_product.quantity
-								existing_tax_product.quantity =2
-								#existing_tax_product.unit_price =existing_tax_product.unit_price +  tax["TaxRate"]
-							
+								
+								existing_tax_product.unit_price =existing_tax_product.unit_price +  tax["TaxRate"]
+								existing_tax_product.quantity =existing_tax_product.quantity + 1.to_f
 							
 							end
 						end 
