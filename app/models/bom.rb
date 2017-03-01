@@ -269,12 +269,19 @@ class Bom < ActiveRecord::Base
 					else
 						#check for items with non zero amount
 						if tax["TaxRate"] !=0
-							p = LineItem.new(
-								description: tax["TaxTypeDesc"],
-								quantity: 1,
-								unit_price: tax["TaxRate"],  
-								product:  Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym]))  
-							new_line_item_array.push(p) 
+							
+							ta = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ Need to check by TaxCode
+							if ta.nil?
+								puts "rrrrrrrrrrrrrrrrrrrr"
+								puts "exists"
+							else 
+								p = LineItem.new(
+									description: tax["TaxTypeDesc"],
+									quantity: 1,
+									unit_price: tax["TaxRate"],  
+									product:  tax_product 
+								new_line_item_array.push(p) 
+							end
 						end 
 					end
 				end
