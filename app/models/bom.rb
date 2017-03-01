@@ -279,7 +279,7 @@ class Bom < ActiveRecord::Base
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
 									unit_price: tax["TaxRate"],  
-									product:  tax_product 
+									product:  tax_product )
 								new_line_item_array.push(p) 
 							end
 						end 
