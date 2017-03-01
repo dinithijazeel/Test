@@ -269,22 +269,18 @@ class Bom < ActiveRecord::Base
 					else
 						#check for items with non zero amount
 						if tax["TaxRate"] !=0 
-							existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ Need to check by TaxCode
+							#check whether the tax product is already added to the array
+							existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
 							if existing_tax_product.nil?
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
 									unit_price: tax["TaxRate"],  
-									product:  current_tax_product )
-								new_line_item_array.push(p) 
-								
-							else 	
-							puts "rrrrrrrrrrrrrrrrrrrr"
-								puts existing_tax_product.quantity
-								
-								existing_tax_product.unit_price =existing_tax_product.unit_price +  tax["TaxRate"]
-								existing_tax_product.quantity =existing_tax_product.quantity + 1.to_f
-							
+									product:  current_tax_product)
+								new_line_item_array.push(p)
+							else 
+								existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
+								existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
 							end
 						end 
 					end
@@ -366,6 +362,9 @@ class Bom < ActiveRecord::Base
   def summary(divider = ' / ')
     names = []
     line_items.each do |line_item|
+	puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	line_item.product.product_type
+	
       # Make float into int if it's a whole number
       quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
       # Add to array
