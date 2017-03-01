@@ -278,11 +278,13 @@ class Bom < ActiveRecord::Base
 									product:  current_tax_product )
 								new_line_item_array.push(p) 
 								
-							else 
+							else 	
+							puts "rrrrrrrrrrrrrrrrrrrr"
+								puts existing_tax_product.quantity
 								existing_tax_product.quantity =2
 								#existing_tax_product.unit_price =existing_tax_product.unit_price +  tax["TaxRate"]
-								puts "rrrrrrrrrrrrrrrrrrrr"
-								puts "exists"
+							
+							
 							end
 						end 
 					end
