@@ -261,10 +261,8 @@ class Bom < ActiveRecord::Base
 		if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
 			new_line_item_array =  []   
 			parsed["GroupList"].each do |group| 
-				group["TaxList"].each do |tax|
-				puts "ooooooooooooooooooooooooooooooooooo"
-					tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[':6666666666'])  
-					#tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym]))  
+				group["TaxList"].each do |tax| 
+					tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym]))  
 					if tax_product.nil?
 						puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
 					else
