@@ -270,7 +270,7 @@ class Bom < ActiveRecord::Base
 						#check for items with non zero amount
 						if tax["TaxRate"] !=0 
 							existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ Need to check by TaxCode
-							if ta.nil?
+							if existing_tax_product.nil?
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
