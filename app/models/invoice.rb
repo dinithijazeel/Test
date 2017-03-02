@@ -83,7 +83,9 @@ class Invoice < Bom
       end
       # Fill in missing memo
       if memo.nil? || memo.blank?
-        self.memo = summary
+        #self.memo = summary
+		#gets only 250 charaters if summary length is longer than 250
+		self.memo = summary.length <= 250 ? summary : summary.split(//).first(250).join("").to_s 
       end
     end
   end
