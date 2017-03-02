@@ -47,7 +47,7 @@ class Admin::ProductsController < ApplicationController
     respond_to do |format|
       if @product.update(product_params)
         @products = Product.index
-        format.js { render :update }
+        format.js { helper_reload }
       else
         format.js { render :edit }
       end

@@ -1,14 +1,11 @@
 class PaymentMailer < ApplicationMailer
-  layout 'mailer'
-  add_template_helper ApplicationHelper
 
   def payment(payment)
-    # @payment = payment
-    # # to = User.current.email
-    # # to = payment.payable.contact.admin_email
-    # to = 'ian@fractel.net'
-    # from = Rails.application.config.x.email.payment_sender
-    # subject = Rails.application.config.x.email.payment_subject
-    # mail(to: to, from: from, subject: subject, template_path: "tenants/#{Rails.application.config.x.tenant}/email")
+    @payment = payment
+    to = payment.payable_contact.invoice_email
+    from = directory(:payment_from)
+    cc = directory(:accounting)
+    subject = directory(:payment_subject)
+    mail(to: to, from: from, cc: cc, subject: subject, template_path: directory(:template_path))
   end
 end

@@ -2,12 +2,12 @@ doctype html
 html lang="en" 
   head
 
-    title= "#{params[:controller].titleize} :: Myriander"
+    title= "#{params[:controller].titleize} :: #{Rails.application.config.x.company.name}"
 
     meta content=("text/html; charset=UTF-8") http-equiv="content-type" /
     meta charset="utf-8" /
     meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" /
-    link rel="icon" href=image_url("icons/#{Rails.application.config.x.theme.name}_favicon.ico")
+    link rel="icon" href=image_url("favicon.ico")
 
     = javascript_include_tag 'https://js.stripe.com/v2/' if ['proposals','invoices','customers'].include? params[:controller]
     = stylesheet_link_tag    Rails.application.config.x.theme.name, media: 'all', 'data-turbolinks-track' => true
@@ -21,7 +21,7 @@ html lang="en"
 
     #page
       #logo
-        = image_tag Rails.application.config.x.theme.logo
+        = image_tag "logo_sm.png"
       #menu-toggle
         = link_to '#', class: 'menu-toggle'
           = fa('bars')

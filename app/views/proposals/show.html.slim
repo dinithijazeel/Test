@@ -59,13 +59,17 @@
         => button_link 'Accept', proposal_path(@proposal, status: 'accepted'), method: :put, type: 'primary', confirm: 'Accept this proposal?'
         => button_link 'Resend', proposal_path(@proposal, status: 'resend'), method: :put, type: 'warning', confirm: 'Resend this proposal?'
       - elsif @proposal.accepted?
-        - if @proposal.paid?
-          - if @proposal.contact.has_portal_account?
-            => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal?'
-          - else
-            => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a FracTEL account for the customer.'
+        / - if @proposal.paid?
+        /   - if @proposal.contact.has_portal_account?
+        /     => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal?'
+        /   - else
+        /     => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a FracTEL account for the customer.'
+        / - else
+        /   => button_link 'Collect Payment', new_proposal_payment_path(@proposal), type: 'primary', remote: true
+        - if @proposal.contact.has_portal_account? || !Rails.application.config.x.features.fractel_onboarding
+          => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal?'
         - else
-          => button_link 'Collect Payment', new_proposal_payment_path(@proposal), type: 'primary', remote: true
+          => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a FracTEL account for the customer.'
         
       = button_link 'View PDF', proposal_path(@proposal, :format => :pdf), :target => '_blank'
 

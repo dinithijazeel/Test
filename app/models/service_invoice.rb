@@ -10,6 +10,9 @@ class ServiceInvoice < Invoice
     total = nil
     json_invoice.each_pair do |name, value|
       case name
+      when 'Billing'
+        invoice.billing_start = value[0]['Period'][0]['Start'][0]
+        invoice.billing_end = value[0]['Period'][0]['End'][0]
       when 'BillingCode'
         billing_code = value[0]
       when 'BillTo'
@@ -150,6 +153,6 @@ class ServiceInvoice < Invoice
   end
 
   def pdf_template
-    "tenants/#{Rails.application.config.x.tenant}/invoices/service_pdf.html.slim"
+    'invoices/pdf/service_pdf.html.slim'
   end
 end

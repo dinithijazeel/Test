@@ -12,9 +12,10 @@
       = link_to "Contacts Index", contacts_path, class: 'btn btn-default'
     = col md: 6
       - if @contact.lead?
-        = link_to "Create Opportunity", new_contact_opportunity_path(@contact), :remote => true, class: 'btn btn-primary'
-      - else
-        = link_to "View Customer", customer_path(@contact.customer), class: 'btn btn-primary'
+        = link_to "Create Opportunity", new_contact_opportunity_path(@contact), :remote => true, class: 'btn btn-default'
+      - elsif @contact.type == 'Customer'
+        = link_to "View Customer", customer_path(@contact), class: 'btn btn-default'
+      =< link_to "Create Proposal", new_customer_proposal_path(@contact), class: 'btn btn-primary'
 
 - content_for :page_activity
   = render partial: 'comments/comments', locals: {commentable: @contact, new_comment: @comment}

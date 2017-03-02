@@ -1,0 +1,47 @@
+<% content_for :preview do %>
+    Your <%= Rails.application.config.x.company.name %> Invoice
+<% end %>
+
+<!-- COPY -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+
+          <p>Dear <%= @invoice.contact.contact_first %> <%= @invoice.contact.contact_last %>,
+
+          <p>Your invoice for <%= Rails.application.config.x.company.name %> services is attached.</p>
+
+          <% if Rails.application.config.x.features.payments %>
+            <p>To pay online, please use payment button at the bottom of this email.</p>
+          <% end %>
+
+          <p>To pay by check, please remit to:</p>
+
+          <p><%= Rails.application.config.x.company.name %><br/>
+          Attn: Accounts Receivable<br/>
+          <%= Rails.application.config.x.company.street %><br/>
+          <%= Rails.application.config.x.company.city_st_zip %></p>
+
+          <p>If you have any questions or require assistance, please feel free to contact <%= Rails.application.config.x.company.accounting_email %>.</p>
+
+        </td>
+    </tr>
+    <% if Rails.application.config.x.features.payments %>
+      <tr>
+          <td align="center">
+              <!-- BULLETPROOF BUTTON -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                      <td align="center" style="padding-top: 25px;" class="padding">
+                          <table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container">
+                              <tr>
+                                  <td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="<%= @invoice.payment_link %>" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">Pay Online</a></td>
+                              </tr>
+                          </table>
+                      </td>
+                  </tr>
+              </table>
+          </td>
+      </tr>
+    <% end %>
+</table>

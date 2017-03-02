@@ -1,0 +1,43 @@
+#proposal.print-page
+  .proposal
+    h1 Summary of Charges
+    - if @proposal.products_proposal.line_items.any?
+      p The following are one-time charges for selected equipment and services.
+      / Products Proposal Table
+      = myrject :card do |c|
+        - c.title 'One-time Charges'
+        - c.body
+          = table
+            = render 'invoices/invoice_line_items', :line_items => @proposal.products_proposal.line_items, :hide_payments => true, :hide_total_due => true
+            tbody.total
+              = render 'invoices/invoice_line_total',
+                :total_class => 'products-total',
+                :total_label => 'One-time Total:',
+                :total_amount => money(@proposal.products_proposal.invoice_total)
+    - if @proposal.services_proposal.line_items.any?
+      p The following are monthly recurring charges for selected service plans.
+      / Service Proposal Table
+      = myrject :card do |c|
+        - c.title 'Estimated Monthly Charges'
+        - c.body
+          = table
+            = render 'invoices/invoice_line_items', :line_items => @proposal.services_proposal.line_items, :hide_payments => true, :hide_total_due => true
+            tbody.total
+              = render 'invoices/invoice_line_total',
+                :total_class => 'services-total',
+                :total_label => 'Monthly Total:',
+                :total_amount => money(@proposal.services_proposal.invoice_total)
+      p Service plans are charged in advance on the first day of each month. Your first month payment will be pro-rated based on your service date. Remaining credit will be applied to your second month.
+    / Total
+    p
+    = table
+      tbody.grand-total
+        tr
+          td width="75%" Total due at signing:
+          td.text-right
+            = money(@proposal.total)
+
+  .footer
+    p.proposal-number = "PROPOSAL ##{@proposal.number.nil? ? "[NUMBER]" : @proposal.number}"
+
+  .page-number = page

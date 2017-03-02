@@ -1,0 +1,12 @@
+#payment-instructions
+  h4 Payments
+  - if Rails.application.config.x.features.payments
+    p
+      | To pay online, 
+      =< link_to 'click here', @pdf_invoice.payment_link
+      | .
+  p
+    | To pay by check, please remit to the address at the top of this invoice.
+  p
+    = "For billing questions or issues, please contact us at #{Rails.application.config.x.company.accounting_phone} or"
+    a< href="mailto:#{Rails.application.config.x.company.email}" = Rails.application.config.x.company.accounting_email

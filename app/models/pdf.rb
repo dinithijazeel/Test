@@ -3,6 +3,13 @@ require 'render_anywhere'
 class Pdf
   include RenderAnywhere
 
+  class RenderingController < RenderAnywhere::RenderingController
+    def initialize
+      super
+      prepend_view_path "app/views/tenants/#{Rails.application.config.x.tenant}"
+    end
+  end
+
   def self.generate (view, options = {})
     generator = self.new
     generator.generate_pdf(view, options)

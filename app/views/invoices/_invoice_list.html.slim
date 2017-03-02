@@ -2,18 +2,22 @@
   = myrject :card do |c|
     - c.title title
     - c.body
-      = table
+      = table class: 'sortable'
         thead
           tr
             th.col-md-1 Date
             th.col-md-2 Number
-            th.col-md-4 Company
+            th.col-md-3 Company
             th.col-md-4 Memo
-            th.col-md-1 Due
+            th.col-md-2 Due
         tbody
           = content_tag_for(:tr, invoices) do |invoice|
             td = link_to invoice.invoice_date, invoice.becomes(Invoice)
             td = invoice.number
             td = invoice.contact.company_name unless invoice.contact.nil?
             td = invoice.memo
-            td.text-right = money(invoice.total_due)
+            td.text-right data-sortvalue=invoice.total_due
+              - if invoice.open?
+                = link_to "#{money(invoice.total_due)} #{fa('money')}".html_safe, new_invoice_payment_path(invoice), :remote => true
+              - else
+                = money(invoice.total_due)

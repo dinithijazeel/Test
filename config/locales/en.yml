@@ -84,6 +84,7 @@ en:
         decision_maker: Decision Maker
         competition: Competition
       payment:
+        payment_account: Account
         payment_type: Type
         payment_date: Date
         amount: Amount
@@ -91,6 +92,7 @@ en:
         memo: Memo
       product:
         sku: SKU
+        vendor_sku: Vendor SKU
         name: Name
         description: Description
         price: Price
@@ -101,7 +103,6 @@ en:
         product_status: Status
         billing: Billing
         vendor: Vendor
-        taxable: Taxable
         fixed_price: Fixed Price
         datasheet: Datasheet
       profile:
@@ -185,6 +186,7 @@ en:
         decision_maker: Decision Maker
         competition: Competition
       payment:
+        payment_account: Account
         payment_type: Type
         payment_date: Date
         amount: Amount
@@ -192,6 +194,7 @@ en:
         memo: Memo
       product:
         sku: SKU
+        vendor_sku: Vendor SKU
         name: Name
         description: Description
         price: Price
@@ -202,7 +205,6 @@ en:
         product_status: Status
         billing: Billing
         vendor: Vendor
-        taxable: Taxable
         fixed_price: Fixed Price
         datasheet: Datasheet
       profile:
@@ -286,6 +288,7 @@ en:
         decision_maker: Decision Maker
         competition: Competition
       payment:
+        payment_account: Account
         payment_type: Type
         payment_date: Date
         amount: Amount
@@ -293,6 +296,7 @@ en:
         memo: Memo
       product:
         sku: SKU
+        vendor_sku: Vendor SKU
         name: Name
         description: Description
         price: Price
@@ -303,7 +307,6 @@ en:
         product_status: Status
         billing: Billing
         vendor: Vendor
-        taxable: Taxable
         fixed_price: Fixed Price
         datasheet: Datasheet
       profile:

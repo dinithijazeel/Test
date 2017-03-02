@@ -1,5 +1,26 @@
 namespace :myriander do
 
+  task update_suretax: :environment do
+    codes = CSV.read("#{Rails.root}/sure_tax_codes.csv")
+    codes.each do |code|
+      sku = code[0]
+      sure_tax_code = code[1]
+      product = Product.find_by_sku(sku)
+      if product
+        print "Product #{product.id} -> #{sure_tax_code}\n"
+        product.update_attribute(:sure_tax_code, sure_tax_code)
+      else
+        print "Product #{sku} NOT FOUND\n"
+      end
+    end
+  end
+
+  task refresh_contacts: :environment do
+    Customer.where('portal_id IS NOT NULL').each do |c|
+      c.read_portal_record
+    end
+  end
+
   task check_contacts: :environment do
     c = Customer.where('portal_id IS NOT NULL')
     c.each do |customer|

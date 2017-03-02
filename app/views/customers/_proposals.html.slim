@@ -3,7 +3,7 @@
   - c.action
     = link_to fa('plus'), new_customer_proposal_path(customer)
   - c.body
-    = table
+    = table class: 'sortable'
       thead
         tr
           th width="10%" Date
@@ -20,7 +20,7 @@
               td = link_to (proposal.number.nil? ? 'Draft' : proposal.number), proposal
               td = proposal.memo
               td = proposal.status_label
-              td.text-right
+              td.text-right data-sortvalue=proposal.total
                 = money(proposal.total)
               td.text-right
         - else

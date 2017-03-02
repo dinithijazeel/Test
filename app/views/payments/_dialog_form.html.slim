@@ -3,24 +3,24 @@
 - else
   - payable = @payment.payable
 
-= semantic_form_for [payable, @payment], html: {'data-stripe-key': Rails.configuration.stripe[:publishable_key]}, remote: true do |f|
+= semantic_form_for [payable, @payment], html: {'data-stripe-key' => Rails.configuration.stripe[:publishable_key]}, remote: true do |f|
   = myrject :modal do |m|
     - m.title 'Payment'
     - m.body
       .payment-problems
         = render 'errors', obj: @payment, title: 'The payment could not be processed.'
-      - if (@payment.persisted? ? policy(@payment).update? : policy(@payment).create?)
+      - if @payment.persisted?
+        = render 'info', :payment => @payment
+        = f.hidden_field :amount, :class => 'cc-amount'
+      - else
         .form-wrapper style="margin-bottom: 20px;"
-          = select_tag :form_type, options_for_select(Payment.payments_accepted, @form_type), :class => 'form-control'
+          = f.input :payment_account, :collection => options_for_select(Payment.payments_accepted)
         = myrject :card do |c|
           - c.title 'Details'
           - c.body
-            - Payment.payments_accepted.each do |payment_type|
-              .payment-form class=payment_type
-                = render payment_type[1], :f => f
-      - else
-        = render 'info', :payment => @payment
-        = f.hidden_field :amount, :class => 'cc-amount'
+            - Payment.payment_forms.each do |payment_form|
+              .payment-form class=payment_form
+                = render payment_form.to_s, :f => f
       - unless @payment.payable.is_a?(Proposal)
         = render 'open_invoices', :f => f
     - m.footer
@@ -32,5 +32,5 @@
 coffee:
   payments.initTestData('select.test-data', 'form.payment')
   payments.initPayment('form.payment')
-  h.focusModal('select#form_type')
+  h.focusModal('select#payment_payment_account')
   window.stripeResponseHandler = payments.responseHandler

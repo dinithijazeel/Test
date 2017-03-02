@@ -43,7 +43,6 @@
   = col md: 4
     = f.input :amount, label: true, :prepend => fa('dollar'), as: :number, input_html: {class: 'cc-amount', readonly: (defined?(read_only_amount) && read_only_amount), value: sprintf('%.2f', f.object.amount)}
   = f.hidden_field :payment_date
-  = f.hidden_field :payment_type, :value => 'Stripe'
   = f.fields_for :stripe_transaction do |f|
     = f.hidden_field :token, :id => 'st_token'
     = f.hidden_field :stripe_created, :id => 'st_created'

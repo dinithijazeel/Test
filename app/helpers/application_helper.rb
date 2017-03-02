@@ -84,10 +84,13 @@ module ApplicationHelper
   end
 
   def phone(numbers)
-    if numbers.to_s.length <= 10
-      number_to_phone(numbers, :area_code => true)
-    else
-      "#{number_to_phone(numbers.to_s[0..9], :area_code => true)} x#{numbers.to_s[10..20]}"
+    unless numbers.blank?
+      numbers.gsub!(/\D/, '')
+      if numbers.to_s.length <= 10
+        number_to_phone(numbers, :area_code => true)
+      else
+        "#{number_to_phone(numbers.to_s[0..9], :area_code => true)} x#{numbers.to_s[10..20]}"
+      end
     end
   end
 

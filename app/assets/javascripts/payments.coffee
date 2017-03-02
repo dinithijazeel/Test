@@ -108,15 +108,16 @@ window.payments =
 
   initFormTypeSelector: (payment)->
     console.log "payments.initFormTypeSelector #{payment}"
+    $('.payment-form').hide()
     $(payment).on(
       'change'
-      'select#form_type'
+      'select#payment_payment_account'
       (e)->
         console.log "payments.paymentTypeSelector #{payment}"
         e.preventDefault()
         $('.payment-form').hide()
         # Disable everything
-        form_type = $(this).val()
+        form_type = $(this).find('option:selected').data('form')
         # Disable all the inputs
         $('input, select, textarea', "#{payment} .payment-form").
           attr('disabled', true)
@@ -183,7 +184,6 @@ window.payments =
     $('input.cc-cvc').payment('formatCardCVC')
     # Hide forms and initialize payment type selector
     payments.initFormTypeSelector(payment)
-    $('select#form_type', payment).change()
     # Initialize credits
     credits = $('tr.credit-row', payment).length
     if (credits == 1)
@@ -206,8 +206,7 @@ window.payments =
         forms.addOverlay(payment)
         $form = $(payment)
         # If we don't have a token, get one
-        # console.log $('select#form_type', payment).val(), $('input#st_token', $form).val()
-        if $('input#form_type, select#form_type', payment).val() == 'stripe' && not $('input#st_token', $form).val()
+        if $('input#payment_payment_account, select#payment_payment_account', payment).val() == 'Stripe' && not $('input#st_token', $form).val()
           # Indicate processing in progress
           payments.processingInProgress($form)
           # Request a token from Stripe:

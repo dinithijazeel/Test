@@ -10,6 +10,8 @@ class ContactsController < ApplicationController
     if params[:q]
       @contacts = Contact.search(params[:q])
     else
+      @leads = Contact.leads
+      @opps = Contact.opps
       @contacts = Contact.index
     end
   end

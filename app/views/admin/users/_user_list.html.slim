@@ -1,4 +1,4 @@
-= table
+= table class: 'sortable'
   thead
     tr
       th Email
@@ -12,7 +12,7 @@
     - @users.each do |user|
       tr
         td = mail_to user.email
-        td = "#{user.first_name} #{user.last_name}"
+        td data-sortvalue=user.last_name = "#{user.first_name} #{user.last_name}"
         td = user.phone
         td = user.title
         td = user.role_name

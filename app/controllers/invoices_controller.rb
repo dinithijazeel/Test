@@ -30,7 +30,7 @@ class InvoicesController < ApplicationController
       end
       format.pdf do
         pdf_invoice = @invoice.becomes(@invoice.type.constantize)
-        pdf_invoice.generate_pdf if pdf_invoice.pdf.file.nil? || pdf_invoice.invoice_status == 'draft'
+        pdf_invoice.generate_pdf
         send_file(pdf_invoice.pdf.path, :filename => pdf_invoice.pdf_filename, :type => 'application/pdf', :disposition => 'inline')
       end
     end
@@ -109,8 +109,8 @@ class InvoicesController < ApplicationController
       else
         case params[:status]
         when 'open'
-          @invoice.invoice_status = :open
           @invoice.send_invoice_later
+          @invoice.invoice_status = :open
         when 'resend'
           @invoice.send_invoice_later
         when 'closed'

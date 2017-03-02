@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
 
-  before_filter :set_current_user
+  before_filter :set_current_user, :prepend_view_paths
   after_filter -> { flash.discard }, :if => -> { request.xhr? }
 
   private
@@ -23,6 +23,10 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     User.current = current_user
+  end
+
+  def prepend_view_paths
+    prepend_view_path "app/views/tenants/#{Rails.application.config.x.tenant}"
   end
 
   def assign_creator

@@ -17,8 +17,9 @@
       = field 'Billing Address'
         - unless @invoice.contact.nil?
           = render 'address', address: @invoice.contact.billing_address
+          = @invoice.contact.invoice_email
     = col md: 6
-      = field 'Billing Address'
+      = field 'Service Address'
         - unless @invoice.contact.nil?
           = render 'address', address: @invoice.contact.service_address
   / Line Items
@@ -27,7 +28,8 @@
       :line_items => @invoice.line_items
     = render 'invoices/invoice_totals',
       :invoice => @invoice,
-      :link_payment => (@invoice.invoice_status == 'open')
+      :link_payment => true
+      / :link_payment => (@invoice.invoice_status == 'open')
       
   / Memo
   = field 'Memo', @invoice.memo
@@ -46,5 +48,5 @@
             - @invoice.credits.each do |credit|
               tr
                 td = credit.payment.payment_date
-                td = credit.payment.payment_type
+                td = credit.payment.payment_account
                 td = money(credit.amount)

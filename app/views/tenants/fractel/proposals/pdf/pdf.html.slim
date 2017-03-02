@@ -1,0 +1,26 @@
+/ Cover
+= render "proposals/pdf/cover"
+
+/ Letter
+= render "proposals/pdf/letter", :page => 2
+
+/ About FracTEL Benefits
+= render "proposals/pdf/about", :page => 3
+
+/ Proposal
+= render "proposals/pdf/proposal", :page => 4
+
+/ Cloud PBX | SIP Trunking
+- if @proposal.services_proposal.has_line_item(:cloud_pbx)
+  = render "proposals/pdf/cloud_pbx", :page => 5
+- else
+  = render "proposals/pdf/sip_trunking", :page => 5
+
+/ Profiles
+= render "proposals/pdf/profiles", :page => 6
+
+/ Addendums Index
+= render "proposals/pdf/addendums", :page => 7
+
+/ Terms and Conditions
+/ = render 'proposals/pages/terms'

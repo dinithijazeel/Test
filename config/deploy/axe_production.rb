@@ -1,5 +1,5 @@
 set :profile, 'axecom'
-set :branch, 'release/1.2.1'
+set :branch, 'feature/tenant-pdfs-150'
 set :stage, :production
 
 set :rails_env, :production

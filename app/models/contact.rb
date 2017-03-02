@@ -26,9 +26,13 @@ class Contact < ActiveRecord::Base
   ## Scopes
   #
   scope :query, -> (q) { where('company_name LIKE ? OR contact_first LIKE ? OR contact_last LIKE ? OR admin_email LIKE ? OR billing_email LIKE ? OR phone LIKE ? OR portal_id LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
+  scope :updated_this_week, -> {
+    where(updated_at: 1.weeks.ago..Time.now).
+    order(updated_at: :desc)
+  }
   scope :updated_this_month, -> {
     where(updated_at: 4.weeks.ago..Time.now).
-    order(:company_name)
+    order(updated_at: :desc)
   }
   #
   ## Callbacks
@@ -57,8 +61,16 @@ class Contact < ActiveRecord::Base
   #
   ## Listings
   #
+  def self.leads
+    updated_this_week.where(customer_status: Contact.customer_statuses[:lead])
+  end
+
+  def self.opps
+    updated_this_week.where(customer_status: Contact.customer_statuses[:opportunity])
+  end
+
   def self.index
-    updated_this_month
+    updated_this_month.where.not(customer_status: [Contact.customer_statuses[:lead], Contact.customer_statuses[:opportunity]])
   end
 
   def self.search(q)
@@ -149,6 +161,35 @@ class Contact < ActiveRecord::Base
     :PortingEmail   => admin_email,
     :WorkPhone      => phone.gsub(/[^\d]/, ''),
   }
+  end
+
+  def read_portal_record
+    if has_portal_account?
+      portal_record = Fractel.get_account(customerdata: ",,#{portal_id}")
+      record = {
+        contact_first: portal_record['FirstName'][0],
+        contact_last: portal_record['LastName'][0],
+        company_name: portal_record['CompanyName'][0],
+        phone: portal_record['WorkPhone'][0],
+        admin_email: portal_record['AdminEmail'][0],
+        billing_email: portal_record['BillingEmail'][0],
+        billing_street_1: portal_record['Address1'][0],
+        billing_street_2: portal_record['Address2'][0],
+        billing_city: portal_record['City'][0],
+        billing_state: portal_record['State'][0],
+        billing_zip: portal_record['ZipCode'][0],
+        billing_country: portal_record['Country'][0],
+        service_street_1: portal_record['Address1'][0],
+        service_street_2: portal_record['Address2'][0],
+        service_city: portal_record['City'][0],
+        service_state: portal_record['State'][0],
+        service_zip: portal_record['ZipCode'][0],
+        service_country: portal_record['Country'][0],
+        use_billing_for_service: true,
+        tax_exempt_certificate: portal_record['USF499ID'][0],
+      }
+      update_columns(record)
+    end
   end
 
   # Helpers

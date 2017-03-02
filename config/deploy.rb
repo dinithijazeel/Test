@@ -42,7 +42,7 @@ set(:config_files, %w(
 # Config files to make executable
 set(:executable_config_files, [])
 
-# Additional symlinks for deploy:setup_config
+# Additional symlinks for deploy:provision
 set(:symlinks, [
   {
     source: 'nginx.conf',
@@ -62,15 +62,16 @@ namespace :deploy do
   # Only allow a deploy with passing tests to deployed
   before :deploy, 'deploy:run_tests'
   # Compile assets locally, then rsync
+  after 'deploy:symlink:shared', 'deploy:link_profile'
   after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :finishing, 'deploy:cleanup'
 
   # Remove the default nginx configuration
   # to prevent conflicts
-  before 'deploy:setup_config', 'nginx:remove_default_vhost'
+  before 'deploy:provision', 'nginx:remove_default_vhost'
 
   # Reload nginx to pick up new/modified vhosts
-  after 'deploy:setup_config', 'nginx:reload'
+  after 'deploy:provision', 'nginx:reload'
 
   # Restart application
   after 'deploy:publishing', 'deploy:restart'

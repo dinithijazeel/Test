@@ -7,7 +7,7 @@ $font-medium: 20px;
 $font-header: 15px;
 $font-body: 14px;
 $font-small: 11px;
-$font-terms: 9.3px;
+$font-terms: 8.4px;
 
 $standard-margin: $font-body;
 
@@ -126,8 +126,10 @@ $border-thick-teal: 3px solid #009AB1;
 
 #invoice {
   .logo {
-    background-image: image_url('invoices/invoice_logo_fractel.png');
-    background-position: left top;
+    @include layout(0.5in, 0.13in, 4.0in);
+    background-image: image_url('logo_md.png');
+    background-size: 70%;
+    background-position: 30px 0;
     background-repeat: no-repeat;
     height: 1.5in;
   }
@@ -145,10 +147,7 @@ $border-thick-teal: 3px solid #009AB1;
     }
   }
   #first-page {
-    .logo {
-      @include layout(0.5in, 0.13in, 4.0in);
-    }
-    #invoice-header {
+    .invoice-header {
       @include layout(0.5in, 4.25in, 3.75in);
       border: $border-teal-thin;
       .title {
@@ -208,17 +207,13 @@ $border-thick-teal: 3px solid #009AB1;
   .detail-page {
     .header {
       @include layout(0.5in, 0.13in, 7.87in);
-      .invoice-number {
-        @include layout(0.2in, 0.37in, 7.5in);
-        text-align: center;
-      }
       .invoice-pagination {
         @include layout(0.2in, 00.37in, 7.5in);
         text-align: right;
       }
     }
     .detail {
-      @include layout(1.5in, 0.5in, 7.5in);
+      @include layout(1.75in, 0.5in, 7.5in);
     }
   }
 }
@@ -377,7 +372,7 @@ $border-thick-teal: 3px solid #009AB1;
     .page-body {
       @include layout(1.75in, 0.625in, 7.25in);
       p, li {
-        font-size: $font-terms;
+        font-size: $font-terms !important;
         text-align: justify;
         &.notice {
           font-size: $font-terms * 1.3;

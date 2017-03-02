@@ -52,3 +52,6 @@
             = fa('plus')
             | &nbsp;Add Vendor
         li.list-group-item = link_to_unless_current 'Resque', resque_path
+
+    - if Rails.application.config.x.staging
+      h4.text-center STAGING

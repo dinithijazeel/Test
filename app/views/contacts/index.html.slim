@@ -4,4 +4,19 @@
 
 - content_for :page_body
   = render 'search', :search_path => contacts_path
-  = render 'contact_list', :listing => @contacts, :show_status => true
+  - unless @opps.nil? || @opps.empty?
+    = myrject :card do |c|
+      - c.title 'Opportunities'
+      - c.body
+        = render 'contacts/contact_list', :listing => @opps
+  - unless @leads.nil? || @leads.empty?
+    = myrject :card do |c|
+      - c.title 'Leads'
+      - c.body
+        = render 'contacts/contact_list', :listing => @leads
+  - unless @contacts.nil? || @contacts.empty?
+    = myrject :card do |c|
+      - c.title 'Contacts'
+      - c.body
+        = render 'contacts/contact_list', :listing => @contacts, show_status: true
+    

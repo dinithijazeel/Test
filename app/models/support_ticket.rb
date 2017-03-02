@@ -19,7 +19,7 @@ class SupportTicket < ActiveRecord::Base
   def create_remote
     url  = "#{Rails.application.config.x.freshdesk.url}api/v2/tickets"
     api_key = Rails.application.config.x.freshdesk.api_key
-    payload = supportable.external_ticket_params(:freshdesk)
+    payload = supportable.external_ticket_params
     site = RestClient::Resource.new(url, api_key, 'X')
     begin
       if payload[:attachments]

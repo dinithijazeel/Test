@@ -1,0 +1,67 @@
+<% content_for :preview do %>
+    A new customer has been added.
+<% end %>
+
+<!-- COPY -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="center" style="font-size: 32px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">New Customer</td>
+    </tr>
+    <tr>
+        <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+
+            <h3>Contact</h3>
+
+            <p>
+                <strong><%= "#{@proposal.contact.contact_first} #{@proposal.contact.contact_last}" %></strong><br/>
+                <%= @proposal.contact.company_name %>
+            </p>
+            <p>
+                <%= mail_to @proposal.contact.admin_email %> (admin)
+                <% unless @proposal.contact.billing_email.nil? or @proposal.contact.billing_email.empty? %>
+                    <br/>
+                    <%= mail_to @proposal.contact.billing_email %> (billing)
+                <% end %>
+            </p>
+            <p>
+                <%= phone(@proposal.contact.phone) %>
+            </p>
+            <p>
+                FracTEL Account Code: <%= @proposal.contact.portal_id %><br/>
+            </p>
+            <h3>Affiliate / Discount</h3>
+            <p>
+                Affiliate: <%= @proposal.contact.affiliate_id %><br/>
+                Discount: <%= @proposal.contact.discount_code %>
+            </p>
+            <h3>Billing Address</h3>
+            <p>
+                <%= @proposal.contact.billing_street_1 %><br/>
+                <%= @proposal.contact.billing_street_2 %><br/>
+                <%= "#{@proposal.contact.billing_city}, #{@proposal.contact.billing_state} #{@proposal.contact.billing_zip} (#{@proposal.contact.billing_country})" %>
+            </p>
+            <h3>Service Address</h3>
+            <% if @proposal.contact.use_billing_for_service %>
+            <p><em>Use billing address.</em>
+            <% else %>
+            <p>
+                <%= @proposal.contact.service_street_1 %><br/>
+                <%= @proposal.contact.service_street_2 %><br/>
+                <%= "#{@proposal.contact.service_city}, #{@proposal.contact.service_state} #{@proposal.contact.service_zip} (#{@proposal.contact.service_country})" %>
+            </p>
+            <% end %>
+            <h3>Onboarding</h3>
+            <p>
+                Local Porting: <%= if @proposal.onboarding.local_port then "yes" else "no" end %><br/>
+                Toll Free Porting: <%= if @proposal.onboarding.tollfree_port then "yes" else "no" end %>
+            </p>
+            <p>
+                Installation: <%= @proposal.onboarding.installation %>
+            </p>
+            <p>
+                <%= @proposal.onboarding.installation_notes %>
+            </p>
+
+        </td>
+  </tr>
+</table>

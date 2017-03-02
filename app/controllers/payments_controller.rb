@@ -14,12 +14,10 @@ class PaymentsController < ApplicationController
       @payment.payment_date = Date.today
       # Figure out customer for payment
       @payment.customer_id = params[:customer_id] || @payment.payable.contact_id
-      # Set type
-      @form_type = params[:form_type]
       # Create stripe transaction
       @payment.build_stripe_transaction
       # Load tests if we're in development
-      @tests = PaymentsController.tests if Rails.env.development?
+      @tests = PaymentsController.tests if Rails.application.config.x.staging
       # Figure out which form to show
       if params[:payment_token]
         render :pay, layout: 'portal'
@@ -37,8 +35,10 @@ class PaymentsController < ApplicationController
     @payment.client_ip = request.remote_ip
     # Respond
     if @payment.save
+      # Report to portal
+      @payment.record_portal_payment unless @payment.payable.is_a?(Customer)
       # Log activity
-      Comment.build_from(@payment.customer, current_user.id, "Payment received: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_type})").save
+      Comment.build_from(@payment.customer, Rails.application.config.x.default_user_id, "Payment received: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_account})").save
       # Send payment receipt
       PaymentMailer.payment(@payment).deliver_now
       # Reload page to show successful payment
@@ -60,25 +60,15 @@ class PaymentsController < ApplicationController
         @payment.credits.build(:invoice => invoice)
       end
     end
-    # Figure out the payment form to use
-    @form_type = if Payment.bank_deposits.include? @payment.payment_type
-        'bank_deposit'
-      elsif Payment.credits.include? @payment.payment_type
-        'credit'
-      else
-        'stripe'
-      end
   end
 
   def update
-    # Load tests
-    @tests = PaymentsController.tests
     # Update payment attributes
     @payment.attributes = payment_params
     # Respond
     if @payment.valid?
       # Attempt to run Stripe payments
-      if @payment.payment_type == 'Stripe'
+      if @payment.payment_account == 'Stripe'
         success = process_stripe
       else
         success = true
@@ -87,13 +77,14 @@ class PaymentsController < ApplicationController
       if success
         @payment.client_ip = request.remote_ip
         @payment.save
-        Comment.build_from(@payment.customer, current_user.id, "Payment updated: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_type})").save
+        Comment.build_from(@payment.customer, current_user.id, "Payment updated: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_account})").save
         respond_to do |format|
           format.js { helper_reload }
         end
       end
     else
       respond_to do |format|
+        @tests = PaymentsController.tests if Rails.application.config.x.staging
         format.js { render :edit }
       end
     end
@@ -191,9 +182,9 @@ class PaymentsController < ApplicationController
 
   def payable
     if params[:customer_id]
-      Customer.find(params[:customer_id]).becomes(Customer )
+      Customer.find(params[:customer_id]).becomes(Customer)
     elsif params[:invoice_id]
-      Invoice.find(params[:invoice_id]).becomes(Invoice)
+      Bom.find(params[:invoice_id]).becomes(Invoice)
     # TODO: Get rid of this once PayController goes away?
     elsif params[:payment_token]
       Invoice.find_by_payment_token(params[:payment_token])

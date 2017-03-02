@@ -1,5 +1,6 @@
 set :profile, 'fractel'
-set :branch, 'develop'
+# set :branch, 'develop'
+set :branch, 'release/1.2.4'
 set :stage, :staging
 
 set :rails_env, :production

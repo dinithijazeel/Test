@@ -4,7 +4,7 @@
   - c.action
     = link_to fa('plus'), new_customer_invoice_path(customer)
   - c.body
-    = table
+    = table class: 'sortable'
       thead
         tr
           th width="10%" Date
@@ -24,7 +24,7 @@
               td = invoice.invoice_status.capitalize
               td.text-right
                 = money(invoice.invoice_total)
-              td.text-right
+              td.text-right data-sortvalue=invoice.total_due
                 = money(invoice.total_due)
               td.text-right
                 - if invoice.open?

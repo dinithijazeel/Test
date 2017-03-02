@@ -21,5 +21,8 @@ config/unicorn.rb
 
 # Gemfile.lock
 public/assets/*
+public/images
 service_invoices/*
 .env
+service_invoices/*
+settings.local.yml

@@ -72,5 +72,13 @@ window.h =
         else
           $("#{context} .#{field}").prop('checked', false)
 
+  activateTablesorter: ()->
+    console.log 'h.activateTablesorter'
+    $('table.sortable').tablesorter(
+      textExtraction: (node)->
+        $(node).data('sortvalue') || $(node).text()
+    )
+
 $(document).ready ->
   h.initToggle('.menu-toggle', '#sidebar-page')
+  h.activateTablesorter()

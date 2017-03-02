@@ -7,7 +7,7 @@ class PayController < PaymentsController
     if @customer = Customer.find_by(portal_id: params[:portal_id])
       @payment = Payment.new(amount: params[:amount] || 0)
       @payment.build_stripe_transaction
-      @tests = PaymentsController.tests if Rails.env.development?
+      @tests = PaymentsController.tests if Rails.application.config.x.staging
       render :prepay, layout: 'portal'
     else
       render :unknown, layout: 'portal'
@@ -45,8 +45,13 @@ class PayController < PaymentsController
       )
       respond_to do |format|
         if @payment.save
+          # Report to portal
+          @payment.record_portal_prepayment
+          # Send receipt
           PaymentMailer.payment(@payment).deliver_now
+          # Send invoice
           invoice.send_invoice_later
+          # Refresh
           format.js { helper_reload }
         end
       end

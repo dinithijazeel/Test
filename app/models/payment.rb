@@ -4,7 +4,7 @@ class Payment < ActiveRecord::Base
   #
   validate :not_negative_balance
   validate :process_payment
-  validates :payment_type, :presence => true
+  validates :payment_account, :presence => true
   validates :amount, :numericality => { :greater_than_or_equal_to => 0.01, :message => 'Must be greater than $0.00' }
   validates :fee, :numericality => true
   #
@@ -17,7 +17,7 @@ class Payment < ActiveRecord::Base
   belongs_to :customer
   belongs_to :creator, :class_name => 'User'
   belongs_to :last_editor, :class_name => 'User'
-  accepts_nested_attributes_for :credits
+  accepts_nested_attributes_for :credits, reject_if: proc { |credit| credit['amount'].blank? || credit['amount'] == 0}
   accepts_nested_attributes_for :stripe_transaction, :reject_if => :all_blank, :allow_destroy => true
   #
   # Enumerations
@@ -27,7 +27,16 @@ class Payment < ActiveRecord::Base
   #
   before_create do
     self.creator = User.current
-    self.memo = "#{payment_type} - #{payable.payable_name}" if memo.blank?
+    if payment_type.blank? && payment_account == 'Stripe'
+      self.payment_type = stripe_transaction.brand
+    end
+    if memo.blank?
+      if payment_type.blank?
+        self.memo = "#{payment_account} - #{payable.payable_name}"
+      else
+        self.memo = "#{payment_type} - #{payable.payable_name}"
+      end
+    end
     self.payment_date = Time.now if payment_date.blank?
   end
 
@@ -38,7 +47,6 @@ class Payment < ActiveRecord::Base
     else
       self.payment_status = :payment
     end
-    record_portal_payment
   end
 
   after_save do
@@ -66,16 +74,23 @@ class Payment < ActiveRecord::Base
 
   # TODO: Ditch when portal no longer records payments
   def record_portal_payment
-    if payable.is_a?(ServiceInvoice)
-      portal_payment = {
-        :accountcode => payable_contact.portal_id,
-        :amount      => amount,
-        :invoiceid   => payable.number,
-        :paymentdata => stripe_transaction.to_json,
-      }
-      Fractel.record_invoice_payment(portal_payment)
-    # Fractel.record_prepaid_payment(portal_payment)
-    end
+    portal_payment = {
+      :accountcode => payable_contact.portal_id,
+      :amount      => amount,
+      :invoiceid   => payable.number,
+      :paymentdata => stripe_transaction.to_json,
+    }
+    Fractel.record_invoice_payment(portal_payment)
+  end
+
+  def record_portal_prepayment
+    portal_payment = {
+      :accountcode => payable_contact.portal_id,
+      :amount      => amount,
+      :invoiceid   => payable.number,
+      :paymentdata => stripe_transaction.to_json,
+    }
+    Fractel.record_prepaid_payment(portal_payment)
   end
 
   def credit_total
@@ -104,18 +119,23 @@ class Payment < ActiveRecord::Base
   end
 
   def self.payments_accepted
-    payments = [:stripe, :bank_deposit, :credit].collect do |payment_type|
-      if Pundit.policy(User.current, :payment).send("use_#{payment_type}?")
-        [payment_type.to_s.humanize.capitalize, payment_type.to_s]
+    payments = Rails.application.config.x.payments.accepted.collect do |payment_name, payment_account|
+      if Pundit.policy(User.current, :payment).send("use_#{payment_account}?")
+        [payment_name, 'data-form' => payment_account]
       end
     end
     payments.compact
+  end
+
+  def self.payment_forms
+    Rails.application.config.x.payments.accepted.values.uniq
   end
 
   def self.bank_deposits
     [
       'Check',
       'Cash',
+      'Credit Card',
       'ACH',
       'Wire',
       'Paypal',
@@ -137,7 +157,8 @@ class Payment < ActiveRecord::Base
   end
 
   def self.controller_params
-    [ :payment_type,
+    [ :payment_account,
+      :payment_type,
       :payment_date,
       :amount,
       :fee,
@@ -152,7 +173,7 @@ class Payment < ActiveRecord::Base
   def process_payment
     # Process Stripe payments
     # TODO: This should probably be a property, eg "if remote_transaction?"
-    unless payment_type != 'Stripe' || stripe_transaction.token.empty? || (amount <= 0)
+    unless payment_account != 'Stripe' || stripe_transaction.token.empty? || (amount <= 0)
       begin
         Stripe::Charge.create(
           :amount => (amount * 100).to_i, # amount in cents

@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210170115) do
+ActiveRecord::Schema.define(version: 20170301203310) do
 
   create_table "boms", force: :cascade do |t|
     t.string   "type",           limit: 255
     t.string   "number",         limit: 255
     t.date     "invoice_date"
     t.integer  "invoice_status", limit: 4,   default: 0
+    t.integer  "invoice_type",   limit: 4,   default: 0
     t.integer  "rating_status",  limit: 4,   default: 0
     t.integer  "terms",          limit: 4
     t.float    "invoice_total",  limit: 24,  default: 0.0
@@ -33,6 +34,8 @@ ActiveRecord::Schema.define(version: 20170210170115) do
     t.string   "payment_token",  limit: 255
     t.integer  "creator_id",     limit: 4
     t.integer  "last_editor_id", limit: 4
+    t.datetime "billing_start"
+    t.datetime "billing_end"
     t.datetime "rated_at"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
@@ -68,28 +71,33 @@ ActiveRecord::Schema.define(version: 20170210170115) do
   create_table "contacts", force: :cascade do |t|
     t.string   "type",                    limit: 255
     t.integer  "customer_status",         limit: 4,   default: 0
-    t.string   "contact_first",           limit: 255,                null: false
-    t.string   "contact_last",            limit: 255,                null: false
-    t.string   "company_name",            limit: 255,                null: false
+    t.string   "contact_first",           limit: 255
+    t.string   "contact_last",            limit: 255
+    t.string   "company_name",            limit: 255
     t.string   "admin_email",             limit: 255
-    t.string   "phone",                   limit: 255,                null: false
-    t.string   "billing_email",           limit: 255,                null: false
+    t.string   "phone",                   limit: 255
+    t.string   "cell_phone",              limit: 255
+    t.string   "fax_phone",               limit: 255
+    t.string   "other_phone",             limit: 255
+    t.string   "other_phone_label",       limit: 255
+    t.string   "billing_email",           limit: 255
     t.integer  "default_terms",           limit: 4,   default: 0
-    t.string   "billing_street_1",        limit: 255,                null: false
-    t.string   "billing_street_2",        limit: 255,                null: false
-    t.string   "billing_city",            limit: 255,                null: false
-    t.string   "billing_state",           limit: 255,                null: false
-    t.string   "billing_zip",             limit: 255,                null: false
-    t.string   "billing_country",         limit: 255,                null: false
+    t.string   "billing_street_1",        limit: 255
+    t.string   "billing_street_2",        limit: 255
+    t.string   "billing_city",            limit: 255
+    t.string   "billing_state",           limit: 255
+    t.string   "billing_zip",             limit: 255
+    t.string   "billing_country",         limit: 255
     t.boolean  "use_billing_for_service",             default: true
-    t.string   "service_street_1",        limit: 255,                null: false
-    t.string   "service_street_2",        limit: 255,                null: false
-    t.string   "service_city",            limit: 255,                null: false
-    t.string   "service_state",           limit: 255,                null: false
-    t.string   "service_zip",             limit: 255,                null: false
-    t.string   "service_country",         limit: 255,                null: false
-    t.string   "affiliate_id",            limit: 255,                null: false
-    t.string   "discount_code",           limit: 255,                null: false
+    t.string   "service_street_1",        limit: 255
+    t.string   "service_street_2",        limit: 255
+    t.string   "service_city",            limit: 255
+    t.string   "service_state",           limit: 255
+    t.string   "service_zip",             limit: 255
+    t.string   "service_country",         limit: 255
+    t.string   "affiliate_id",            limit: 255
+    t.string   "discount_code",           limit: 255
+    t.string   "tax_exempt_certificate",  limit: 255
     t.string   "portal_id",               limit: 255
     t.integer  "creator_id",              limit: 4
     t.integer  "last_editor_id",          limit: 4
@@ -173,29 +181,57 @@ ActiveRecord::Schema.define(version: 20170210170115) do
   add_index "opportunities", ["contact_id"], name: "index_opportunities_on_contact_id", using: :btree
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "payment_status", limit: 4,     default: 0
-    t.string   "payment_type",   limit: 255
+    t.integer  "payment_status",  limit: 4,     default: 0
+    t.string   "payment_account", limit: 255
+    t.string   "payment_type",    limit: 255
     t.date     "payment_date"
-    t.float    "amount",         limit: 24,                  null: false
-    t.float    "balance",        limit: 24,                  null: false
-    t.float    "fee",            limit: 24,    default: 0.0
-    t.text     "memo",           limit: 65535,               null: false
-    t.integer  "customer_id",    limit: 4
-    t.integer  "payable_id",     limit: 4
-    t.string   "payable_type",   limit: 255
-    t.string   "client_ip",      limit: 255,                 null: false
-    t.integer  "creator_id",     limit: 4
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.float    "amount",          limit: 24,                  null: false
+    t.float    "balance",         limit: 24,                  null: false
+    t.float    "fee",             limit: 24,    default: 0.0
+    t.text     "memo",            limit: 65535,               null: false
+    t.integer  "customer_id",     limit: 4
+    t.integer  "payable_id",      limit: 4
+    t.string   "payable_type",    limit: 255
+    t.string   "client_ip",       limit: 255,                 null: false
+    t.integer  "creator_id",      limit: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   add_index "payments", ["creator_id"], name: "index_payments_on_creator_id", using: :btree
   add_index "payments", ["customer_id"], name: "index_payments_on_customer_id", using: :btree
+  add_index "payments", ["payment_account"], name: "index_payments_on_payment_account", using: :btree
   add_index "payments", ["payment_date"], name: "index_payments_on_payment_date", using: :btree
   add_index "payments", ["payment_status"], name: "index_payments_on_payment_status", using: :btree
-  add_index "payments", ["payment_type"], name: "index_payments_on_payment_type", using: :btree
 
   create_table "products", force: :cascade do |t|
+    t.string   "sku",              limit: 255,                  null: false
+    t.string   "vendor_sku",       limit: 255
+    t.string   "name",             limit: 255,                  null: false
+    t.text     "description",      limit: 65535,                null: false
+    t.float    "price",            limit: 24
+    t.float    "weight",           limit: 24
+    t.string   "units",            limit: 255,                  null: false
+    t.float    "default_quantity", limit: 24,    default: 1.0
+    t.integer  "product_status",   limit: 4,     default: 0
+    t.integer  "product_type",     limit: 4,     default: 0
+    t.integer  "billing",          limit: 4,     default: 0
+    t.boolean  "fixed_price",                    default: true
+    t.string   "datasheet",        limit: 255
+    t.string   "sure_tax_code",    limit: 255
+    t.integer  "vendor_id",        limit: 4
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "products", ["billing"], name: "index_products_on_billing", using: :btree
+  add_index "products", ["name"], name: "index_products_on_name", using: :btree
+  add_index "products", ["product_status"], name: "index_products_on_product_status", using: :btree
+  add_index "products", ["product_type"], name: "index_products_on_product_type", using: :btree
+  add_index "products", ["sku"], name: "index_products_on_sku", using: :btree
+  add_index "products", ["vendor_id"], name: "index_products_on_vendor_id", using: :btree
+
+  create_table "products_copy", force: :cascade do |t|
     t.string   "sku",              limit: 255,                  null: false
     t.string   "vendor_sku",       limit: 255
     t.string   "name",             limit: 255,                  null: false
@@ -214,12 +250,12 @@ ActiveRecord::Schema.define(version: 20170210170115) do
     t.datetime "updated_at",                                    null: false
   end
 
-  add_index "products", ["billing"], name: "index_products_on_billing", using: :btree
-  add_index "products", ["name"], name: "index_products_on_name", using: :btree
-  add_index "products", ["product_status"], name: "index_products_on_product_status", using: :btree
-  add_index "products", ["product_type"], name: "index_products_on_product_type", using: :btree
-  add_index "products", ["sku"], name: "index_products_on_sku", using: :btree
-  add_index "products", ["vendor_id"], name: "index_products_on_vendor_id", using: :btree
+  add_index "products_copy", ["billing"], name: "index_products_on_billing", using: :btree
+  add_index "products_copy", ["name"], name: "index_products_on_name", using: :btree
+  add_index "products_copy", ["product_status"], name: "index_products_on_product_status", using: :btree
+  add_index "products_copy", ["product_type"], name: "index_products_on_product_type", using: :btree
+  add_index "products_copy", ["sku"], name: "index_products_on_sku", using: :btree
+  add_index "products_copy", ["vendor_id"], name: "index_products_on_vendor_id", using: :btree
 
   create_table "proposals", force: :cascade do |t|
     t.integer  "proposal_status",      limit: 4,   default: 0
@@ -351,6 +387,7 @@ ActiveRecord::Schema.define(version: 20170210170115) do
   add_foreign_key "payments", "contacts", column: "customer_id"
   add_foreign_key "payments", "users", column: "creator_id"
   add_foreign_key "products", "vendors"
+  add_foreign_key "products_copy", "vendors", name: "products_copy_ibfk_1"
   add_foreign_key "proposals", "boms", column: "products_proposal_id"
   add_foreign_key "proposals", "boms", column: "services_proposal_id"
   add_foreign_key "proposals", "contacts"

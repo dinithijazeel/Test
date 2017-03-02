@@ -63,11 +63,13 @@ class Product < ActiveRecord::Base
       services = Product.where(:billing => billings[:recurring]).where(:product_status => product_statuses[:active]).order(:name).pluck(:name, :id)
       services << Product.collection_item(:discount)
       services << Product.collection_item(:sales_tax)
+      services.compact
     when :products_proposal, :merchandise
       products = Product.where(:billing => billings[:non_recurring]).where(:product_status => product_statuses[:active]).order(:name).pluck(:name, :id)
       products << Product.collection_item(:discount)
       products << Product.collection_item(:sales_tax)
       products << Product.collection_item(:shipping)
+      products.compact
     else
       Product.order(:name).pluck(:name, :id)
     end
@@ -75,7 +77,11 @@ class Product < ActiveRecord::Base
 
   def self.collection_item(product_label)
     product = get(product_label)
-    [product.name, product.id]
+    if product
+      [product.name, product.id]
+    else
+      nil
+    end
   end
 
   def self.controller_params
@@ -83,7 +89,6 @@ class Product < ActiveRecord::Base
       :billing,
       :product_type,
       :product_status,
-      :taxable,
       :fixed_price,
       :datasheet,
       :name,
@@ -91,6 +96,7 @@ class Product < ActiveRecord::Base
       :price,
       :weight,
       :units,
+      :vendor_sku,
       :vendor_id,
       :default_quantity ]
   end

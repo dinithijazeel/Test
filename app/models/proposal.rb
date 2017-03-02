@@ -38,7 +38,11 @@ class Proposal < ActiveRecord::Base
     self.last_editor = User.current
   end
 
-  before_save :calculate_total, :update_onboarding
+  before_save do
+    calculate_total
+    update_onboarding
+  end
+
   #
   ## Listings
   #
@@ -100,7 +104,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def pdf_template
-    "tenants/#{Rails.application.config.x.tenant}/proposal/pdf.html.slim"
+    "proposals/pdf/pdf"
   end
 
   def pdf_filename
@@ -117,7 +121,9 @@ class Proposal < ActiveRecord::Base
     products_datasheets = products_proposal.datasheet_index.collect do |line_item|
       line_item.product.datasheet.path
     end
-    [proposal_path] + products_datasheets + [Rails.application.config.x.proposals.terms, Rails.application.config.x.proposals.back_cover]
+    terms = "#{Rails.root}/config/profiles/#{Rails.application.config.x.tenant}/pdf/proposal_terms.pdf"
+    back_cover = "#{Rails.root}/config/profiles/#{Rails.application.config.x.tenant}/pdf/proposal_back_cover.pdf"
+    [proposal_path] + products_datasheets + [terms, back_cover]
   end
 
   def self.controller_params
@@ -154,6 +160,6 @@ class Proposal < ActiveRecord::Base
   end
 
   def update_onboarding
-    onboarding.read_bom(services_proposal)
+    onboarding.read_bom(services_proposal) if Rails.application.config.x.features.fractel_onboarding
   end
 end

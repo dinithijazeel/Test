@@ -11,14 +11,15 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery-ui/sortable
 //= require jquery-ui/effect-highlight
 //= require twitter/typeahead.min
 //= require cocoon
-//= require turbolinks
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker/core
 //= require data-confirm-modal
+//= require turbolinks
 //= require_tree .

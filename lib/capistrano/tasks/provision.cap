@@ -1,0 +1,43 @@
+namespace :deploy do
+  task :provision do
+    on roles(:app) do
+
+      # Create a config/ dir in shared/
+      execute :mkdir, "-p #{shared_path}/config"
+
+      # Remove existing log_rotation file
+      sudo "rm -f #{shared_path}/config/log_rotation"
+
+      # Copy over declared config files from config/deploy/shared
+      config_files = fetch(:config_files)
+      config_files.each do |file|
+        smart_template file
+      end
+
+      # Mark any executable config files
+      executable_files = fetch(:executable_config_files)
+      executable_files.each do |file|
+        execute :chmod, "+x #{shared_path}/config/#{file}"
+      end
+
+      # Create symlinks
+      symlinks = fetch(:symlinks)
+      symlinks.each do |symlink|
+        sudo "ln -nfs #{shared_path}/config/#{symlink[:source]} #{sub_strings(symlink[:link])}"
+      end
+
+      # Copy resque service file to /lib/systemd/system/
+      sudo "mv #{shared_path}/config/resque.service /lib/systemd/system/resque@#{fetch(:full_app_name)}.service"
+
+      # Copy unicorn service file to /lib/systemd/system/
+      sudo "mv #{shared_path}/config/unicorn.service /lib/systemd/system/unicorn@#{fetch(:full_app_name)}.service"
+
+      # Reload daemons
+      sudo "systemctl daemon-reload"
+
+      # Change ownership of log_rotation to root:root
+      sudo "chown root:root #{shared_path}/config/log_rotation"
+
+    end
+  end
+end

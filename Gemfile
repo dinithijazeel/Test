@@ -72,6 +72,7 @@ gem 'formtastic-bootstrap'
 gem 'cocoon'
 
 # JS Assets
+gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
 gem 'twitter-typeahead-rails'
 
@@ -109,3 +110,4 @@ gem 'forgery'
 gem 'wkhtmltopdf-binary-edge'
 gem 'wicked_pdf'
 gem 'combine_pdf'
+gem 'gmail'

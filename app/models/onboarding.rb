@@ -94,12 +94,10 @@ class Onboarding < ActiveRecord::Base
     )
   end
 
-  def external_ticket_params(system = :freshdesk)
+  def external_ticket_params
     { status: 2,
       priority: 2,
-      # email: proposal.contact.admin_email,
-      email: 'ian.koss@gmail.com',
-      # email: User.current.email
+      email: proposal.contact.admin_email,
       name: "#{proposal.contact.contact_first} #{proposal.contact.contact_last}",
       description: support_description,
       subject: "#{Rails.application.config.x.freshdesk.onboarding_subject} - #{proposal.contact.company_name}",

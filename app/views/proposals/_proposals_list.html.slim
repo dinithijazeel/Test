@@ -2,7 +2,7 @@
   = myrject :card do |c|
     - c.title title
     - c.body
-      = table
+      = table class: 'sortable'
         thead
           tr
             th width="10%" Submitted
@@ -17,7 +17,7 @@
             td = proposal.proposal_date
             td = link_to (proposal.number.nil? ? 'Draft' : proposal.number), proposal
             td = proposal.contact.company_name
-            td = "#{proposal.contact.contact_first} #{proposal.contact.contact_last}"
+            td data-sortvalue=proposal.contact.contact_last = "#{proposal.contact.contact_first} #{proposal.contact.contact_last}"
             td = phone(proposal.contact.phone)
             td = mail_to proposal.contact.admin_email
-            td.text-right = money(proposal.total)
+            td.text-right data-sortvalue=proposal.total = money(proposal.total)

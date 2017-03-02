@@ -26,7 +26,7 @@ class Invoice < Bom
   ## Listings
   #
   def self.index
-    Bom.invoices_updated_this_month.group_by { |i| i.status_label }
+    Bom.invoices_updated_this_month.order(invoice_date: :desc).group_by { |i| i.status_label }
   end
 
   def self.search(q)
@@ -40,7 +40,11 @@ class Invoice < Bom
   end
 
   def payment_link
-    Rails.application.routes.url_helpers.payment_url(payment_token)
+    if payment_token
+      Rails.application.routes.url_helpers.payment_url(payment_token)
+    else
+      Rails.application.routes.url_helpers.payment_url('xxxx-xxxx-xxxx-xxxx')
+    end
   end
 
   def pdf_filename
@@ -53,7 +57,7 @@ class Invoice < Bom
   end
 
   def pdf_template
-    "tenants/#{Rails.application.config.x.tenant}/invoices/standard_pdf.html.slim"
+    'invoices/pdf/standard_pdf.html.slim'
   end
 
   protected
@@ -79,9 +83,7 @@ class Invoice < Bom
       end
       # Fill in missing memo
       if memo.nil? || memo.blank?
-        #self.memo = summary
-		#gets only 250 charaters if summary length is longer than 250
-		self.memo = summary.length <= 250 ? summary : summary.split(//).first(250).join("").to_s 
+        self.memo = summary
       end
     end
   end

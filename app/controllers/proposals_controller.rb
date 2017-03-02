@@ -122,13 +122,13 @@ class ProposalsController < ApplicationController
           message = "Proposal #{@proposal.number} accepted."
         when 'completed'
           # Create portal account if needed
-          unless @proposal.contact.has_portal_account?
+          if Rails.application.config.x.features.fractel_onboarding && !@proposal.contact.has_portal_account?
             @proposal.onboarding.create_portal_account
             # Reload so that we can include the newly-generated portal_id
             @proposal.reload
             # Send notifications
-            ProposalMailer.new_account(@proposal).deliver_now
-            ProposalMailer.welcome(@proposal).deliver_now
+            OnboardingMailer.new_account(@proposal).deliver_now
+            OnboardingMailer.welcome(@proposal).deliver_now
           end
           # Create onboarding ticket
           @proposal.onboarding.create_support_ticket

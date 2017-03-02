@@ -9,8 +9,9 @@ Rails.application.config.x.users.roles = {
   :partner  => 15,
   :customer => 20,
 }
+Rails.application.config.x.staging = ENV['APP_STAGING'];
 Rails.application.config.x.default_user_id = ENV['DEFAULT_USER_ID'];
 #
 # Load profile
 #
-require File.expand_path("../../profiles/#{ENV['PROFILE']}.rb", __FILE__)
+require File.expand_path("../../profiles/#{ENV['PROFILE']}/#{ENV['PROFILE']}.rb", __FILE__)
