@@ -169,8 +169,8 @@ class Bom < ActiveRecord::Base
 									:TermNumber => '',#?  Optional fields
 									:BillToNumber => '',#?  Optional fields  
 									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
-									:BillingPeriodStartDate => billing_start != nil ? billing_start.strftime("%m/%d/%Y"), ''  ,
-									:BillingPeriodEndDate => billing_end != nil ? billing_end.strftime("%m/%d/%Y"), ''  ,
+									:BillingPeriodStartDate => billing_start != nil ? billing_start.strftime("%m/%d/%Y"): ''  ,
+									:BillingPeriodEndDate => billing_end != nil ? billing_end.strftime("%m/%d/%Y"):''  ,
 									:Revenue => line_item.total.to_s,
 									:Units => line_item.quantity.to_i.to_s,   
 									:UnitType => '00',
