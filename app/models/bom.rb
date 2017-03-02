@@ -169,15 +169,15 @@ class Bom < ActiveRecord::Base
 									:TermNumber => '',#?  Optional fields
 									:BillToNumber => '',#?  Optional fields  
 									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
-									:BillingPeriodStartDate => '', #?
-									:BillingPeriodEndDate => '',#?
+									:BillingPeriodStartDate => billing_start.strftime("%m/%d/%Y")  ,
+									:BillingPeriodEndDate => billing_end.strftime("%m/%d/%Y")  ,
 									:Revenue => line_item.total.to_s,
 									:Units => line_item.quantity.to_i.to_s,   
 									:UnitType => '00',
 									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
 									:TaxIncludedCode => '0',
 									:TaxSitusRule => '04',
-									:TransTypeCode => '050101', #? This field does not exist yet, it needs to be added
+									:TransTypeCode => line_item.product.sure_tax_code, #'050101', #? This field does not exist yet, it needs to be added
 									:SalesTypeCode => 'B',  # (B for everyone)
 									:RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
 									:TaxExemptionCodeList => [''], #? Need clarification from CCH on this.  
@@ -188,7 +188,7 @@ class Bom < ActiveRecord::Base
 									# :CurrencyCode => '', #?  Optional fields
 									# :OriginCountryCode => '', #?  Optional fields
 									# :DestCountryCode => '', #?  Optional fields
-									:BillingDaysInPeriod => 0,#?
+									:BillingDaysInPeriod => billing_start != nil && billing_end != nil ? (billing_end - billing_start).to_i : 0, 
 									:Parameter1 => line_item.product.sku,  
 									:Parameter2 => line_item.product.name,  
 									:Parameter3 => line_item.unit_price.to_s,  
@@ -244,9 +244,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	}  
 	
-	# puts "%%%%%%%%%%%%%%%%%%%%%%%"
-	# puts main_hash.to_json
-	# puts "%%%%%%%%%%%%%%%%%%%%%%%" 
+	puts "%%%%%%%%%%%%%%%%%%%%%%%"
+	puts main_hash.to_json
+	puts "%%%%%%%%%%%%%%%%%%%%%%%" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
@@ -306,37 +306,6 @@ class Bom < ActiveRecord::Base
 	rescue SocketError => socketerror
 		puts "API Error:#{socketerror}"
     end
-	
-  
-    # # Calculate taxes
-    # federal_tax_amount = invoice_total * 0.12
-    # state_tax_amount = invoice_total * 0.05
-    # local_tax_amount = invoice_total * 0.06
-    # # Get products from sku's
-    # federal_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:federal_tax])
-    # state_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:state_tax])
-    # local_tax_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:local_tax])
-    # # Create array of line items to return
-    # [
-      # LineItem.new(
-        # description: federal_tax_product.description,
-        # quantity: 1,
-        # unit_price: federal_tax_amount,
-        # product: federal_tax_product
-      # ),
-      # LineItem.new(
-        # description: state_tax_product.description,
-        # quantity: 1,
-        # unit_price: state_tax_amount,
-        # product: state_tax_product
-      # ),
-      # LineItem.new(
-        # description: local_tax_product.description,
-        # quantity: 1,
-        # unit_price: local_tax_amount,
-        # product: local_tax_product
-      # ),
-    # ]
   end
 
   # View Helpers
