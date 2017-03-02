@@ -177,7 +177,7 @@ class Bom < ActiveRecord::Base
 									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
 									:TaxIncludedCode => '0',
 									:TaxSitusRule => '04',
-									:TransTypeCode => line_item.product.sure_tax_code, #'050101', #? This field does not exist yet, it needs to be added
+									:TransTypeCode =>  '050101', #? This field does not exist yet, it needs to be added
 									:SalesTypeCode => 'B',  # (B for everyone)
 									:RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
 									:TaxExemptionCodeList => [''], #? Need clarification from CCH on this.  
