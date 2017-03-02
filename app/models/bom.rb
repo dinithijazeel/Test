@@ -188,7 +188,7 @@ class Bom < ActiveRecord::Base
 									# :CurrencyCode => '', #?  Optional fields
 									# :OriginCountryCode => '', #?  Optional fields
 									# :DestCountryCode => '', #?  Optional fields
-									:BillingDaysInPeriod => billing_start != nil && billing_end != nil ? (billing_end - billing_start).to_i : 0, 
+									:BillingDaysInPeriod => billing_start != nil && billing_end != nil ? (billing_end - billing_start).to_i/1.day : 0, 
 									:Parameter1 => line_item.product.sku,  
 									:Parameter2 => line_item.product.name,  
 									:Parameter3 => line_item.unit_price.to_s,  
