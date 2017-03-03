@@ -258,7 +258,7 @@ class Bom < ActiveRecord::Base
 	json_text = {:request => main_hash.to_json}.to_json  
 	 
 	#Calling SureTax API 
-	url  = "#{Rails.application.config.x.suretax.url}/PostRequest"  
+	url  = "#{Rails.application.config.x.freshdesk.url}/PostRequest"  
     begin  
 		site = RestClient::Resource.new(url) 
 		response = site.post(json_text ,:content_type=>'application/json'); 
