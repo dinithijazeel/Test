@@ -177,7 +177,7 @@ class Bom < ActiveRecord::Base
 									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
 									:BillingPeriodStartDate => billing_start != nil ? billing_start.strftime("%m/%d/%Y"): ''  ,
 									:BillingPeriodEndDate => billing_end != nil ? billing_end.strftime("%m/%d/%Y"):''  ,
-									:Revenue =>(line_item.quantity * line_item.unit_price).to_s,  # line_item.total.to_s,
+									:Revenue =>(line_item.quantity * line_item.unit_price).to_s,  
 									:Units => line_item.quantity.to_i.to_s,   
 									:UnitType => '00',
 									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
@@ -248,17 +248,13 @@ class Bom < ActiveRecord::Base
 		:ResponseType => 'D2',  
 		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
 		:ItemList => line_item_array
-	}  
-	
-	puts "%%%%%%%%%%%%%%%%%%%%%%%"
-	puts main_hash.to_json
-	puts "%%%%%%%%%%%%%%%%%%%%%%%" 
+	}   
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
 	 
 	#Calling SureTax API 
-	url  = "#{Rails.application.config.x.freshdesk.url}/PostRequest"  
+	url  = "#{Rails.application.config.x.suretax.url}/PostRequest"  
     begin  
 		site = RestClient::Resource.new(url) 
 		response = site.post(json_text ,:content_type=>'application/json'); 
@@ -273,19 +269,18 @@ class Bom < ActiveRecord::Base
 					if current_tax_product.nil?
 						puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
 					else
-						#check for items with non zero amount
-						puts tax["TaxAmount"] 
+						#check for items with non zero tax amount
 						if tax["TaxAmount"].to_f  != 0.to_f 
 							#check whether the tax product is already added to the array
 							existing_tax_product = new_line_item_array.find {|s| s.product.sku == current_tax_product.sku}  
-							if existing_tax_product.nil?
+							if existing_tax_product.nil? # add new line item to array
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
 									unit_price: tax["TaxAmount"].to_f,  
 									product:  current_tax_product)
 								new_line_item_array.push(p)
-							else   
+							else   # update existing line item
 								existing_tax_product.unit_price +=  tax["TaxAmount"].to_f 
 							end
 						end 
