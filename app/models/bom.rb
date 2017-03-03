@@ -157,7 +157,7 @@ class Bom < ActiveRecord::Base
     #generate number if blank
 	self.number = generate_number if number.blank?
 	
-	#recalculate invoice totals 
+	#recalculate invoice totals - to make sure API call have the correct totals
 	set_invoice_total
 	
     #generate line items hash
@@ -174,7 +174,7 @@ class Bom < ActiveRecord::Base
 									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
 									:BillingPeriodStartDate => billing_start != nil ? billing_start.strftime("%m/%d/%Y"): ''  ,
 									:BillingPeriodEndDate => billing_end != nil ? billing_end.strftime("%m/%d/%Y"):''  ,
-									:Revenue => line_item.total.to_s,
+									:Revenue =>(line_item.quantity * line_item.unit_price).to_s,  # line_item.total.to_s,
 									:Units => line_item.quantity.to_i.to_s,   
 									:UnitType => '00',
 									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
