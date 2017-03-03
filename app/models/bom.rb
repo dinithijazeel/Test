@@ -146,7 +146,6 @@ class Bom < ActiveRecord::Base
     # Calculate new line items
 	new_tax_items = get_rating_line_items
     # Add to line items
-    #line_items << new_tax_items
 	line_items << new_tax_items unless new_tax_items.nil? 
     # Timestamp rating
     self.rated_at = Time.now
@@ -304,14 +303,17 @@ class Bom < ActiveRecord::Base
 					puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
 				end  
 			end
+			return nil
 		end 
 	  
     rescue RestClient::Exception => exception
 		puts 'API Error: Your request is not successful.'  
 		puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
 		puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"  
+		return nil
 	rescue SocketError => socketerror
 		puts "API Error:#{socketerror}"
+		return nil
     end
   end
 
