@@ -144,9 +144,10 @@ class Bom < ActiveRecord::Base
     old_tax_items = line_items.joins(:product).where(products: {product_type: Product.product_types[:tax]})
     line_items.destroy(old_tax_items) unless old_tax_items.empty?
     # Calculate new line items
-    new_tax_items = get_rating_line_items
+	new_tax_items = get_rating_line_items
     # Add to line items
-    line_items << new_tax_items
+    #line_items << new_tax_items
+	line_items << new_tax_items unless new_tax_items.nil? 
     # Timestamp rating
     self.rated_at = Time.now
     self.rating_status = :rating_processed
@@ -154,10 +155,8 @@ class Bom < ActiveRecord::Base
 
   def get_rating_line_items 
   
-	return nil if line_items.select{|li| li._destroy == false}.empty? 
-	# if line_items.select {|li| li._destroy == false}.count <= 0
-	# return
-	# end
+	#return if there's no active line items
+	return nil if line_items.select{|li| li._destroy == false}.empty?  
      
     #generate number if blank
 	self.number = generate_number if number.blank?
