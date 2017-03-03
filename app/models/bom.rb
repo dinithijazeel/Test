@@ -154,6 +154,8 @@ class Bom < ActiveRecord::Base
 
   def get_rating_line_items 
   
+	if line_items.count<= 0 return nil
+  
     #generate number if blank
 	self.number = generate_number if number.blank?
 	
