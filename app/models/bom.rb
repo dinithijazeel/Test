@@ -289,7 +289,7 @@ puts "PPPPPPPPPPPPP"
 								existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
 								existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
 								######################
-								puts existing_tax_product.product
+								puts existing_tax_product.product.sku
 								#######################
 							end
 						end 
