@@ -278,10 +278,7 @@ class Bom < ActiveRecord::Base
 									unit_price: tax["TaxRate"],  
 									product:  current_tax_product)
 								new_line_item_array.push(p)
-							else 
-								#existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
-								#existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
-								existing_tax_product.quantity +=  1.to_f
+							else   
 								existing_tax_product.unit_price +=  tax["TaxRate"] 
 							end
 						end 
