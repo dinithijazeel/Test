@@ -273,8 +273,10 @@ puts "PPPPPPPPPPPPP"
 						#check for items with non zero amount
 						if tax["TaxRate"] !=0 
 							#check whether the tax product is already added to the array
-							#existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
-							existing_tax_product = new_line_item_array.product.find {|s| s.sku == current_tax_product.sku} #DJ TODO Need to check by TaxCode
+							 existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
+							#existing_tax_product = new_line_item_array.product.find {|s| s.sku == current_tax_product.sku} #DJ TODO Need to check by TaxCode
+							
+							
 							if existing_tax_product.nil?
 							puts 
 								p = LineItem.new(
@@ -286,6 +288,9 @@ puts "PPPPPPPPPPPPP"
 							else 
 								existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
 								existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
+								######################
+								puts existing_tax_product.product
+								#######################
 							end
 						end 
 					end
