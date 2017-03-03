@@ -167,7 +167,7 @@ class Bom < ActiveRecord::Base
 	line_items.each do |line_item| 
 		line_item_hash ={:LineNumber => i,
 									:InvoiceNumber => number,
-									:CustomerNumber => contact.portal_id,
+									:CustomerNumber =>  contact.portal_id != nil ? contact.portal_id: '',
 									:OrigNumber =>'',#?  Optional fields
 									:TermNumber => '',#?  Optional fields
 									:BillToNumber => '',#?  Optional fields  
@@ -240,7 +240,7 @@ class Bom < ActiveRecord::Base
 		:CmplDataMonth =>  invoice_date.strftime("%m"),  
 		:TotalRevenue => invoice_total.to_s,
 		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
-		:ClientTracking => contact.portal_id ,
+		:ClientTracking => contact.portal_id != nil ? contact.portal_id: '',
 		:ResponseGroup => '00',
 		:ResponseType => 'D2',  
 		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
