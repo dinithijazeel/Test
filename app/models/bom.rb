@@ -154,7 +154,7 @@ class Bom < ActiveRecord::Base
 
   def get_rating_line_items 
   
-	return nil if line_items.select {|li| li._destroy == false}.count <= 0?
+	return nil unless line_items.select {|li| li._destroy == false}.count>0? 
 	# if line_items.select {|li| li._destroy == false}.count <= 0
 	# return
 	# end
