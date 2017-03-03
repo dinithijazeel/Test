@@ -268,6 +268,7 @@ class Bom < ActiveRecord::Base
 						puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
 					else
 						#check for items with non zero amount
+						puts tax["TaxAmount"] 
 						if tax["TaxAmount"] != 0.to_f 
 							#check whether the tax product is already added to the array
 							existing_tax_product = new_line_item_array.find {|s| s.product.sku == current_tax_product.sku}  
