@@ -167,7 +167,7 @@ class Bom < ActiveRecord::Base
 	line_item_array = [] 
 	i = 1
 	line_items.each do |line_item| 
-	puts line_item._destroy
+	puts line_item.deleted_at
 		line_item_hash ={:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber =>  contact.portal_id != nil ? contact.portal_id: '',
