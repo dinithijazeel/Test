@@ -262,7 +262,10 @@ class Bom < ActiveRecord::Base
 			new_line_item_array =  []   
 			parsed["GroupList"].each do |group| 
 				group["TaxList"].each do |tax| 
-					current_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym])   
+					current_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym]) 
+puts "PPPPPPPPPPPPP"
+
+puts "PPPPPPPPPPPPP"					
 					# check for invalid product codes
 					if current_tax_product.nil?
 						puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
@@ -270,8 +273,10 @@ class Bom < ActiveRecord::Base
 						#check for items with non zero amount
 						if tax["TaxRate"] !=0 
 							#check whether the tax product is already added to the array
-							existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
+							#existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
+							existing_tax_product = new_line_item_array.product.find {|s| s.sku == current_tax_product.sku} #DJ TODO Need to check by TaxCode
 							if existing_tax_product.nil?
+							puts 
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
