@@ -154,7 +154,7 @@ class Bom < ActiveRecord::Base
 
   def get_rating_line_items 
   puts "88888888888888888888" 
-	puts line_items._destroy
+	puts line_items.count
     puts "88888888888888888888" 
     #generate number if blank
 	self.number = generate_number if number.blank?
@@ -167,6 +167,7 @@ class Bom < ActiveRecord::Base
 	line_item_array = [] 
 	i = 1
 	line_items.each do |line_item| 
+	puts line_item._destroy
 		line_item_hash ={:LineNumber => i,
 									:InvoiceNumber => number,
 									:CustomerNumber =>  contact.portal_id != nil ? contact.portal_id: '',
