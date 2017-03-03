@@ -154,7 +154,7 @@ class Bom < ActiveRecord::Base
 
   def get_rating_line_items 
   puts "88888888888888888888" 
-	puts line_items
+	puts line_items.count
     puts "88888888888888888888" 
     #generate number if blank
 	self.number = generate_number if number.blank?
