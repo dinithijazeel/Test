@@ -244,9 +244,9 @@ class Bom < ActiveRecord::Base
 		:ItemList => line_item_array
 	}  
 	
-	puts "%%%%%%%%%%%%%%%%%%%%%%%"
-	puts main_hash.to_json
-	puts "%%%%%%%%%%%%%%%%%%%%%%%" 
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%"
+	# puts main_hash.to_json
+	# puts "%%%%%%%%%%%%%%%%%%%%%%%" 
 
 	#Add request wrapper to json data
 	json_text = {:request => main_hash.to_json}.to_json  
@@ -262,10 +262,7 @@ class Bom < ActiveRecord::Base
 			new_line_item_array =  []   
 			parsed["GroupList"].each do |group| 
 				group["TaxList"].each do |tax| 
-					current_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym]) 
-puts "PPPPPPPPPPPPP"
-
-puts "PPPPPPPPPPPPP"					
+					current_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym])
 					# check for invalid product codes
 					if current_tax_product.nil?
 						puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
@@ -273,12 +270,8 @@ puts "PPPPPPPPPPPPP"
 						#check for items with non zero amount
 						if tax["TaxRate"] !=0 
 							#check whether the tax product is already added to the array
-							# existing_tax_product = new_line_item_array.find {|s| s.description == tax["TaxTypeDesc"]} #DJ TODO Need to check by TaxCode
-							existing_tax_product = new_line_item_array.find {|s| s.product.sku == current_tax_product.sku} #DJ TODO Need to check by TaxCode
-							
-							
+							existing_tax_product = new_line_item_array.find {|s| s.product.sku == current_tax_product.sku}  
 							if existing_tax_product.nil?
-							puts 
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
@@ -286,11 +279,10 @@ puts "PPPPPPPPPPPPP"
 									product:  current_tax_product)
 								new_line_item_array.push(p)
 							else 
-								existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
-								existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
-								######################
-								puts existing_tax_product.product.sku
-								#######################
+								#existing_tax_product.quantity = existing_tax_product.quantity + 1.to_f
+								#existing_tax_product.unit_price = existing_tax_product.unit_price + tax["TaxRate"] 
+								existing_tax_product.quantity +=  1.to_f
+								existing_tax_product.unit_price +=  tax["TaxRate"] 
 							end
 						end 
 					end
