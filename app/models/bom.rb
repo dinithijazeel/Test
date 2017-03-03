@@ -157,6 +157,9 @@ class Bom < ActiveRecord::Base
     #generate number if blank
 	self.number = generate_number if number.blank?
 	
+	#recalculate invoice totals 
+	set_invoice_total
+	
     #generate line items hash
 	line_item_hash = Hash.new()  
 	line_item_array = [] 
