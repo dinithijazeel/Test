@@ -153,9 +153,12 @@ class Bom < ActiveRecord::Base
   end
 
   def get_rating_line_items 
-  puts "88888888888888888888" 
-	puts line_items.select {|li| li._destroy == false}.count 
-    puts "88888888888888888888" 
+  
+	
+	if line_items.select {|li| li._destroy == false}.count <= 0
+	return
+	end
+     
     #generate number if blank
 	self.number = generate_number if number.blank?
 	
