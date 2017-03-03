@@ -276,11 +276,11 @@ class Bom < ActiveRecord::Base
 								p = LineItem.new(
 									description: tax["TaxTypeDesc"],
 									quantity: 1,
-									unit_price: tax["TaxAmount"],  
+									unit_price: tax["TaxAmount"].to_f,  
 									product:  current_tax_product)
 								new_line_item_array.push(p)
 							else   
-								existing_tax_product.unit_price +=  tax["TaxAmount"] 
+								existing_tax_product.unit_price +=  tax["TaxAmount"].to_f 
 							end
 						end 
 					end
