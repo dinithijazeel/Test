@@ -1,5 +1,5 @@
 staging:
-  engaged: <%= ENV['APP_STAGING'] %>
+  engaged: 'Y'
   email: 'myriander@fractel.net'
 id:
   name: FracTEL
