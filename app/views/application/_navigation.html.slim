@@ -52,4 +52,7 @@
             = fa('plus')
             | &nbsp;Add Vendor
         li.list-group-item = link_to_unless_current 'Resque', resque_path
- 
+
+    - if Conf.staging.engaged
+      h4.text-center STAGING
+    p = "#{Conf.id.name} - v#{Conf.version}"
