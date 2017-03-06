@@ -56,7 +56,6 @@ class ContactsController < ApplicationController
 
   # PATCH/PUT /contacts/1
   def update
-    authorize @contact
     if params[:status].nil?
       respond_to do |format|
         if @contact.update(contact_params)
@@ -82,6 +81,9 @@ class ContactsController < ApplicationController
       when 'canceled'
         @contact.customer_status = :canceled
         message = 'Account canceled.'
+      when 'statement'
+        @contact.becomes(Customer).send_statement_later
+        message = 'Statement sent.'
       end
       @contact.save
       Comment.build_from(@contact, current_user.id, message).save

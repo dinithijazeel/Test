@@ -8,18 +8,16 @@
       thead
         tr
           th width="10%" Date
-          th width="10%" Account
-          th width="55%" Memo
+          th width="65%" Memo
           th.text-right width="10%" Amount
           th.text-right width="10%" Balance
           th width="5%" &nbsp;
       tbody
-        - if customer.payments.where(:payment_status => Payment.payment_statuses[:credit]).count > 0
-          - customer.payments.where(:payment_status => Payment.payment_statuses[:credit]).each do |payment|
+        - if customer.credits.count > 0
+          - customer.credits.each do |payment|
             tr
               td = payment.payment_date
-              td = link_to payment.payment_account, [payment.customer, payment], :remote => true
-              td = payment.memo
+              td = link_to payment.memo, [payment.customer, payment], :remote => true
               td.text-right data-sortvalue=payment.amount = money(payment.amount)
               td.text-right data-sortvalue=payment.balance = money(payment.balance)
               td.text-right

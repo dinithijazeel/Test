@@ -1,5 +1,5 @@
 <% content_for :preview do %>
-    Welcome to AxeCom
+    Welcome to <%= Conf.id.name %></p>
 <% end %>
 
 <!-- COPY -->
@@ -9,25 +9,25 @@
 
         <p>Hello <%= @proposal.contact.contact_first %>,</p>
 
-        <p>I would like to take this opportunity to welcome you to AxeCom, and to help you understand what you can expect from us in the next few days.</p>
+        <p>I would like to take this opportunity to welcome you to <%= Conf.id.name %>, and to help you understand what you can expect from us in the next few days.</p>
 
-        <p>The AxeCom team has worked with hundreds of companies like yours, and we’ve made every effort to make getting started as easy as it can possibly be. We have a profound appreciation for how important communications are to your business and we’re committed to making sure your deployment goes smoothly.</p>
+        <p>The <%= Conf.id.name %> team has worked with hundreds of companies like yours, and we’ve made every effort to make getting started as easy as it can possibly be. We have a profound appreciation for how important communications are to your business and we’re committed to making sure your deployment goes smoothly.</p>
 
-        <p>An AxeCom Onboarding Manager will be reaching out to you sometime in the next few business days to begin coordinating a deployment plan. This may also require the attendance of other groups such as an IT technical team, so please assist in providing contact information for any of those parties as necessary.</p>
+        <p>An <%= Conf.id.name %> Onboarding Manager will be reaching out to you sometime in the next few business days to begin coordinating a deployment plan. This may also require the attendance of other groups such as an IT technical team, so please assist in providing contact information for any of those parties as necessary.</p>
 
-        <p>In the meantime, the AxeCom team will be working hard to configure the cloud-based functionality of your system and tailoring it to your business needs. If your new system includes adding additional equipment, it will be pre-configured to enable a simple plug and play process when it arrives.</p>
+        <p>In the meantime, the <%= Conf.id.name %> team will be working hard to configure the cloud-based functionality of your system and tailoring it to your business needs. If your new system includes adding additional equipment, it will be pre-configured to enable a simple plug and play process when it arrives.</p>
 
-        <p>If you have telephone numbers that need to be transferred from an existing provider, this process, known as porting, will usually take about two weeks. We recognize that sometimes it is necessary to begin utilizing the new system before the porting process has completed. In these circumstances AxeCom can provide a transparent solution that will allow you to continue displaying your main telephone number to your customers when making outbound calls. We will also assign temporary numbers that can be used to receive inbound calls utilizing a call forwarding approach from your existing telephone provider. Many of our customers prefer this cut-over strategy because of the seamless transition into the new system with no interruption of service.</p>
+        <p>If you have telephone numbers that need to be transferred from an existing provider, this process, known as porting, will usually take about two weeks. We recognize that sometimes it is necessary to begin utilizing the new system before the porting process has completed. In these circumstances <%= Conf.id.name %> can provide a transparent solution that will allow you to continue displaying your main telephone number to your customers when making outbound calls. We will also assign temporary numbers that can be used to receive inbound calls utilizing a call forwarding approach from your existing telephone provider. Many of our customers prefer this cut-over strategy because of the seamless transition into the new system with no interruption of service.</p>
 
         <p>The final step in deployment of your new system is training. Your Onboarding Manager will provide instruction on the use of system features, as well as performing common system management and administration tasks. Since it is generally not practical to provide training to all users, the preferred approach is to identify one or more key personnel and “train the trainers”.</p>
 
-        <p>While AxeCom has made every effort to make the deployment process as trouble-free as possible, every business is different and there are many opportunities for problems to arise. Almost all of these problems can be eliminated or minimized with good communication and a thorough understanding of the deployment environment and business requirements. Attached to this message is a survey of questions that your Onboarding Manager will be reviewing with you as the first step of the onboarding process. By taking a few minutes to review and answer these questions in advance of the interview, you can assist greatly in facilitating a successful and stress-free deployment.</p>
+        <p>While <%= Conf.id.name %> has made every effort to make the deployment process as trouble-free as possible, every business is different and there are many opportunities for problems to arise. Almost all of these problems can be eliminated or minimized with good communication and a thorough understanding of the deployment environment and business requirements. Attached to this message is a survey of questions that your Onboarding Manager will be reviewing with you as the first step of the onboarding process. By taking a few minutes to review and answer these questions in advance of the interview, you can assist greatly in facilitating a successful and stress-free deployment.</p>
 
-        <p>Thank you for choosing AxeCom.</p>
+        <p>Thank you for choosing <%= Conf.id.name %>.</p>
 
-        <p><strong>Joe Atkins</strong><br>
-        Vice-President<br/>
-        AxeCom Telecom</p>
+        <p><strong><%= Conf.id.contact.welcome.name %></strong><br/>
+        <%= Conf.id.contact.welcome.title %><br/>
+        <%= Conf.id.legal_name %></p>
 
         </td>
     </tr>

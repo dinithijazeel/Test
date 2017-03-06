@@ -16,17 +16,17 @@ namespace :myriander do
   end
 
   task refresh_contacts: :environment do
-    Customer.where('portal_id IS NOT NULL').each do |c|
+    Customer.where('account_code IS NOT NULL').each do |c|
       c.read_portal_record
     end
   end
 
   task check_contacts: :environment do
-    c = Customer.where('portal_id IS NOT NULL')
+    c = Customer.where('account_code IS NOT NULL')
     c.each do |customer|
       # Get portal info
       account = {
-        customerdata: ",,#{customer.portal_id}"
+        customerdata: ",,#{customer.account_code}"
       }
       portal_info = Fractel.get_account(account)
       portal_info = %w{BillingEmail Email CompanyName FirstName LastName}.collect { |name| [name, portal_info[name][0]]}.to_h
@@ -39,13 +39,13 @@ namespace :myriander do
         "LastName" => customer.contact_last
       }
       if portal_info != myr_info
-        print "#{customer.company_name} / #{customer.portal_id}\n\n"
+        print "#{customer.company_name} / #{customer.account_code}\n\n"
         portal_info.each do |name, value|
           print "#{name}:\n  P -> #{value}\n  M -> #{myr_info[name]}\n" if value != myr_info[name]
         end
         print "\n\n"
       else
-        print "#{customer.company_name} / #{customer.portal_id} OK\n\n"
+        print "#{customer.company_name} / #{customer.account_code} OK\n\n"
       end
     end
   end

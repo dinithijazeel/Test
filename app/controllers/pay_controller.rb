@@ -4,10 +4,10 @@ class PayController < PaymentsController
   after_action :allow_iframe
 
   def prepaid_new
-    if @customer = Customer.find_by(portal_id: params[:portal_id])
+    if @customer = Customer.find_by_account_code(params[:account_code])
       @payment = Payment.new(amount: params[:amount] || 0)
       @payment.build_stripe_transaction
-      @tests = PaymentsController.tests if Rails.application.config.x.staging
+      @tests = PaymentsController.tests if Conf.staging.engaged
       render :prepay, layout: 'portal'
     else
       render :unknown, layout: 'portal'
@@ -15,13 +15,13 @@ class PayController < PaymentsController
   end
 
   def prepaid_create
-    if @customer = Customer.find_by(portal_id: params[:portal_id])
+    if @customer = Customer.find_by_account_code(params[:account_code])
       # Set up payment
       @payment = make_new_payment(payment_params, false) # false to skip building credits
       @payment.payable = @customer
       @payment.client_ip = request.remote_ip
       # Locate our prepaid product
-      prepaid_product = Product.find_by_sku(Rails.application.config.x.products.special_products[:prepaid])
+      prepaid_product = Product.find_by_sku(Conf.products.special.prepaid)
       # Build invoice
       invoice = Invoice.new(
         terms: 0,

@@ -16,7 +16,15 @@ class InvoicePolicy < ApplicationPolicy
     user.is(:manager)
   end
 
+  def destroy?
+    user.is(:admin)
+  end
+
   def accept_payment?
     @record.invoice_status == 'open'
+  end
+
+  def rate?
+    user.is(:admin)
   end
 end

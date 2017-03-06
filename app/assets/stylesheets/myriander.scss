@@ -395,3 +395,6 @@ tr.inactive-status {
   font-style: italic;
   color: #999;
 }
+table > tbody > tr.total-row > td {
+  border-width: 3px;
+}

@@ -1,21 +1,21 @@
 = semantic_form_for @payment,
   url: payment_path(@payment.payable.payment_token),
   remote: true,
-  html: {'data-stripe-key' => Rails.configuration.stripe[:publishable_key]}, remote: true do |f|
+  html: {'data-stripe-key' => Rails.application.secrets.stripe_public_key}, remote: true do |f|
   = myrject :modal, show_close: false do |m|
     - m.title 'Payment'
     - m.body
       h4
-        = @payment.payable.contact.company_name
+        = @payment.payable_contact.company_name
         | &nbsp;
-        small = @payment.payable.contact.portal_id
+        small = @payment.payable_contact.account_code
       - if @payment.amount > 0
         .payment-problems
           = render 'errors', obj: @payment, title: 'The payment could not be processed.'
-        = render 'stripe', f: f, read_only_amount: true
+        = render 'stripe', f: f, read_only_amount: (not @payment.payable.is_a?(Customer))
       - else
         .alert.alert-info This invoice has been paid.
-      = render 'open_invoices', :f => f, read_only_amounts: true
+      = render 'open_invoices', :f => f, read_only_amounts: (not @payment.payable.is_a?(Customer))
     - m.footer
       - if @payment.amount > 0
         = f.hidden_field :customer_id

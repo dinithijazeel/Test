@@ -6,5 +6,5 @@
       ul
         - @proposal.products_proposal.datasheet_index.each do |line_item|
           li = line_item.product.name
-    h2 = "#{Rails.application.config.x.company.name} Service Terms and Conditions"
+    h2 = "#{Conf.id.name} Service Terms and Conditions"
   .page-number = page

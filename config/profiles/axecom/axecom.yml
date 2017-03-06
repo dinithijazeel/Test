@@ -1,0 +1,84 @@
+staging:
+  engaged: <%= ENV['APP_STAGING'] %>
+  email: 'myriander@fractel.net'
+id:
+  name: AxeCom
+  legal_name: AxeCom Telecom, LLC
+  website_name: '4axecom.com'
+  website_url:  'http://4axecom.com'
+  motto: 'Connecting the World of Business'
+  default_user_id: <%= ENV['DEFAULT_USER_ID'] %>
+  address:
+    one_line: '122 4th Ave. &bull; Ste. 201 &bull; Indialantic, Florida 32903 &bull; United States'
+    street: '122 4th Ave., Ste. 201'
+    city_st_zip: 'Indialantic, Florida 32903'
+  contact:
+    phone: '(844) 4AXECOM'
+    general_email: 'info@fractel.net'
+    no_reply_email: 'no-reply@fractel.net'
+    accounting:
+      name: 'Accounting Department'
+      phone: '(844) 449-3266'
+      email: 'accounting@4axecom.com'
+    billing:
+      name: 'Billing Department'
+      phone: '(844) 449-3266'
+      email: 'billing@4axecom.com'
+    sales:
+      name: 'Sales Department'
+      phone: '(844) 449-3266'
+      email: 'sales@4axecom.com'
+    onboarding:
+      name: 'Onboarding Department'
+      phone: '(844) 449-3266'
+      email: 'onboarding@4axecom.com'
+    welcome:
+      name: 'Joe Atkins'
+      title: 'Vice President'
+      email: 'joe@4axecom.com'
+features:
+  onboarding: false
+  payments: false
+email:
+  logo:                  <%= "#{ENV['PROTOCOL']}://#{ENV['HOST']}/images/logo_md.png" %>
+  invoice_subject:       'AxeCom Invoice'
+  welcome_subject:       'Welcome to AxeCom'
+  proposal_subject:      'AxeCom Telecom Solutions Proposal'
+  invoice_subject:       'AxeCom Invoice'
+  new_account_subject:   'Your new AxeCom account is ready to use'
+  new_customer_subject:  'New AxeCom Account'
+  payment_subject:       'AxeCom Payment Received'
+products:
+  special:
+    small:   SMALL-01
+    standard:   STANDARD-01
+    enterprise:   ENTERPRISE-01
+    cloud: SF-FEATURES-CLOUD-01
+    callcenter: SF-FEATURES-CALLCENTER-01
+    combo: SF-FEATURES-COMBO-01
+    did:
+      - DID-LOCAL-01
+      - DID-TF-01
+    did_price:
+      - ADDL-DIDS-01
+    fax:         ENT-FAX-01
+    discount:    DISCOUNT-01
+    sales_tax:   TX-FL-GST-01
+    federal_tax: TX-FUSF-01
+    state_tax:   TX-FL-CST-01
+    local_tax:   TX-LOC-CST-01
+    shipping:    SHIPPING-01
+    prepaid:     PREPAID-01
+payments:
+  stripe:
+    - Stripe
+  bank_deposit:
+    - Chase
+  credit:
+    - Credit
+freshdesk:
+  onboarding_subject: AxeCom Onboarding Request
+  groups_onboarding: 14000107426
+loa:
+  local: 'https://www.fractel.net/forms/loa-form-local/'
+  tollfree: 'https://www.fractel.net/forms/loa-form-toll-free/'

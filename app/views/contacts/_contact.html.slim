@@ -15,7 +15,7 @@
         = field 'Phone', phone(contact.phone)
       = col md: 3
         - if contact.has_portal_account?
-          = field 'Portal ID', contact.portal_id
+          = field 'Account Code', contact.account_code
     = row
       = col md: 6
         = field 'Billing Address'
@@ -25,6 +25,6 @@
           = render 'address', address: contact.service_address
     = row
       = col md: 6
-        = field 'Affiliate ID', contact.affiliate_id
+        = field 'Affiliate Code', contact.affiliate_code
       = col md: 6
         = field 'Discount Code', contact.discount_code

@@ -57,6 +57,7 @@ gem 'nokogiri',   '1.6.8'
 
 # Configuration
 gem 'dotenv-rails'
+gem 'config'
 
 # Auth
 gem 'devise'

@@ -1,5 +1,33 @@
 # myriander
 
+## Version 1.2.5
+
+_released March 3, 2017_
+
+### View Sorting
+
+- Invoices and Proposals are now sorted in reverse chronological order by default
+- The proposal, invoice, payment, and credit sections of the customer card are also in reverse chronological order
+
+### Payments
+
+- Instead of prompting for a payment type, the payment dialog now prompts for a payment account
+  - Stripe
+  - SCCU
+  - Chase
+  - Wells Fargo
+  - Intuit
+  - Credit
+
+### Customers
+
+- Customer cards now have an activity statement at the top
+  - Previous balance
+  - Payments received
+  - Adjustments
+  - Current charges
+  - Balance due
+
 ## Version 1.2.4
 
 _released February 26, 2017_

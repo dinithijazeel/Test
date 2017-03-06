@@ -1,11 +1,11 @@
 = semantic_form_for @payment,
-  url: prepayment_path(@customer.portal_id),
+  url: prepayment_path(@customer.account_code),
   remote: true,
-  html: {'data-stripe-key': Rails.configuration.stripe[:publishable_key]}, remote: true do |f|
+  html: {'data-stripe-key': Rails.application.secrets.stripe_public_key}, remote: true do |f|
   = myrject :modal, show_close: false do |m|
     - m.title 'Prepaid Payment'
     - m.body
-      h4 = "Account #{@customer.portal_id}"
+      h4 = "Account #{@customer.account_code}"
       .payment-problems
         = render 'errors', obj: @payment, title: 'The payment could not be processed.'
       = render 'stripe', f: f

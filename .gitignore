@@ -19,10 +19,12 @@ config/database.yml
 config/secrets.yml
 config/unicorn.rb
 
-# Gemfile.lock
 public/assets/*
 public/images
 service_invoices/*
 .env
 service_invoices/*
-settings.local.yml
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

@@ -8,4 +8,5 @@
     em No invoices found
   - else
     - %w( Draft Open Paid Closed Credit Canceled Obsolete ).each do |group|
-      = render 'invoice_list', invoices: @invoices[group], title: group
+      - unless group == 'Obsolete' && !current_user.is(:root)
+        = render 'invoice_list', invoices: @invoices[group], title: group

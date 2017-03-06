@@ -56,14 +56,14 @@ class ServiceInvoice < Invoice
             product_id = nil
             description = line_item['Description'][0]
             # Try a straight match first
-            product = Product.find_by(vendor_sku: description)
+            product = Product.find_by_vendor_sku(description)
             # If not found, build SKU word by word
             if product.nil?
               partial_description = ''
               words = description.split
               words.each do |word|
                 partial_description = "#{partial_description} #{word}"
-                product = Product.find_by(vendor_sku: partial_description.strip)
+                product = Product.find_by_vendor_sku(partial_description.strip)
                 break unless product.nil?
               end
             end
@@ -89,7 +89,7 @@ class ServiceInvoice < Invoice
     invoice.memo = "Service Invoice for #{invoice.invoice_date}"
     # Fill out contact from billing code
     unless billing_code.nil?
-      customer = Contact.find_by(:portal_id => billing_code)
+      customer = Contact.find_by_account_code(billing_code)
       if customer.nil?
         invoice.errors.add(:errors, "Unknown customer account: #{billing_code}")
       else

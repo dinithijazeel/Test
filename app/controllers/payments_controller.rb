@@ -13,13 +13,13 @@ class PaymentsController < ApplicationController
       # Add date and amount to payment
       @payment.payment_date = Date.today
       # Figure out customer for payment
-      @payment.customer_id = params[:customer_id] || @payment.payable.contact_id
+      @payment.customer_id = params[:customer_id] || @payment.payable_contact.id
       # Create stripe transaction
       @payment.build_stripe_transaction
       # Load tests if we're in development
-      @tests = PaymentsController.tests if Rails.application.config.x.staging
+      @tests = PaymentsController.tests if Conf.staging.engaged
       # Figure out which form to show
-      if params[:payment_token]
+      if params[:payment_token] || params[:account_token]
         render :pay, layout: 'portal'
       else
         render :edit, layout: false
@@ -38,7 +38,7 @@ class PaymentsController < ApplicationController
       # Report to portal
       @payment.record_portal_payment unless @payment.payable.is_a?(Customer)
       # Log activity
-      Comment.build_from(@payment.customer, Rails.application.config.x.default_user_id, "Payment received: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_account})").save
+      Comment.build_from(@payment.customer, Conf.id.default_user_id, "Payment received: $ #{format("%#.2f", @payment.amount)} (#{@payment.payment_account})").save
       # Send payment receipt
       PaymentMailer.payment(@payment).deliver_now
       # Reload page to show successful payment
@@ -84,7 +84,7 @@ class PaymentsController < ApplicationController
       end
     else
       respond_to do |format|
-        @tests = PaymentsController.tests if Rails.application.config.x.staging
+        @tests = PaymentsController.tests if Conf.staging.engaged
         format.js { render :edit }
       end
     end
@@ -167,19 +167,6 @@ class PaymentsController < ApplicationController
 
   private
 
-  def payment_invoices
-    if params[:customer_id]
-      Bom.open_invoices_for(params[:customer_id])
-    elsif params[:invoice_id]
-      [Invoice.find(params[:invoice_id])]
-    # TODO: Get rid of this once PayController goes away?
-    elsif params[:payment_token]
-      [Invoice.find_by_payment_token(params[:payment_token])]
-    else
-      []
-    end
-  end
-
   def payable
     if params[:customer_id]
       Customer.find(params[:customer_id]).becomes(Customer)
@@ -187,7 +174,10 @@ class PaymentsController < ApplicationController
       Bom.find(params[:invoice_id]).becomes(Invoice)
     # TODO: Get rid of this once PayController goes away?
     elsif params[:payment_token]
-      Invoice.find_by_payment_token(params[:payment_token])
+      Bom.find_by_payment_token(params[:payment_token]).becomes(Invoice)
+    elsif params[:account_token]
+       invoice = Bom.find_by_payment_token(params[:account_token])
+       invoice ? invoice.contact : nil
     elsif params[:proposal_id]
       Proposal.find(params[:proposal_id])
     else
@@ -207,7 +197,7 @@ class PaymentsController < ApplicationController
       amount_left = payment.amount = payable.payable_amount unless params[:amount]
       # Create payment credits from invoices
       if build_credits
-        invoices = payment_invoices
+        invoices = payable.payment_invoices
         invoices.each do |invoice|
           if amount_left > 0
             amount_to_apply = amount_left > invoice.total_due ? invoice.total_due : amount_left

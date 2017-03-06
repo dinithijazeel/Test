@@ -12,8 +12,8 @@
           th.text-right width="10%" Amount
           th width="5%"
       tbody
-        - if customer.payments.where(:payment_status => Payment.payment_statuses[:payment]).count > 0
-          - customer.payments.where(:payment_status => Payment.payment_statuses[:payment]).each do |payment|
+        - if customer.payments.count > 0
+          - customer.payments.each do |payment|
             tr
               td = payment.payment_date
               td = link_to payment.payment_account, [payment.customer, payment], :remote => true

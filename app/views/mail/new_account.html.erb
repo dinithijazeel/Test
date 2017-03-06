@@ -5,28 +5,27 @@
 <!-- COPY -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td align="center" style="font-size: 32px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">Welcome to FracTEL</td>
+        <td align="center" style="font-size: 32px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">Welcome to <%= Conf.id.name %></td>
     </tr>
     <tr>
         <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
         <p>Hello <%= @proposal.contact.contact_first %>,
 
-        <p>Your new Fractel account has been provisioned and is ready for use.
-        You can manage your account using the FracTEL Portal:</p>
+        <p>Your new <%= Conf.id.name %> account has been provisioned and is ready for use. You can manage your account using the <%= Conf.id.name %> Portal:</p>
 
         <p><a href="https://portal.fractel.net" target="_blank">https://portal.fractel.net</a></p>
 
-        <p>Your Account Code is <%= @proposal.contact.portal_id %>.</p>
+        <p>Your Account Code is <%= @proposal.contact.account_code %>.</p>
 
-        <p>For security purposes, an additional step is required to obtain your password. Go to the FracTEL Portal page, select "Forgot Password" and enter your Account Code and this email address, your password will be emailed to you.</p>
+        <p>For security purposes, an additional step is required to obtain your password. Go to the <%= Conf.id.name %> Portal page, select "Forgot Password" and enter your Account Code and this email address, your password will be emailed to you.</p>
 
-        <p>Please take some time to read the FracTEL <a href="https://www.fractel.net/terms-and-conditions/" title="FracTEL Terms and Conditions">Terms and Conditions</a>.</p>
+        <p>Please take some time to read the <%= Conf.id.name %> <a href="https://www.fractel.net/terms-and-conditions/" title="<%= Conf.id.name %> Terms and Conditions">Terms and Conditions</a>.</p>
 
         <p>You can get assistance at any time by browsing our knowledge base or creating a support ticket at <a href="https://helpdesk.fractel.net/" target="_blank">https://helpdesk.fractel.net</a>.</p>
 
         <p>We also encourage you to visit our <a href="https://www.fractel.net/resources/" target="_blank">Resources</a> site, where you can find additional information on your service and devices.</p>
 
-        <p>Thank you again for choosing FracTEL!</p>
+        <p>Thank you again for choosing <%= Conf.id.name %>!</p>
         </td>
     </tr>
 </table>

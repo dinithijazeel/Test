@@ -1,4 +1,4 @@
-.payment data-stripe-key=Rails.configuration.stripe[:publishable_key]
+.payment data-stripe-key=Rails.application.secrets.stripe_public_key
   = render 'pay_form'
 
 coffee:

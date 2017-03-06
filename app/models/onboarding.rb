@@ -76,9 +76,9 @@ class Onboarding < ActiveRecord::Base
   def create_portal_account
     if Fractel.unique_email?(proposal.contact.admin_email)
       # Create portal account
-      portal_id = Fractel.create_account(portal_record)
+      account_code = Fractel.create_account(portal_record)
       # Update contact with generated ID
-      proposal.contact.update_attribute(:portal_id, portal_id)
+      proposal.contact.update_attribute(:account_code, account_code)
     else
       # Email already exists, return false
       errors[:admin_email] = 'already exists'
@@ -100,8 +100,8 @@ class Onboarding < ActiveRecord::Base
       email: proposal.contact.admin_email,
       name: "#{proposal.contact.contact_first} #{proposal.contact.contact_last}",
       description: support_description,
-      subject: "#{Rails.application.config.x.freshdesk.onboarding_subject} - #{proposal.contact.company_name}",
-      group_id: Rails.application.config.x.freshdesk.groups_onboarding,
+      subject: "#{Conf.freshdesk.onboarding_subject} - #{proposal.contact.company_name}",
+      group_id: Conf.freshdesk.groups_onboarding,
       type: 'Onboarding',
       custom_fields: {
         company_name: proposal.contact.company_name,
@@ -111,7 +111,7 @@ class Onboarding < ActiveRecord::Base
         customer_contact_last_name: proposal.contact.contact_last,
         customer_contact_email: proposal.contact.admin_email,
         customer_contact_phone_number_primary: proposal.contact.phone.to_i,
-        customer_number: proposal.contact.portal_id,
+        customer_number: proposal.contact.account_code || 123456789,
         proposal_number: proposal.number,
         equipment_list: proposal.equipment_list,
         services: proposal.services,
@@ -123,12 +123,6 @@ class Onboarding < ActiveRecord::Base
 
   def support_description(system = :freshdesk)
     render 'onboarding/freshdesk_description', layout: false, locals: {onboarding: self}
-    # ApplicationController.new.render_to_string(
-    #   :template => 'onboarding/freshdesk_description',
-    #   # :layout => 'my_layout',
-    #   :locals => { :@onboarding => self }
-    # )
-    # simple_format(installation_notes || Rails.application.config.x.freshdesk.onboarding_description)
   end
 
   def self.controller_params

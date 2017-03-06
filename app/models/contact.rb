@@ -16,7 +16,7 @@ class Contact < ActiveRecord::Base
   #
   ## Validation
   #
-  validates :admin_email, :email => true, :uniqueness => { :message => 'already exists' }
+  validates :admin_email, :email => true #, :uniqueness => { :message => 'already exists' }
   #
   ## Enumerations
   #
@@ -25,7 +25,7 @@ class Contact < ActiveRecord::Base
   #
   ## Scopes
   #
-  scope :query, -> (q) { where('company_name LIKE ? OR contact_first LIKE ? OR contact_last LIKE ? OR admin_email LIKE ? OR billing_email LIKE ? OR phone LIKE ? OR portal_id LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
+  scope :query, -> (q) { where('company_name LIKE ? OR contact_first LIKE ? OR contact_last LIKE ? OR admin_email LIKE ? OR billing_email LIKE ? OR phone LIKE ? OR account_code LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
   scope :updated_this_week, -> {
     where(updated_at: 1.weeks.ago..Time.now).
     order(updated_at: :desc)
@@ -81,7 +81,7 @@ class Contact < ActiveRecord::Base
   #
   def local_loa_path
     query = {
-      :accountcode  => portal_id,
+      :accountcode  => account_code,
       :customername => company_name,
       :address1     => billing_street_1,
       :address2     => billing_street_2,
@@ -93,12 +93,12 @@ class Contact < ActiveRecord::Base
       :email        => admin_email,
       :phone        => phone,
     }
-    "#{Rails.configuration.x.loa.local}?#{query.to_query}"
+    "#{Conf.loa.local}?#{query.to_query}"
   end
 
   def tollfree_loa_path
     query = {
-      :accountcode  => portal_id,
+      :accountcode  => account_code,
       :customername => company_name,
       :address1     => billing_street_1,
       :address2     => billing_street_2,
@@ -110,18 +110,18 @@ class Contact < ActiveRecord::Base
       :email        => admin_email,
       :phone        => phone,
     }
-    "#{Rails.configuration.x.loa.tollfree}?#{query.to_query}"
+    "#{Conf.loa.tollfree}?#{query.to_query}"
   end
 
   # Portal
 
   def has_portal_account?
-    !(portal_id.nil? || portal_id.blank?)
+    !(account_code.nil? || account_code.blank?)
   end
 
   def portal_record
   {
-    :accountcode    => portal_id,
+    :accountcode    => account_code,
     :firstname      => contact_first,
     :lastname       => contact_last,
     :companyname    => company_name,
@@ -143,7 +143,7 @@ class Contact < ActiveRecord::Base
 
   def update_portal_record
   {
-    :AccountCode    => portal_id,
+    :AccountCode    => account_code,
     :FirstName      => contact_first,
     :LastName       => contact_last,
     :CompanyName    => company_name,
@@ -165,7 +165,7 @@ class Contact < ActiveRecord::Base
 
   def read_portal_record
     if has_portal_account?
-      portal_record = Fractel.get_account(customerdata: ",,#{portal_id}")
+      portal_record = Fractel.get_account(customerdata: ",,#{account_code}")
       record = {
         contact_first: portal_record['FirstName'][0],
         contact_last: portal_record['LastName'][0],
@@ -205,9 +205,9 @@ class Contact < ActiveRecord::Base
 
   def invoice_email
     if billing_email.nil? || billing_email.empty?
-      admin_email
+      "#{contact_first} #{contact_last} <#{admin_email}>"
     else
-      billing_email
+      "#{contact_first} #{contact_last} <#{billing_email}>"
     end
   end
 
@@ -272,7 +272,7 @@ class Contact < ActiveRecord::Base
       :billing_country  => 'United States',
       :billing_email    => '',
       :use_billing_for_service => true,
-      :affiliate_id     => '',
+      :affiliate_code   => '',
       :discount_code    => ''
     )
   end
@@ -298,7 +298,7 @@ class Contact < ActiveRecord::Base
       :service_state,
       :service_zip,
       :service_country,
-      :affiliate_id,
+      :affiliate_code,
       :discount_code ]
   end
 end

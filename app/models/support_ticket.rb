@@ -17,8 +17,8 @@ class SupportTicket < ActiveRecord::Base
   end
 
   def create_remote
-    url  = "#{Rails.application.config.x.freshdesk.url}api/v2/tickets"
-    api_key = Rails.application.config.x.freshdesk.api_key
+    url  = "#{Rails.application.secrets.freshdesk_url}api/v2/tickets"
+    api_key = Rails.application.secrets.freshdesk_api_key
     payload = supportable.external_ticket_params
     site = RestClient::Resource.new(url, api_key, 'X')
     begin
@@ -38,8 +38,8 @@ class SupportTicket < ActiveRecord::Base
   end
 
   def read_remote
-    url  = "#{Rails.application.config.x.freshdesk.url}api/v2/tickets/#{foreign_id}"
-    api_key = Rails.application.config.x.freshdesk.api_key
+    url  = "#{Rails.application.secrets.freshdesk_url}api/v2/tickets/#{foreign_id}"
+    api_key = Rails.application.secrets.freshdesk_api_key
     site = RestClient::Resource.new(url, api_key, 'X')
     begin
       response = site.get

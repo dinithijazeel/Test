@@ -44,7 +44,8 @@
             :total_label => 'Products Total:',
             :total_amount => money(@proposal.products_proposal.invoice_total)
   / Onboarding
-  = render 'onboarding/onboarding', onboarding: @proposal.onboarding
+  - if Conf.features.onboarding
+    = render 'onboarding/onboarding', onboarding: @proposal.onboarding
 
 - content_for :page_footer
   = row
@@ -63,13 +64,13 @@
         /   - if @proposal.contact.has_portal_account?
         /     => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal?'
         /   - else
-        /     => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a FracTEL account for the customer.'
+        /     => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a telecom account for the customer.'
         / - else
         /   => button_link 'Collect Payment', new_proposal_payment_path(@proposal), type: 'primary', remote: true
-        - if @proposal.contact.has_portal_account? || !Rails.application.config.x.features.fractel_onboarding
+        - if @proposal.contact.has_portal_account? || !Conf.features.onboarding
           => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal?'
         - else
-          => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a FracTEL account for the customer.'
+          => button_link 'Complete', proposal_path(@proposal, status: 'completed'), method: :put, type: 'warning', confirm: 'Complete this proposal? This will generate a telecom account for the customer.'
         
       = button_link 'View PDF', proposal_path(@proposal, :format => :pdf), :target => '_blank'
 

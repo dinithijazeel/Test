@@ -46,7 +46,7 @@ class Bom < ActiveRecord::Base
   end
 
   before_save do
-	update_rating
+  update_rating
     set_invoice_total
     if invoice_status == 'open'
       # Make sure open invoices have a token, date, and number
@@ -99,7 +99,7 @@ class Bom < ActiveRecord::Base
     # Use current user if we don't specify a sender
     sender_id = User.current.id if sender_id.nil?
     # Queue for execution
-    #SendInvoiceJob.perform_later(self.id, sender_id)
+    SendInvoiceJob.perform_later(self.id, sender_id)
   end
 
   def send_invoice(sender_id = nil)
@@ -122,7 +122,7 @@ class Bom < ActiveRecord::Base
 
   def filtered_line_items(filter)
     # Get SKU
-    product_sku = Rails.application.config.x.products.special_products[filter]
+    product_sku = Conf.products.special[filter]
     # Normalize to array
     unless product_sku.is_a?(Array)
       product_sku = [product_sku]
@@ -144,171 +144,172 @@ class Bom < ActiveRecord::Base
     old_tax_items = line_items.joins(:product).where(products: {product_type: Product.product_types[:tax]})
     line_items.destroy(old_tax_items) unless old_tax_items.empty?
     # Calculate new line items
-	new_tax_items = get_rating_line_items
+     new_tax_items = get_rating_line_items
     # Add to line items
-	line_items << new_tax_items unless new_tax_items.nil? 
+    line_items << new_tax_items unless new_tax_items.nil?
     # Timestamp rating
     self.rated_at = Time.now
     self.rating_status = :rating_processed
   end
 
-  def get_rating_line_items 
-  
-	#return if there's no active line items
-	return nil if line_items.select{|li| li._destroy == false}.empty?  
-     
-    #generate number if blank
-	self.number = generate_number if number.blank?
-	
-	#recalculate invoice totals - to make sure API call have the correct totals
-	set_invoice_total
-	
-    #generate line items hash
-	line_item_hash = Hash.new()  
-	line_item_array = [] 
-	i = 1
-	line_items.select {|li| li._destroy == false}.each do |line_item|  
-		line_item_hash ={:LineNumber => i,
-									:InvoiceNumber => number,
-									:CustomerNumber =>  contact.portal_id != nil ? contact.portal_id: '',
-									:OrigNumber =>'',#?  Optional fields
-									:TermNumber => '',#?  Optional fields
-									:BillToNumber => '',#?  Optional fields  
-									:TransDate => invoice_date.strftime("%m/%d/%Y")  ,
-									:BillingPeriodStartDate => billing_start != nil ? billing_start.strftime("%m/%d/%Y"): ''  ,
-									:BillingPeriodEndDate => billing_end != nil ? billing_end.strftime("%m/%d/%Y"):''  ,
-									:Revenue =>(line_item.quantity * line_item.unit_price).to_s,  
-									:Units => line_item.quantity.to_i.to_s,   
-									:UnitType => '00',
-									:Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',  
-									:TaxIncludedCode => '0',
-									:TaxSitusRule => '04',
-									:TransTypeCode =>  '050101', #? This field does not exist yet, it needs to be added
-									:SalesTypeCode => 'B',  # (B for everyone)
-									:RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
-									:TaxExemptionCodeList => [''], #? Need clarification from CCH on this.  
-									:ExemptReasonCode => 'None', #?Need clarification from CCH on this.  
-									# :CostCenter => '', #?  Optional fields
-									# :GLAccount => '', #?  Optional fields
-									# :MaterialGroup => '', #?  Optional fields
-									# :CurrencyCode => '', #?  Optional fields
-									# :OriginCountryCode => '', #?  Optional fields
-									# :DestCountryCode => '', #?  Optional fields
-									:BillingDaysInPeriod => billing_start != nil && billing_end != nil ? (billing_end - billing_start).to_i/1.day : 0, 
-									:Parameter1 => line_item.product.sku,  
-									:Parameter2 => line_item.product.name,  
-									:Parameter3 => line_item.unit_price.to_s,  
-									:Parameter4 => line_item.quantity.to_s,  
-									:Parameter5 => line_item.total.to_s,  
-									# :Parameter6 => '', #?  Optional fields
-									# :Parameter7 => '', #?  Optional fields
-									# :Parameter8 => '', #?  Optional fields
-									# :Parameter9 => '', #?  Optional fields
-									# :Parameter10 => '', #?  Optional fields
-									# :UDF => '', #?  Optional fields
-									# :UDF2 => '', #?  Optional fields
-									:Address => {:PrimaryAddressLine => '',
-												:SecondaryAddressLine => '',
-												:County => '', 
-												:City => '',
-												:State => '',
-												:PostalCode => contact.service_zip,
-												:Plus4 => '',
-												:Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
-												:Geocode => '',
-												:VerifyAddress => '0'},
-									:P2PAddress => {:PrimaryAddressLine => '',
-													:SecondaryAddressLine => '',
-													:County => '',
-													:City => '',
-													:State => '',
-													:PostalCode => '',
-													:Plus4 => '',
-													:Country => '',
-													:Geocode => '',
-													:VerifyAddress => 'false'}  
-								 
-						}  
-	    line_item_array.push(line_item_hash)
-		i += 1
-    end   
-  
-    #generate main hash for SureTax API call 
-	main_hash = {:ClientNumber => Rails.application.config.x.suretax.client_number,
-		:BusinessUnit => Rails.application.config.x.tenant,  
-		:ValidationKey => Rails.application.config.x.suretax.validation_key ,
-		:DataYear =>  invoice_date.strftime("%Y"),
-		:DataMonth =>  invoice_date.strftime("%m"),
-		:CmplDataYear => invoice_date.strftime("%Y"),  
-		:CmplDataMonth =>  invoice_date.strftime("%m"),  
-		:TotalRevenue => invoice_total.to_s,
-		:ReturnFileCode => invoice_status=='open' ? '0' : 'Q',  
-		:ClientTracking => contact.portal_id != nil ? contact.portal_id: '',
-		:ResponseGroup => '00',
-		:ResponseType => 'D2',  
-		:STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s, 
-		:ItemList => line_item_array
-	}   
+  def get_rating_line_items
+    # return if there's no active line items
+    return nil if line_items.select{|li| li._destroy == false}.empty?
 
-	#Add request wrapper to json data
-	json_text = {:request => main_hash.to_json}.to_json  
-	 
-	#Calling SureTax API 
-	url  = "#{Rails.application.config.x.suretax.url}/PostRequest"  
-    begin  
-		site = RestClient::Resource.new(url) 
-		response = site.post(json_text ,:content_type=>'application/json'); 
-		
-		parsed= JSON.parse(JSON.parse(response.body)["d"])
-		if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'  
-			new_line_item_array =  []   
-			parsed["GroupList"].each do |group| 
-				group["TaxList"].each do |tax| 
-					current_tax_product = Product.find_by_sku(Rails.application.config.x.products.tax_products[tax["TaxTypeCode"].to_s.to_sym])
-					# check for invalid product codes
-					if current_tax_product.nil?
-						puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
-					else
-						#check for items with non zero tax amount
-						if tax["TaxAmount"].to_f  != 0.to_f 
-							#check whether the tax product is already added to the array
-							existing_tax_product = new_line_item_array.find {|s| s.product.sku == current_tax_product.sku}  
-							if existing_tax_product.nil? # add new line item to array
-								p = LineItem.new(
-									description: tax["TaxTypeDesc"],
-									quantity: 1,
-									unit_price: tax["TaxAmount"].to_f,  
-									product:  current_tax_product)
-								new_line_item_array.push(p)
-							else   # update existing line item
-								existing_tax_product.unit_price +=  tax["TaxAmount"].to_f 
-							end
-						end 
-					end
-				end
-			end
-			return new_line_item_array
-		else 
-			# Handle if SureTax API return any errors
-			puts 'API Error: Your request is not successful.' 
-			puts "Transaction ID: #{parsed["TransId"]}" 
-			puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}" 
-			if parsed["ResponseCode"] =='9001' # have item errors 
-				parsed["ItemMessages"].each do |itemmsg|  
-					puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "  
-				end  
-			end
-			return nil
-		end 
-	  
+    # generate number if blank
+    self.number = generate_number if number.blank?
+
+    # recalculate invoice totals - to make sure API call have the correct totals
+    set_invoice_total
+
+    # generate line items hash
+    line_item_hash = Hash.new()
+    line_item_array = []
+    i = 1
+    line_items.select{|li| li._destroy == false}.each do |line_item|
+      line_item_hash = {
+        :LineNumber => i,
+        :InvoiceNumber => number,
+        :CustomerNumber =>  contact.account_code != nil ? contact.account_code: '',
+        :OrigNumber =>'',#?  Optional fields
+        :TermNumber => '',#?  Optional fields
+        :BillToNumber => '',#?  Optional fields
+        :TransDate => invoice_date.strftime("%m/%d/%Y")  ,
+        :BillingPeriodStartDate => billing_start != nil ? billing_start.strftime("%m/%d/%Y"): ''  ,
+        :BillingPeriodEndDate => billing_end != nil ? billing_end.strftime("%m/%d/%Y"):''  ,
+        :Revenue =>(line_item.quantity * line_item.unit_price).to_s,
+        :Units => line_item.quantity.to_i.to_s,
+        :UnitType => '00',
+        :Seconds => line_item.product.billing =='usage' ? line_item.quantity.to_i.to_s : '1',
+        :TaxIncludedCode => '0',
+        :TaxSitusRule => '04',
+        :TransTypeCode =>  line_item.product.sure_tax_code,
+        :SalesTypeCode => 'B',  # (B for everyone)
+        :RegulatoryCode => '03', # 03 -> VOIP, recommended by CCH
+        :TaxExemptionCodeList => [''], #? Need clarification from CCH on this.
+        :ExemptReasonCode => 'None', #?Need clarification from CCH on this.
+        # :CostCenter => '', #?  Optional fields
+        # :GLAccount => '', #?  Optional fields
+        # :MaterialGroup => '', #?  Optional fields
+        # :CurrencyCode => '', #?  Optional fields
+        # :OriginCountryCode => '', #?  Optional fields
+        # :DestCountryCode => '', #?  Optional fields
+        :BillingDaysInPeriod => billing_start != nil && billing_end != nil ? (billing_end - billing_start).to_i/1.day : 0,
+        :Parameter1 => line_item.product.sku,
+        :Parameter2 => line_item.product.name,
+        :Parameter3 => line_item.unit_price.to_s,
+        :Parameter4 => line_item.quantity.to_s,
+        :Parameter5 => line_item.total.to_s,
+        # :Parameter6 => '', #?  Optional fields
+        # :Parameter7 => '', #?  Optional fields
+        # :Parameter8 => '', #?  Optional fields
+        # :Parameter9 => '', #?  Optional fields
+        # :Parameter10 => '', #?  Optional fields
+        # :UDF => '', #?  Optional fields
+        # :UDF2 => '', #?  Optional fields
+        :Address => {
+          :PrimaryAddressLine => '',
+          :SecondaryAddressLine => '',
+          :County => '',
+          :City => '',
+          :State => '',
+          :PostalCode => contact.service_zip,
+          :Plus4 => '',
+          :Country =>  contact.service_country =='Canada' ? 'CA' : 'US',
+          :Geocode => '',
+          :VerifyAddress => '0'},
+          :P2PAddress => {:PrimaryAddressLine => '',
+          :SecondaryAddressLine => '',
+          :County => '',
+          :City => '',
+          :State => '',
+          :PostalCode => '',
+          :Plus4 => '',
+          :Country => '',
+          :Geocode => '',
+          :VerifyAddress => 'false'
+        }
+      }
+      line_item_array.push(line_item_hash)
+      i += 1
+    end
+
+    # generate main hash for SureTax API call
+    main_hash = {
+      :ClientNumber => Conf.suretax.client_number,
+      :BusinessUnit => Conf.tenant, :ValidationKey => Conf.suretax.validation_key ,
+      :DataYear =>  invoice_date.strftime("%Y"),
+      :DataMonth =>  invoice_date.strftime("%m"),
+      :CmplDataYear => invoice_date.strftime("%Y"),
+      :CmplDataMonth =>  invoice_date.strftime("%m"),
+      :TotalRevenue => invoice_total.to_s,
+      :ReturnFileCode => invoice_status=='open' ? '0' : 'Q',
+      :ClientTracking => contact.account_code != nil ? contact.account_code: '',
+      :ResponseGroup => '00',
+      :ResponseType => 'D2',
+      :STAN => number.split(//).last(4).join("").to_s + '-' + Time.now.to_i.to_s,
+      :ItemList => line_item_array
+    }
+
+    # Add request wrapper to json data
+    json_text = {:request => main_hash.to_json}.to_json
+
+    #Calling SureTax API
+    url  = "#{Conf.suretax.url}/PostRequest"
+    begin
+      site = RestClient::Resource.new(url)
+      print "#{json_text}"
+      response = site.post(json_text ,:content_type=>'application/json')
+      parsed= JSON.parse(JSON.parse(response.body)["d"])
+      if parsed["Successful"] =='Y' && parsed["ResponseCode"] =='9999'
+        new_line_item_array =  []
+        parsed["GroupList"].each do |group|
+          group["TaxList"].each do |tax|
+            current_tax_product = Product.find_by_sku(Conf.suretax.tax_products["ST#{tax['TaxTypeCode'].to_s}"])
+            # check for invalid product codes
+            if current_tax_product.nil?
+              puts "Invalid Tax Code : #{tax["TaxTypeCode"]}"
+            else
+              #check for items with non zero tax amount
+              if tax["TaxAmount"].to_f  != 0.to_f
+                #check whether the tax product is already added to the array
+                existing_tax_product = new_line_item_array.find {|s| s.product.sku == current_tax_product.sku}
+                if existing_tax_product.nil? # add new line item to array
+                  p = LineItem.new(
+                    description: tax["TaxTypeDesc"],
+                    quantity: 1,
+                    unit_price: tax["TaxAmount"].to_f,
+                    product:  current_tax_product
+                  )
+                  new_line_item_array.push(p)
+                else   # update existing line item
+                  existing_tax_product.unit_price +=  tax["TaxAmount"].to_f
+                end
+              end
+            end
+          end
+        end
+        return new_line_item_array
+      else
+        # Handle if SureTax API return any errors
+        puts 'API Error: Your request is not successful.'
+        puts "Transaction ID: #{parsed["TransId"]}"
+        puts "Response Code: #{parsed["ResponseCode"]} Header Message: #{parsed["HeaderMessage"]}"
+        if parsed["ResponseCode"] =='9001' # have item errors
+          parsed["ItemMessages"].each do |itemmsg|
+            puts "LineNumber: #{itemmsg["LineNumber"]} Response Code:#{itemmsg["ResponseCode"]} Message:#{itemmsg["Message"]} "
+          end
+        end
+        return nil
+      end
     rescue RestClient::Exception => exception
-		puts 'API Error: Your request is not successful.'  
-		puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
-		puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"  
-		return nil
-	rescue SocketError => socketerror
-		puts "API Error:#{socketerror}"
-		return nil
+      puts 'API Error: Your request is not successful.'
+      puts "X-Request-Id: #{exception.response.headers[:x_request_id]}"
+      puts "Response Code: #{exception.response.code} \nResponse Body: #{exception.response.body} \n"
+      return nil
+    rescue SocketError => socketerror
+      puts "API Error:#{socketerror}"
+      return nil
     end
   end
 
@@ -335,13 +336,13 @@ class Bom < ActiveRecord::Base
   def summary(divider = ' / ')
     names = []
     line_items.each do |line_item|
-		#Consider only service and merchandise products to generate summary
-		if line_item.product.product_type == 'service' || line_item.product.product_type == 'merchandise' 
-			# Make float into int if it's a whole number
-			quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
-			# Add to array
-			names << "#{quantity} x #{line_item.product.name}"
-		end
+  #Consider only service and merchandise products to generate summary
+  if line_item.product.product_type == 'service' || line_item.product.product_type == 'merchandise'
+  # Make float into int if it's a whole number
+  quantity = (line_item.quantity.to_i == line_item.quantity) ? line_item.quantity.to_i : line_item.quantity
+  # Add to array
+  names << "#{quantity} x #{line_item.product.name}"
+  end
     end
     names.join(divider)
   end
@@ -362,7 +363,7 @@ class Bom < ActiveRecord::Base
       :billing_end,
       :did_url,
       :contact_id,
-      :portal_id,
+      :account_code,
       :line_items_attributes => ([:id] + LineItem.controller_params) ]
   end
 

@@ -1,0 +1,29 @@
+= myrject :card do |c|
+  - c.title 'Account Summary'
+  - if defined?(send_statement_button) && send_statement_button
+    - c.action
+      = link_to fa('envelope'), contact_path(@customer, status: 'statement'), method: :put, confirm: 'Send a statement to this customer?'
+  - c.body
+    = table
+      tbody
+        tr
+          td = "Previous Balance (#{customer.previous_balance_date}):"
+          td.text-right = money(customer.previous_balance)
+        tr
+          td = "Payments Received:"
+          td.text-right = "- #{money(customer.last_payments)}"
+        tr
+          - sign = customer.adjustments < 0 ? '+' : '-'
+          td Adjustments:
+          td.text-right = "#{sign} #{money(customer.adjustments)}"
+        tr
+          td Balance Forward:
+          td.text-right = money(customer.previous_balance - customer.last_payments + customer.adjustments)
+        tr
+          td Current Charges:
+          td.text-right = "+ #{money(customer.last_charge)}"
+        tr.total-row
+          td
+            strong Total Current Charges:
+          td.text-right
+            strong = money(customer.current_balance)

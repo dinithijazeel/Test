@@ -1,9 +1,9 @@
 class Admin::AccountsController < ApplicationController
   respond_to :js
 
-  # PUT /admin/accounts/portal_id.json
+  # PUT /admin/accounts/account_code.json
   def update
-    @account = Customer.find_by_portal_id(params[:id])
+    @account = Customer.find_by_account_code(params[:id])
     respond_to do |format|
       if @account.nil?
         format.json { render :json => "Unknown BillingCode #{params[:id]}".to_json, :status => :not_found }

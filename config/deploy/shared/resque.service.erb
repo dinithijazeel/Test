@@ -1,17 +1,17 @@
 [Unit]
-Description=<%= "Resque Worker :: #{fetch(:profile)} :: #{fetch(:application)}" %>
+Description=<%= "Resque Worker :: #{fetch(:tenant)} :: #{fetch(:application)}" %>
 # Requires=redis.service
 # After=redis.service
 
 [Service]
 User=<%= fetch(:deploy_user) %>
 WorkingDirectory=<%= "#{fetch(:deploy_to)}/current" %>
-SyslogIdentifier=<%= "resque-#{fetch(:profile)}-#{fetch(:application)}" %>
+SyslogIdentifier=<%= "resque-#{fetch(:tenant)}-#{fetch(:application)}" %>
 PIDFile=<%= "#{fetch(:deploy_to)}/current/tmp/pids/resque.pid" %>
 
 Environment=RAILS_ENV=<%= fetch(:rails_env) %>
 
-ExecStart=<%= "/usr/bin/bundle exec \"rake environment resque:work QUEUE=#{fetch(:profile)}\""  %>
+ExecStart=<%= "/usr/bin/bundle exec \"rake environment resque:work QUEUE=#{fetch(:tenant)}\""  %>
 
 [Install]
 WantedBy=multi-user.target

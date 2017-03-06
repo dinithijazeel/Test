@@ -1,4 +1,5 @@
 class ApplicationJob < ActiveJob::Base
+  queue_as Conf.tenant
   include Rails.application.routes.url_helpers
 
   protected

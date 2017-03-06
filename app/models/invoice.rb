@@ -17,10 +17,11 @@ class Invoice < Bom
   #
   ## Scopes
   #
-  scope :query, -> (q) { joins(:contact).where('boms.number LIKE ? OR boms.memo LIKE ? OR contacts.company_name LIKE ? OR contacts.contact_first LIKE ? OR contacts.contact_last LIKE ? OR contacts.portal_id LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
+  scope :query, -> (q) { joins(:contact).where('boms.number LIKE ? OR boms.memo LIKE ? OR contacts.company_name LIKE ? OR contacts.contact_first LIKE ? OR contacts.contact_last LIKE ? OR contacts.account_code LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
   scope :updated_this_month, -> {
-    where(updated_at: Time.now.beginning_of_month..Time.now.end_of_month).
+    where(updated_at: 4.weeks.ago..Time.now).
     where('boms.type IN (\'Invoice\',\'ServiceInvoice\')')
+    order(invoice_date: :desc)
   }
   #
   ## Listings
@@ -45,6 +46,10 @@ class Invoice < Bom
     else
       Rails.application.routes.url_helpers.payment_url('xxxx-xxxx-xxxx-xxxx')
     end
+  end
+
+  def payment_invoices
+    [self]
   end
 
   def pdf_filename

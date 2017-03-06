@@ -46,12 +46,12 @@ class User < ActiveRecord::Base
     if role.nil?
       false
     else
-      role <= Rails.configuration.x.users.roles[check_role]
+      role <= Conf.users.roles[check_role]
     end
   end
 
   def self.roles
-    roles_list = Rails.configuration.x.users.roles.clone
+    roles_list = Conf.users.roles.clone
     unless User.current.is(:root)
       roles_list.delete(:root)
     end
@@ -59,13 +59,13 @@ class User < ActiveRecord::Base
   end
 
   def role_name
-    Rails.configuration.x.users.roles.key(role).to_s
+    Conf.users.roles.to_h.key(role).to_s
   end
 
   # Model access
 
   def self.current
-    Thread.current[:user] || User.find(Rails.application.config.x.default_user_id)
+    Thread.current[:user] || User.find(Conf.id.default_user_id)
   end
 
   def self.current=(user)

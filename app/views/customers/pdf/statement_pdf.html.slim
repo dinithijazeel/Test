@@ -1,0 +1,31 @@
+#statement
+  #first-page
+    .print-page
+      .logo &nbsp;
+      .invoice-header
+        .title Statement
+        .info
+          .account-number
+            .label Account #
+            .value = @customer.account_code
+          .statement-date
+            .label Statement Date
+            .value = Date.today
+          .invoice-balance
+            .label Total Due (USD)
+            .value
+              => money(@customer.current_balance)
+      #vendor-address
+        h3 Remit To:
+        = "#{Conf.id.name}"
+        br
+        = "#{Conf.id.address.street}"
+        br
+        = "#{Conf.id.address.city_st_zip}"
+      #billing-address
+        h3 Bill To:
+        = render 'application/address', address: @customer.billing_address
+      #summary
+        = render 'customers/balance', customer: @customer
+
+      = render "invoices/pdf/payment_instructions", payable: @customer

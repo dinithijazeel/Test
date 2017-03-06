@@ -106,20 +106,27 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       if params[:status].nil?
         ip = invoice_params
+        message = 'Invoice was successfully updated.'
       else
         case params[:status]
         when 'open'
           @invoice.send_invoice_later
           @invoice.invoice_status = :open
+          message = 'Invoice confirmed.'
+        when 'rate'
+          @invoice.update_rating
+          message = 'Invoice rated.'
         when 'resend'
           @invoice.send_invoice_later
+          message = 'Invoice sent.'
         when 'closed'
           @invoice.invoice_status = :closed
+          message = 'Invoice closed.'
         end
         ip = {}
       end
       if @invoice.update(ip)
-        format.html { redirect_to @invoice, :notice => 'Invoice was successfully updated.' }
+        format.html { redirect_to @invoice, :notice => message }
       else
         format.html { render :edit }
         format.json { render :json => @invoice.errors, :status => :unprocessable_entity }
@@ -130,14 +137,14 @@ class InvoicesController < ApplicationController
 
   # DELETE /invoices/1
   # DELETE /invoices/1.json
-  # TODO: Not sure how this should be handled... issue a credit invoice?
-  # def destroy
-  #   @invoice.destroy
-  #   respond_to do |format|
-  #     format.html { redirect_to products_url, notice: 'Invoice was successfully destroyed.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
+  def destroy
+    authorize @invoice
+    @invoice.update_attribute(:invoice_status, :obsolete)
+    respond_to do |format|
+      format.html { redirect_to invoices_url, notice: 'Invoice was successfully deleted.' }
+      format.json { head :no_content }
+    end
+  end
 
   private
 

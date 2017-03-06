@@ -75,7 +75,7 @@ class Payment < ActiveRecord::Base
   # TODO: Ditch when portal no longer records payments
   def record_portal_payment
     portal_payment = {
-      :accountcode => payable_contact.portal_id,
+      :accountcode => payable_contact.account_code,
       :amount      => amount,
       :invoiceid   => payable.number,
       :paymentdata => stripe_transaction.to_json,
@@ -85,7 +85,7 @@ class Payment < ActiveRecord::Base
 
   def record_portal_prepayment
     portal_payment = {
-      :accountcode => payable_contact.portal_id,
+      :accountcode => payable_contact.account_code,
       :amount      => amount,
       :invoiceid   => payable.number,
       :paymentdata => stripe_transaction.to_json,
@@ -119,16 +119,19 @@ class Payment < ActiveRecord::Base
   end
 
   def self.payments_accepted
-    payments = Rails.application.config.x.payments.accepted.collect do |payment_name, payment_account|
-      if Pundit.policy(User.current, :payment).send("use_#{payment_account}?")
-        [payment_name, 'data-form' => payment_account]
+    payments = []
+    Conf.payments.each do |payment_type, payment_accounts|
+      if Pundit.policy(User.current, :payment).send("use_#{payment_type}?")
+        payment_accounts.each do |account|
+          payments << [account, 'data-form' => payment_type]
+        end
       end
     end
     payments.compact
   end
 
   def self.payment_forms
-    Rails.application.config.x.payments.accepted.values.uniq
+    Conf.payments.keys
   end
 
   def self.bank_deposits

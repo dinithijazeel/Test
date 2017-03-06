@@ -2,13 +2,13 @@ doctype html
 html lang="en" 
   head
 
-    title = Rails.application.config.x.company.name
+    title = Conf.id.name
 
     meta content=("text/html; charset=UTF-8") http-equiv="content-type" /
     meta charset="utf-8" /
     meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" /
 
-    = wicked_pdf_stylesheet_link_tag Rails.application.config.x.theme.name
+    = wicked_pdf_stylesheet_link_tag Conf.tenant
     = wicked_pdf_stylesheet_link_tag 'print'
     = wicked_pdf_stylesheet_link_tag 'proposals'
 

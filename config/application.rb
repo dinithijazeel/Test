@@ -39,10 +39,5 @@ module Myriander
     # add custom validators path
     config.autoload_paths << Rails.root.join('app/validators')
     config.autoload_paths << Rails.root.join('lib')
-
-    # TODO: Put this in a better place.
-    # LOA URLs
-    config.x.loa.local     = 'https://www.fractel.net/forms/loa-form-local/'
-    config.x.loa.tollfree  = 'https://www.fractel.net/forms/loa-form-toll-free/'
   end
 end

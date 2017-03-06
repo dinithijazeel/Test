@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170301203310) do
+ActiveRecord::Schema.define(version: 20170305220933) do
 
   create_table "boms", force: :cascade do |t|
     t.string   "type",           limit: 255
@@ -95,16 +95,17 @@ ActiveRecord::Schema.define(version: 20170301203310) do
     t.string   "service_state",           limit: 255
     t.string   "service_zip",             limit: 255
     t.string   "service_country",         limit: 255
-    t.string   "affiliate_id",            limit: 255
+    t.string   "affiliate_code",          limit: 255
     t.string   "discount_code",           limit: 255
     t.string   "tax_exempt_certificate",  limit: 255
-    t.string   "portal_id",               limit: 255
+    t.string   "account_code",            limit: 255
     t.integer  "creator_id",              limit: 4
     t.integer  "last_editor_id",          limit: 4
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
   end
 
+  add_index "contacts", ["account_code"], name: "index_contacts_on_account_code", using: :btree
   add_index "contacts", ["admin_email"], name: "index_contacts_on_admin_email", using: :btree
   add_index "contacts", ["billing_email"], name: "index_contacts_on_billing_email", using: :btree
   add_index "contacts", ["company_name"], name: "index_contacts_on_company_name", using: :btree
@@ -114,7 +115,6 @@ ActiveRecord::Schema.define(version: 20170301203310) do
   add_index "contacts", ["customer_status"], name: "index_contacts_on_customer_status", using: :btree
   add_index "contacts", ["default_terms"], name: "index_contacts_on_default_terms", using: :btree
   add_index "contacts", ["last_editor_id"], name: "index_contacts_on_last_editor_id", using: :btree
-  add_index "contacts", ["portal_id"], name: "index_contacts_on_portal_id", using: :btree
   add_index "contacts", ["type"], name: "index_contacts_on_type", using: :btree
 
   create_table "credits", force: :cascade do |t|
@@ -282,6 +282,18 @@ ActiveRecord::Schema.define(version: 20170301203310) do
   add_index "proposals", ["proposal_status"], name: "index_proposals_on_proposal_status", using: :btree
   add_index "proposals", ["services_proposal_id"], name: "index_proposals_on_services_proposal_id", using: :btree
 
+  create_table "service_records", force: :cascade do |t|
+    t.string   "cdr_url",       limit: 255
+    t.string   "did_url",       limit: 255
+    t.datetime "billing_start"
+    t.datetime "billing_end"
+    t.integer  "invoice_id",    limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "service_records", ["invoice_id"], name: "index_service_records_on_invoice_id", using: :btree
+
   create_table "stripe_transactions", force: :cascade do |t|
     t.string  "token",               limit: 255, null: false
     t.integer "stripe_created",      limit: 4
@@ -393,5 +405,6 @@ ActiveRecord::Schema.define(version: 20170301203310) do
   add_foreign_key "proposals", "contacts"
   add_foreign_key "proposals", "users", column: "creator_id"
   add_foreign_key "proposals", "users", column: "last_editor_id"
+  add_foreign_key "service_records", "boms", column: "invoice_id"
   add_foreign_key "stripe_transactions", "payments"
 end

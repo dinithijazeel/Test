@@ -43,7 +43,7 @@ en:
         service_state: State
         service_zip: Zip
         service_country: Country
-        affiliate_id: Affiliate
+        affiliate_code: Affiliate
         discount_code: Discount Code
       customer:
         contact_first: First Name
@@ -66,7 +66,7 @@ en:
         service_state: State
         service_zip: Zip
         service_country: Country
-        affiliate_id: Affiliate
+        affiliate_code: Affiliate
         discount_code: Discount Code
       invoice:
         terms: Terms
@@ -145,7 +145,7 @@ en:
         service_state: State
         service_zip: Zip
         service_country: Country
-        affiliate_id: Affiliate
+        affiliate_code: Affiliate
         discount_code: Discount Code
       customer:
         contact_first: First Name
@@ -168,7 +168,7 @@ en:
         service_state: State
         service_zip: Zip
         service_country: Country
-        affiliate_id: Affiliate
+        affiliate_code: Affiliate
         discount_code: Discount Code
       invoice:
         terms: Terms
@@ -247,7 +247,7 @@ en:
         service_state: State
         service_zip: Zip
         service_country: Country
-        affiliate_id: Affiliate
+        affiliate_code: Affiliate
         discount_code: Discount Code
       customer:
         contact_first: First Name
@@ -270,7 +270,7 @@ en:
         service_state: State
         service_zip: Zip
         service_country: Country
-        affiliate_id: Affiliate
+        affiliate_code: Affiliate
         discount_code: Discount Code
       invoice:
         terms: Terms

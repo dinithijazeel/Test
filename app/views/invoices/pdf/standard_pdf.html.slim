@@ -7,7 +7,7 @@
         .info
           .account-number
             .label Account #
-            .value = @pdf_invoice.contact.portal_id
+            .value = @pdf_invoice.contact.account_code
           .invoice-number
             .label Invoice #
             .value = @pdf_invoice.number
@@ -23,11 +23,11 @@
             .paid
       #vendor-address
         h3 Remit To:
-        = "#{Rails.application.config.x.company.name}"
+        = "#{Conf.id.name}"
         br
-        = "#{Rails.application.config.x.company.street}"
+        = "#{Conf.id.address.street}"
         br
-        = "#{Rails.application.config.x.company.city_st_zip}"
+        = "#{Conf.id.address.city_st_zip}"
       #billing-address
         h3 Bill To:
         - unless @pdf_invoice.contact.nil?
@@ -39,10 +39,10 @@
             :hide_quantity => false
           = render 'invoices/invoice_totals',
             :invoice => @pdf_invoice
-          - if Rails.application.config.x.features.payments
+          - if Conf.features.payments
             tr
               td colspan=3 &nbsp;
               td.text-right width="15%" style="padding-top: 12px;"
                 a.btn.btn-primary< href=@pdf_invoice.payment_link Click Here to Pay Online
 
-      = render "invoices/pdf/payment_instructions"
+      = render "invoices/pdf/payment_instructions", payable: @pdf_invoice

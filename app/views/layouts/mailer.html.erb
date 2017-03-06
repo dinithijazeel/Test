@@ -115,8 +115,8 @@
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="wrapper">
                   <tr>
                       <td align="center" valign="top" style="padding: 15px 0;" class="logo">
-                          <a href="<%= Rails.application.config.x.company.website_url %>" target="_blank">
-                              <img alt="<%= Rails.application.config.x.company.motto %>" src="<%= Rails.application.config.x.email.logo %>" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
+                          <a href="<%= Conf.id.website_url %>" target="_blank">
+                              <img alt="<%= Conf.id.motto %>" src="<%= Conf.email.logo %>" style="display: block;" border="0" width="300">
                           </a>
                       </td>
                   </tr>
@@ -160,11 +160,11 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 500px;" class="responsive-table">
                 <tr>
                     <td align="center" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">
-                        <%= Rails.application.config.x.company.name %> &bull; <%= Rails.application.config.x.company.address.html_safe %>
+                        <%= Conf.id.legal_name %> &bull; <%= Conf.id.address.one_line.html_safe %>
                         <br>
-                        <a href="<%= Rails.application.config.x.company.website_url %>" target="_blank" style="color: #666666; text-decoration: none;"><%= Rails.application.config.x.company.website_name %></a>
+                        <a href="<%= Conf.id.website_url %>" target="_blank" style="color: #666666; text-decoration: none;"><%= Conf.id.website_name %></a>
                         <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                        <a href="mailto:<%= Rails.application.config.x.company.email %>" target="_blank" style="color: #666666; text-decoration: none;"><%= Rails.application.config.x.company.email %></a>
+                        <a href="mailto:<%= Conf.id.contact.general_email %>" target="_blank" style="color: #666666; text-decoration: none;"><%= Conf.id.contact.general_email %></a>
                     </td>
                 </tr>
             </table>

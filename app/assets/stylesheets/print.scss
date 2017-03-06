@@ -124,7 +124,8 @@ $border-thick-teal: 3px solid #009AB1;
 
 // invoice
 
-#invoice {
+#invoice,
+#statement {
   .logo {
     @include layout(0.5in, 0.13in, 4.0in);
     background-image: image_url('logo_md.png');
@@ -192,7 +193,8 @@ $border-thick-teal: 3px solid #009AB1;
     #service-address {
       @include layout(2.75in, 4.25in, 3.0in);
     }
-    #line-items {
+    #line-items,
+    #summary {
       @include layout(4.5in, 0.5in, 7.5in);
     }
     #service-records {

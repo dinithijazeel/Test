@@ -34,7 +34,7 @@ class Product < ActiveRecord::Base
 
   def self.get(special_product)
     # Get SKU
-    product_sku = Rails.application.config.x.products.special_products[special_product]
+    product_sku = Conf.products.special[special_product]
     # Get product
     find_by_sku(product_sku)
   end

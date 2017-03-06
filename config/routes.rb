@@ -42,16 +42,22 @@ Rails.application.routes.draw do
     resources :line_items
     resources :payments
   end
+  get 'pay/account/:account_token',
+    :to => 'pay#new',
+    :as => 'new_account_payment'
+  post 'pay/account/:account_token',
+    :to => 'pay#create',
+    :as => 'account_payment'
   get 'pay/:payment_token',
     :to => 'pay#new',
     :as => 'new_payment'
   post 'pay/:payment_token',
     :to => 'pay#create',
     :as => 'payment'
-  get 'prepay/:portal_id',
+  get 'prepay/:account_code',
     :to => 'pay#prepaid_new',
     :as => 'new_prepayment'
-  post 'prepay/:portal_id',
+  post 'prepay/:account_code',
     :to => 'pay#prepaid_create',
     :as => 'prepayment'
   #

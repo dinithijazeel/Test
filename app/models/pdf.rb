@@ -6,7 +6,7 @@ class Pdf
   class RenderingController < RenderAnywhere::RenderingController
     def initialize
       super
-      prepend_view_path "app/views/tenants/#{Rails.application.config.x.tenant}"
+      prepend_view_path "app/views/tenants/#{Conf.tenant}"
     end
   end
 

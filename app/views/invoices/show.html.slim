@@ -11,6 +11,10 @@
       => button_link "Invoices", invoices_path
       = button_link "Customer", customer_path(@invoice.contact)
     = col md: 6
+      - if policy(:invoice).destroy?
+        => button_link 'Delete', invoice_path(@invoice), method: :delete, type: 'danger', confirm: 'Delete this invoice?'
+      - if policy(:invoice).rate?
+        => button_link 'Rate', invoice_path(@invoice, status: 'rate'), method: :put, type: 'warning', confirm: 'Submit this invoice for rating?'
       - unless @invoice.draft?
         => button_link 'Resend', invoice_path(@invoice, status: 'resend'), method: :put, type: 'warning', confirm: 'Resend this invoice?'
       - if policy(:invoice).update?

@@ -1,5 +1,5 @@
 <% content_for :preview do %>
-    Your <%= Rails.application.config.x.company.name %> Invoice
+    Your <%= Conf.id.name %> Invoice
 <% end %>
 
 <!-- COPY -->
@@ -9,24 +9,24 @@
 
           <p>Dear <%= @invoice.contact.contact_first %> <%= @invoice.contact.contact_last %>,
 
-          <p>Your invoice for <%= Rails.application.config.x.company.name %> services is attached.</p>
+          <p>Your invoice for <%= Conf.id.name %> services is attached.</p>
 
-          <% if Rails.application.config.x.features.payments %>
+          <% if Conf.features.payments %>
             <p>To pay online, please use payment button at the bottom of this email.</p>
           <% end %>
 
           <p>To pay by check, please remit to:</p>
 
-          <p><%= Rails.application.config.x.company.name %><br/>
+          <p><%= Conf.id.name %><br/>
           Attn: Accounts Receivable<br/>
-          <%= Rails.application.config.x.company.street %><br/>
-          <%= Rails.application.config.x.company.city_st_zip %></p>
+          <%= Conf.id.address.street %><br/>
+          <%= Conf.id.address.city_st_zip %></p>
 
-          <p>If you have any questions or require assistance, please feel free to contact <%= Rails.application.config.x.company.accounting_email %>.</p>
+          <p>If you have any questions or require assistance, please feel free to contact <%= Conf.id.contact.accounting.email %>.</p>
 
         </td>
     </tr>
-    <% if Rails.application.config.x.features.payments %>
+    <% if Conf.features.payments %>
       <tr>
           <td align="center">
               <!-- BULLETPROOF BUTTON -->

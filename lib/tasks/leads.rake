@@ -8,7 +8,7 @@ namespace :leads do
     page = Nokogiri::HTML(html)
     case source
     when :connect_360
-      lead[:affiliate_id] = '360connect'
+      lead[:affiliate_code] = '360connect'
       # Get contact block and split into pieces
       parts = page.css('td.buffered p')
       main_contact = parts[0].inner_html
@@ -75,7 +75,7 @@ namespace :leads do
             contact = Contact.new(record)
             contact.save
           end
-          Comment.build_from(contact, Rails.application.config.x.default_user_id, comment).save
+          Comment.build_from(contact, Conf.id.default_user_id, comment).save
           m.move_to('Processed')
           print "Process - "
         else

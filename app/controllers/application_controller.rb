@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def prepend_view_paths
-    prepend_view_path "app/views/tenants/#{Rails.application.config.x.tenant}"
+    prepend_view_path "app/views/tenants/#{Conf.tenant}"
   end
 
   def assign_creator

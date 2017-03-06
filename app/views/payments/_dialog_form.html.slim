@@ -3,7 +3,7 @@
 - else
   - payable = @payment.payable
 
-= semantic_form_for [payable, @payment], html: {'data-stripe-key' => Rails.configuration.stripe[:publishable_key]}, remote: true do |f|
+= semantic_form_for [payable, @payment], html: {'data-stripe-key' => Rails.application.secrets.stripe_public_key}, remote: true do |f|
   = myrject :modal do |m|
     - m.title 'Payment'
     - m.body

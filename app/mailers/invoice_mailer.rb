@@ -6,7 +6,7 @@ class InvoiceMailer < ApplicationMailer
     from = directory(:invoice_from)
     cc = directory(:accounting)
     # TODO: Use some sort of token substitution for invoice subject
-    subject = "#{Rails.application.config.x.company.name} Invoice #{@invoice.contact.company_name} #{@invoice.invoice_date}"
+    subject = "#{Conf.id.name} Invoice #{@invoice.contact.company_name} #{@invoice.invoice_date}"
     attachments[@invoice.pdf_filename] = File.read(@invoice.pdf.path)
     mail(to: to, from: from, cc: cc, subject: subject, template_path: directory(:template_path))
   end

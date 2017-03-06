@@ -26,7 +26,10 @@ class Proposal < ActiveRecord::Base
   ## Scopes
   #
   scope :query, -> (q) { joins(:contact).where('proposals.number LIKE ? OR proposals.memo LIKE ? OR contacts.company_name LIKE ? OR contacts.contact_first LIKE ? OR contacts.contact_last LIKE ?', "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%", "%#{q.squish}%") }
-  scope :updated_this_month, -> { where(updated_at: Time.now.beginning_of_month..Time.now.end_of_month) }
+  scope :updated_this_month, -> {
+    where(updated_at: 4.weeks.ago..Time.now).
+    order(proposal_date: :desc)
+  }
   #
   ## Callbacks
   #
@@ -121,9 +124,10 @@ class Proposal < ActiveRecord::Base
     products_datasheets = products_proposal.datasheet_index.collect do |line_item|
       line_item.product.datasheet.path
     end
-    terms = "#{Rails.root}/config/profiles/#{Rails.application.config.x.tenant}/pdf/proposal_terms.pdf"
-    back_cover = "#{Rails.root}/config/profiles/#{Rails.application.config.x.tenant}/pdf/proposal_back_cover.pdf"
-    [proposal_path] + products_datasheets + [terms, back_cover]
+    terms = "#{Rails.root}/config/profiles/#{Conf.tenant}/pdf/proposal_terms.pdf"
+    back_cover = "#{Rails.root}/config/profiles/#{Conf.tenant}/pdf/proposal_back_cover.pdf"
+    [proposal_path] + products_datasheets + [back_cover]
+    # [proposal_path] + products_datasheets + [terms, back_cover]
   end
 
   def self.controller_params
@@ -160,6 +164,6 @@ class Proposal < ActiveRecord::Base
   end
 
   def update_onboarding
-    onboarding.read_bom(services_proposal) if Rails.application.config.x.features.fractel_onboarding
+    onboarding.read_bom(services_proposal) if Conf.features.onboarding
   end
 end

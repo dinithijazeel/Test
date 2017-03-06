@@ -5,6 +5,7 @@
   span.label.label-reverse.status = @customer.status_label
 
 - content_for :page_body
+  = render 'balance', customer: @customer, send_statement_button: true
   = render 'contacts/contact', contact: @customer
   - unless @customer.opportunity.nil?
     = render 'opportunities/opportunity', contact: @customer

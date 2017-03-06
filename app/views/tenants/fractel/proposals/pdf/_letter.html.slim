@@ -1,10 +1,10 @@
 #letter.print-page
   .fractel-address
-    p.name FracTEL, LLC
+    p.name = Conf.id.legal_name
     p.address
-      | 122 4th Ave. Ste. 201
+      = Conf.id.address.street
       br
-      | Indialantic, FL 32903
+      = Conf.id.address.city_st_zip
   .letter
     p.date = "#{@proposal.proposal_date.nil? ? "[DATE]" : @proposal.proposal_date.strftime('%B %-d, %Y')}"
     .customer-address
@@ -21,7 +21,7 @@
     .body
       p.greeting = "#{@proposal.contact.contact_first},"
       markdown:
-        Thank you for considering FracTEL for your cloud communications needs. I am happy to present this proposal for your review. We look forward to working with you and providing you with stellar service for your business. If you have any questions, please do not hesitate to contact me.
+        Thank you for considering <%= Conf.id.name %> for your cloud communications needs. I am happy to present this proposal for your review. We look forward to working with you and providing you with stellar service for your business. If you have any questions, please do not hesitate to contact me.
       p.closing Sincerely,
       p.signature
         span.name = "#{@proposal.owner.full_name}"

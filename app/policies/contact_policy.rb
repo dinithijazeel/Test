@@ -1,6 +1,5 @@
 class ContactPolicy < ApplicationPolicy
-
   def update?
-    @record.portal_id.blank?
+    user.is(:sales)
   end
 end

@@ -5,18 +5,18 @@
 <!-- COPY -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td align="center" style="font-size: 32px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy"><%= Rails.application.config.x.company.name %> Payment Receipt</td>
+        <td align="center" style="font-size: 32px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy"><%= Conf.id.name %> Payment Receipt</td>
     </tr>
     <tr>
         <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
 
-        <p>Thank you for your payment. The amount of <%= sprintf '$ %.2f', @payment.amount %> has been received and applied to your balance.</p>
+        <p>Thank you for your payment. The amount of <strong><%= sprintf '$ %.2f', @payment.amount %></strong> has been received and applied to your balance.</p>
 
         <p>Date: <strong><%= Date.today %></strong></p>
 
         <p>Customer: <strong><%= @payment.payable_contact.company_name %></strong></p>
 
-        <p>Account: <strong><%= @payment.payable_contact.portal_id %></strong></p>
+        <p>Account: <strong><%= @payment.payable_contact.account_code %></strong></p>
 
         <p>Memo: <strong><%= @payment.memo %></strong></p>
 

@@ -24,5 +24,6 @@
   = render 'line_items/fields', f: f, products: Product.collection(:products_proposal), :id => 'products_proposal'
 
 / Onboarding
-= f.semantic_fields_for :onboarding do |f|
-  = render 'onboarding/fields', f: f
+- if Conf.features.onboarding
+  = f.semantic_fields_for :onboarding do |f|
+    = render 'onboarding/fields', f: f

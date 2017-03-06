@@ -1,0 +1,151 @@
+staging:
+  engaged: <%= ENV['APP_STAGING'] %>
+  email: 'myriander@fractel.net'
+id:
+  name: FracTEL
+  legal_name: FracTEL, LLC
+  website_name: 'www.fractel.net'
+  website_url:  'https://www.fractel.net'
+  motto: 'FracTEL LLC - Telecom Perfected'
+  default_user_id: <%= ENV['DEFAULT_USER_ID'] %>
+  address:
+    one_line: '122 4th Ave. &bull; Ste. 201 &bull; Indialantic, Florida 32903 &bull; United States'
+    street: '122 4th Ave., Ste. 201'
+    city_st_zip: 'Indialantic, Florida 32903'
+  contact:
+    phone: '(321) 499-1000'
+    general_email: 'info@fractel.net'
+    no_reply_email: 'no-reply@fractel.net'
+    accounting:
+      name: 'Accounting Department'
+      phone: '(321) 499-1000'
+      email: 'accounting@fractel.net'
+    billing:
+      name: 'Billing Department'
+      phone: '(321) 499-1000'
+      email: 'billing@fractel.net'
+    sales:
+      name: 'Sales Department'
+      phone: '(321) 499-1000'
+      email: 'sales@fractel.net'
+    onboarding:
+      name: 'Onboarding Department'
+      phone: '(321) 499-1000'
+      email: 'onboarding@fractel.net'
+    welcome:
+      name: 'Mike Crown'
+      title: 'President'
+      email: 'mike@fractel.net'
+features:
+  onboarding: true
+  payments: true
+email:
+  logo:                  <%= "#{ENV['PROTOCOL']}://#{ENV['HOST']}/images/logo_md.png" %>
+  invoice_subject:       'FracTEL Invoice'
+  welcome_subject:       'Welcome to FracTEL'
+  proposal_subject:      'FracTEL Cloud Communications Proposal'
+  invoice_subject:       'FracTEL Invoice'
+  new_account_subject:   'Your new FracTEL account is ready to use'
+  new_customer_subject:  'New FracTEL Account'
+  payment_subject:       'FracTEL Payment Received'
+products:
+  special:
+    cloud_pbx:   CLOUD-PBX-01
+    sip_trunk:   SIP-TRUNK-01
+    did:
+      - ADDL-DIDS-01
+      - DID-LOCAL-01
+      - DID-TF-01
+      - DID-INTL-01
+    did_price:
+      - ADDL-DIDS-01
+    fax:         ENT-FAX-01
+    discount:    DISCOUNT-01
+    sales_tax:   TX-FL-GST-01
+    federal_tax: TX-FUSF-01
+    state_tax:   TX-FL-CST-01
+    local_tax:   TX-LOC-CST-01
+    shipping:    SHIPPING-01
+    prepaid:     PREPAID-01
+payments:
+  stripe:
+    - Stripe
+  bank_deposit:
+    - SCCU
+    - Chase
+    - Wells Fargo
+    - Intuit
+  credit:
+    - Credit
+freshdesk:
+  onboarding_subject: Onboarding Request
+  groups_onboarding: 14000107507
+suretax:
+  url: 'https://testapi.taxrating.net/Services/Communications/V01/SureTax.asmx'
+  validation_key: 'dddcaf33-15e1-49af-a304-465651f75247'
+  client_number: '000000870'
+  tax_products:
+    ST000: 'TX-CIT-CLLRT-01'
+    ST101: 'TX-CIT-CLRT-01'
+    ST040: 'TX-CIT-CLST-01'
+    ST109: 'TX-CIT-COST-01'
+    ST110: 'TX-CIT-CST-01'
+    ST126: 'TX-CIT-L911S-01'
+    ST129: 'TX-CIT-LBAOT-01'
+    ST142: 'TX-CIT-LCT-01'
+    ST144: 'TX-CIT-LFA-01'
+    ST149: 'TX-CIT-LFF-01'
+    ST150: 'TX-CIT-LGRT-01'
+    ST203: 'TX-CIT-LLT-01'
+    ST224: 'TX-CIT-LRWF-01'
+    ST237: 'TX-CIT-LUUT-01'
+    ST060: 'TX-COU-COLRT-01'
+    ST035: 'TX-COU-COLST-01'
+    ST107: 'TX-COU-COST-01'
+    ST108: 'TX-COU-CST-01'
+    ST124: 'TX-COU-L911S-01'
+    ST133: 'TX-COU-LCT-01'
+    ST202: 'TX-COU-LLT-01'
+    ST216: 'TX-COU-LRWF-01'
+    ST233: 'TX-COU-LUUT-01'
+    ST117: 'TX-FED-FET-01'
+    ST119: 'TX-FED-FTF-01'
+    ST120: 'TX-FED-FUSF-01'
+    ST118: 'TX-FED-FUSFR-01'
+    ST122: 'TX-FED-GST-01'
+    ST533: 'TX-FED-VAT-01'
+    ST051: 'TX-LOC-COLST-01'
+    ST059: 'TX-LOC-CLST-01'
+    ST111: 'TX-LOC-CST-01'
+    ST127: 'TX-LOC-L911S-01'
+    ST238: 'TX-LOC-LUUT-01'
+    ST302: 'TX-LOC-MS1-01'
+    ST305: 'TX-LOC-MS2-01'
+    ST128: 'TX-RAG-L911S-01'
+    ST418: 'TX-RAG-UDPTT-01'
+    ST106: 'TX-STA-CRSS-01'
+    ST123: 'TX-STA-L911S-01'
+    ST204: 'TX-STA-LRWF-01'
+    ST245: 'TX-STA-MS1-01'
+    ST304: 'TX-STA-MS2-01'
+    ST316: 'TX-STA-MS3-01'
+    ST324: 'TX-STA-MS4-01'
+    ST331: 'TX-STA-PC-01'
+    ST333: 'TX-STA-PST-01'
+    ST332: 'TX-STA-PUCF-01'
+    ST336: 'TX-STA-S911T-01'
+    ST337: 'TX-STA-SBOT-01'
+    ST338: 'TX-STA-SCT-01'
+    ST343: 'TX-STA-SET-01'
+    ST347: 'TX-STA-SFF-01'
+    ST348: 'TX-STA-SGRT-01'
+    ST403: 'TX-STA-SIMF-01'
+    ST405: 'TX-STA-SLRT-01'
+    ST404: 'TX-STA-SLT-01'
+    ST416: 'TX-STA-SST-01'
+    ST417: 'TX-STA-SUT-01'
+    ST433: 'TX-STA-ULTSS-01'
+    ST5C2: 'TX-STA-USF-01'
+loa:
+  local: 'https://www.fractel.net/forms/loa-form-local/'
+  tollfree: 'https://www.fractel.net/forms/loa-form-toll-free/'

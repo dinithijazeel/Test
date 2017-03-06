@@ -40,9 +40,6 @@ class ProposalsController < ApplicationController
     respond_to do |format|
       format.html do
         @new_comment = Comment.build_from(@proposal.contact.becomes(Contact), current_user.id, '')
-        if params[:view] == 'preview'
-          render 'pdf', :layout => "tenants/#{Rails.application.config.x.tenant}/invoices/preview"
-        end
       end
       format.pdf do
         @proposal.generate_pdf if @proposal.pdf.file.nil? || @proposal.proposal_status == 'draft'
@@ -122,14 +119,14 @@ class ProposalsController < ApplicationController
           message = "Proposal #{@proposal.number} accepted."
         when 'completed'
           # Create portal account if needed
-          if Rails.application.config.x.features.fractel_onboarding && !@proposal.contact.has_portal_account?
+          if Conf.features.onboarding && !@proposal.contact.has_portal_account?
             @proposal.onboarding.create_portal_account
-            # Reload so that we can include the newly-generated portal_id
+            # Reload so that we can include the newly-generated account_code
             @proposal.reload
             # Send notifications
-            OnboardingMailer.new_account(@proposal).deliver_now
-            OnboardingMailer.welcome(@proposal).deliver_now
           end
+          OnboardingMailer.new_account(@proposal).deliver_now
+          OnboardingMailer.welcome(@proposal).deliver_now
           # Create onboarding ticket
           @proposal.onboarding.create_support_ticket
           # Mark as complete

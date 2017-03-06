@@ -1,5 +1,5 @@
 <% content_for :preview do %>
-    Your <%= Rails.application.config.x.company.name %> Proposal
+    Your <%= Conf.id.name %> Proposal
 <% end %>
 
 <!-- COPY -->
@@ -8,7 +8,8 @@
         <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
         <p>Dear <%= @proposal.contact.contact_first %>:</p>
 
-        <p>Thank you for taking the time to review your telecommunications requirements with me. Your proposal for <%= Rails.application.config.x.company.name %> service is attached.</p>
+        <p>Thank you for taking the time to review your telecommunications requirements with me. Your proposal for <%= Conf.id.name %> service is attached.</p>
+
         <p>Please feel free to contact me if you have any questions. I look forward to working with you.</p>
 
         <p>Sincerely,</p>

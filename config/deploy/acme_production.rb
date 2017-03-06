@@ -1,14 +1,15 @@
-set :profile, 'acme'
+set :tenant, 'acme'
 set :branch, 'release/1.2.1'
 set :stage, :production
 
 set :rails_env, :production
 
 # The domain for the application
+set :server_protocol, 'https'
 set :server_name, 'acme.fractel.net'
 
 # The canonical description
-set :full_app_name, "#{fetch(:profile)}_#{fetch(:application)}_#{fetch(:stage)}"
+set :full_app_name, "#{fetch(:tenant)}_#{fetch(:application)}_#{fetch(:stage)}"
 
 # Deployment server and path
 server 'paprika.fractel.net', port: 32937, user: fetch(:deploy_user), roles: %w{web app db}, primary: true

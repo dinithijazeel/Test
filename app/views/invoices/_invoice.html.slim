@@ -4,7 +4,7 @@
     = col md: 3
       = field 'Company', @invoice.contact.company_name unless @invoice.contact.nil?
     = col md: 3
-      = field 'Date', @invoice.contact.company_name unless @invoice.contact.nil?
+      = field 'Date', @invoice.invoice_date
     = col md: 3
       = field 'Terms', @invoice.terms_label
     = col md: 1

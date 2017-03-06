@@ -27,11 +27,11 @@
                 <%= phone(@proposal.contact.phone) %>
             </p>
             <p>
-                FracTEL Account Code: <%= @proposal.contact.portal_id %><br/>
+                <%= Conf.id.name %> Account Code: <%= @proposal.contact.account_code %><br/>
             </p>
             <h3>Affiliate / Discount</h3>
             <p>
-                Affiliate: <%= @proposal.contact.affiliate_id %><br/>
+                Affiliate: <%= @proposal.contact.affiliate_code %><br/>
                 Discount: <%= @proposal.contact.discount_code %>
             </p>
             <h3>Billing Address</h3>

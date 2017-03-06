@@ -1,5 +1,5 @@
 [Unit]
-Description=<%= "Unicorn Server :: #{fetch(:profile)} :: #{fetch(:application)}" %>
+Description=<%= "Unicorn Server :: #{fetch(:tenant)} :: #{fetch(:application)}" %>
 # Requires=redis.service
 # Wants=mysqld.service postgresql.service
 # After=redis.service mysqld.service postgresql.service
@@ -7,7 +7,7 @@ Description=<%= "Unicorn Server :: #{fetch(:profile)} :: #{fetch(:application)}"
 [Service]
 User=<%= fetch(:deploy_user) %>
 WorkingDirectory=<%= "#{fetch(:deploy_to)}/current" %>
-SyslogIdentifier=<%= "unicorn-#{fetch(:profile)}-#{fetch(:application)}" %>
+SyslogIdentifier=<%= "unicorn-#{fetch(:tenant)}-#{fetch(:application)}" %>
 PIDFile=<%= "#{fetch(:deploy_to)}/current/tmp/pids/unicorn.pid" %>
 
 Environment=RAILS_ENV=<%= fetch(:rails_env) %>

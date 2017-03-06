@@ -1,5 +1,5 @@
 <% content_for :preview do %>
-    Welcome to FracTEL
+    Welcome to <%= Conf.id.name %>
 <% end %>
 
 <!-- COPY -->
@@ -9,29 +9,29 @@
 
         <p>Hello <%= @proposal.contact.contact_first %>,</p>
 
-        <p>I would like to take this opportunity to welcome you to FracTEL, and to help you understand what you can expect from us in the next few days.</p>
+        <p>I would like to take this opportunity to welcome you to <%= Conf.id.name %>, and to help you understand what you can expect from us in the next few days.</p>
 
-        <p>The FracTEL team has worked with thousands of companies like yours, and we’ve made every effort to make getting started as easy as it can possibly be. We have a profound appreciation for how important communications are to your business, and we’re committed to making sure your deployment goes smoothly.</p>
+        <p>The <%= Conf.id.name %> team has worked with thousands of companies like yours, and we’ve made every effort to make getting started as easy as it can possibly be. We have a profound appreciation for how important communications are to your business, and we’re committed to making sure your deployment goes smoothly.</p>
 
-        <p>A FracTEL Onboarding Manager will be reaching out to your designated contact sometime in the next two business days to review your infrastructure, inventory your requirements, analyze your business processes, and establish a deployment plan. This interview process is extremely important, so please make every effort to allocate sufficient time to adequately perform this task.</p>
+        <p>A <%= Conf.id.name %> Onboarding Manager will be reaching out to your designated contact sometime in the next two business days to review your infrastructure, inventory your requirements, analyze your business processes, and establish a deployment plan. This interview process is extremely important, so please make every effort to allocate sufficient time to adequately perform this task.</p>
 
-        <p>You should have received a separate email with instructions and login credentials for accessing the FracTEL User Portal. The User Portal is used make changes to your system configuration and to perform reporting and billing functions. Make sure these credentials are kept confidential and shared only with trusted administrators of your FracTEL system.</p>
+        <p>You should have received a separate email with instructions and login credentials for accessing the <%= Conf.id.name %> User Portal. The User Portal is used make changes to your system configuration and to perform reporting and billing functions. Make sure these credentials are kept confidential and shared only with trusted administrators of your <%= Conf.id.name %> system.</p>
 
-        <p>If your system includes phones or other hardware, the equipment is already on the way to your location(s) and will normally arrive in 3-5 days. In the meantime, the FracTEL team will be working hard to configure the cloud-based functionality of your system and tailoring it to your business. Your equipment is pre-configured, so when it arrives, setup will be a simple plug and play process.</p>
+        <p>If your system includes phones or other hardware, the equipment is already on the way to your location(s) and will normally arrive in 3-5 days. In the meantime, the <%= Conf.id.name %> team will be working hard to configure the cloud-based functionality of your system and tailoring it to your business. Your equipment is pre-configured, so when it arrives, setup will be a simple plug and play process.</p>
 
         <p>Your Onboarding Manager will coordinate with you to schedule a convenient time to assist with equipment set up, troubleshooting any issues, and confirm that your devices are connecting and communicating properly with our fully redundant data centers. When this step is complete, your system will be ready to send and receive calls, faxes and messages.</p>
 
-        <p>If you have telephone numbers that need to be transferred from an existing provider, this process will usually take about two weeks. While this process is underway, FracTEL will provide you with temporary numbers that you can use for testing and forwarding your existing numbers to. As soon as a completion date for this process is established, your Onboarding Manager will let you know, and when the transfer of your numbers is completed, they will begin routing to your new system with no interruption of service.</p>
+        <p>If you have telephone numbers that need to be transferred from an existing provider, this process will usually take about two weeks. While this process is underway, <%= Conf.id.name %> will provide you with temporary numbers that you can use for testing and forwarding your existing numbers to. As soon as a completion date for this process is established, your Onboarding Manager will let you know, and when the transfer of your numbers is completed, they will begin routing to your new system with no interruption of service.</p>
 
         <p>The final step in deployment of your new system is training. Your Onboarding Manager will provide instruction on the use of system features, as well as performing common system management and administration tasks. Since it is generally not practical to provide training to all users, the preferred approach is to identify one or more key personnel and “train the trainers”.</p>
 
-        <p>While FracTEL has made every effort to make the deployment process as trouble-free as possible, every business is different and there are many opportunities for problems to arise. Almost all of these problems can be eliminated or minimized with good communication and a thorough understanding of the deployment environment and business requirements. Attached to this message is a survey of questions that your Onboarding Manager will be reviewing with you as the first step of the onboarding process. By taking a few minutes to review and answer these questions in advance of the interview, you can assist greatly in facilitating a successful and stress-free deployment.</p>
+        <p>While <%= Conf.id.name %> has made every effort to make the deployment process as trouble-free as possible, every business is different and there are many opportunities for problems to arise. Almost all of these problems can be eliminated or minimized with good communication and a thorough understanding of the deployment environment and business requirements. Attached to this message is a survey of questions that your Onboarding Manager will be reviewing with you as the first step of the onboarding process. By taking a few minutes to review and answer these questions in advance of the interview, you can assist greatly in facilitating a successful and stress-free deployment.</p>
 
-        <p>Thank you for choosing FracTEL.</p>
+        <p>Thank you for choosing <%= Conf.id.name %>.</p>
 
-        <p><strong>Michael A Crown</strong><br/>
-        President<br/>
-        FracTEL, LLC</p>
+        <p><strong><%= Conf.id.contact.welcome.name %></strong><br/>
+        <%= Conf.id.contact.welcome.title %><br/>
+        <%= Conf.id.legal_name %></p>
 
         </td>
     </tr>
